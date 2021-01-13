@@ -85,15 +85,7 @@ public class EditDishActivity extends AppCompatActivity {
     private void registerDish() {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.dishTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        Plato dish = factoryPlato.creaPlato(dishNameField.getText().toString(),ingredients,isVeganCheckBox.isChecked(),isGlutenFreeCheckBox.isChecked());
-
-        values.put(Utilities.restaurant, restaurantName);
-        values.put(Utilities.dishName, dish.getNombre());
-        values.put(Utilities.ingredients, arrayListToString(dish.getIngredientes()));
-        values.put(Utilities.price, priceField.getText().toString()); //ESTO HAY QUE CAMBIARLO
-        values.put(Utilities.isVegan, dish.esVegano());
-        values.put(Utilities.isGlutenFree, dish.tieneGluten());
+        ContentValues values = createDish();
 
         long index = db.insert(Utilities.dishTable, Utilities.dishName, values);
         if (index > 0) {
@@ -111,15 +103,7 @@ public class EditDishActivity extends AppCompatActivity {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.dishTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parameters = {restaurantName, dishName};
-        Plato dish = factoryPlato.creaPlato(dishNameField.getText().toString(),ingredients,isVeganCheckBox.isChecked(),isGlutenFreeCheckBox .isChecked());
-
-        ContentValues values = new ContentValues();
-        values.put(Utilities.restaurant, restaurantName);
-        values.put(Utilities.dishName, dish.getNombre());
-        values.put(Utilities.ingredients, arrayListToString(dish.getIngredientes()));
-        values.put(Utilities.price, priceField.getText().toString()); //ESTO HAY QUE CAMBIARLO
-        values.put(Utilities.isVegan, dish.esVegano());
-        values.put(Utilities.isGlutenFree, dish.tieneGluten());
+        ContentValues values = createDish();
         int index = db.update(Utilities.dishTable, values, Utilities.restaurant + "=? AND " + Utilities.dishName + "=?", parameters);
 
         if (index > 0) {
@@ -168,6 +152,18 @@ public class EditDishActivity extends AppCompatActivity {
             db.close();
             e.printStackTrace();
         }
+    }
+    //Instancia la clase plato y mete sus datos en un content values
+    private ContentValues createDish() {
+        Plato dish = factoryPlato.creaPlato(dishNameField.getText().toString(), Integer.parseInt(priceField.getText().toString()), ingredients,isVeganCheckBox.isChecked(),isGlutenFreeCheckBox .isChecked());
+        ContentValues values = new ContentValues();
+        values.put(Utilities.restaurant, restaurantName);
+        values.put(Utilities.dishName, dish.getNombre());
+        values.put(Utilities.ingredients, arrayListToString(dish.getIngredientes()));
+        values.put(Utilities.price, dish.getPrecio());
+        values.put(Utilities.isVegan, dish.getEsVegano());
+        values.put(Utilities.isGlutenFree, dish.getTieneGluten());
+        return values;
     }
 
     private String arrayListToString(ArrayList<String> list){

@@ -1,4 +1,5 @@
 package com.example.instanteat;
+
 import java.util.ArrayList;
 
 public class AbstractFactoryPlato implements IAbstractFactoryPlato{
@@ -14,14 +15,14 @@ public class AbstractFactoryPlato implements IAbstractFactoryPlato{
      * @return Objeto de tipo Plato.
      */
     @Override
-    public Plato creaPlato(String nombre, ArrayList<String> ingredientes, boolean esVegano, boolean tieneGluten){
-        return factoriaPlato.crearPlato(nombre, ingredientes, esVegano, tieneGluten);
+    public Plato creaPlato(String nombre,double precio, ArrayList<String> ingredientes, boolean esVegano, boolean tieneGluten){
+        return factoriaPlato.crearPlato(nombre, precio, ingredientes, esVegano, tieneGluten);
     }
 
     /**
      * Crea un objeto de tipo Hamburguesa.
      *
-     * @return Objeto de tipo hamburguesa.
+     * @return Objeto de tipo Hamburguesa.
      */
     @Override
     public Plato creaHamburguesa(String nombre,int[] opciones){
@@ -29,9 +30,9 @@ public class AbstractFactoryPlato implements IAbstractFactoryPlato{
     }
     
     /**
-     * Crea un objeto de tipo Hamburguesa.
+     * Crea un objeto de tipo Pizza.
      *
-     * @return Objeto de tipo hamburguesa.
+     * @return Objeto de tipo Pizza.
      */
     @Override
     public Plato creaPizza(String nombre, int[] opciones){
@@ -39,14 +40,14 @@ public class AbstractFactoryPlato implements IAbstractFactoryPlato{
     }
     
     /**
-     * Crea un objeto de tipo Hamburguesa.
+     * Crea un objeto de tipo Ensalada.
      *
-     * @return Objeto de tipo hamburguesa.
+     * @return Objeto de tipo Ensalada.
      */
-    /*@Override
+    @Override
     public Plato creaEnsalada(String nombre, int[] opciones){
-        
-    }*/
+        return factoriaEnsalada.crearEnsalada(nombre, opciones);
+    }
     
     
 }

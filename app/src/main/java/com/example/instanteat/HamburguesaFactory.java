@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.example.instanteat;
+
 import java.util.ArrayList;
 
 /**
@@ -51,6 +52,6 @@ public class HamburguesaFactory {
         if(opciones[0]==3) tieneGluten = false;
         if(opciones[4]==0 && (opciones[5]==0 || opciones[5]==3)) esVegano = true;
         
-        return new Plato(nombre,ingredientes,esVegano,tieneGluten);
+        return new Plato(nombre,5.0,ingredientes,esVegano,tieneGluten);
     }
 }

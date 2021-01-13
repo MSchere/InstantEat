@@ -42,7 +42,8 @@
     <ListView
         android:id="@+id/orderDishList"
         android:layout_width="377dp"
-        android:layout_height="293dp"
+        android:layout_height="wrap_content"
+        android:choiceMode="multipleChoice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"

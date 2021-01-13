@@ -1,4 +1,5 @@
 package com.example.instanteat;
+
 import java.util.ArrayList;
 
 public interface IAbstractFactoryPlato {
@@ -8,7 +9,7 @@ public interface IAbstractFactoryPlato {
      *
      * @return Objeto de tipo Plato.
      */
-    public Plato creaPlato(String nombre,ArrayList<String> ingredientes, boolean esVegano, boolean tieneGluten);
+    public Plato creaPlato(String nombre,double precio,ArrayList<String> ingredientes, boolean esVegano, boolean tieneGluten);
 
     /**
      * Crea un objeto de tipo Hamburguesa.
@@ -18,17 +19,17 @@ public interface IAbstractFactoryPlato {
     public Plato creaHamburguesa(String nombre, int[] opciones);
     
     /**
-     * Crea un objeto de tipo Hamburguesa.
+     * Crea un objeto de tipo Pizza.
      *
-     * @return Objeto de tipo hamburguesa.
+     * @return Objeto de tipo Pizza.
      */
     public Plato creaPizza(String nombre, int[] opciones);
     
     /**
-     * Crea un objeto de tipo Hamburguesa.
+     * Crea un objeto de tipo Ensalada.
      *
-     * @return Objeto de tipo hamburguesa.
+     * @return Objeto de tipo Ensalada.
      */
-    //public Plato creaEnsalada(String nombre, int[] opciones);
+    public Plato creaEnsalada(String nombre, int[] opciones);
     
 }
