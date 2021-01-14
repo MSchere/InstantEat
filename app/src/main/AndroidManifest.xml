@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.InstantEat">
+        <activity android:name=".EditCardActivity"></activity>
+        <activity android:name=".OrderSummary" />
         <activity android:name=".OrderEditorActivity" />
         <activity android:name=".ChooseRestaurantActivity" />
         <activity
@@ -17,7 +19,7 @@
         <activity android:name=".OwnerMenuActivity" />
         <activity android:name=".UserPrefsActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".ClientMenuActivity"/>
+        <activity android:name=".ClientMenuActivity" />
         <activity
             android:name=".LoginActivity"
             android:noHistory="true">

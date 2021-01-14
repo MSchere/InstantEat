@@ -58,24 +58,25 @@ public class OrderEditorActivity extends AppCompatActivity {
         });
     }
     //Calcula el precio extrayendo los numeros de la string.
-    public void calculatePrice() {
-        int price = 0;
-        String intValue;
+    public double calculatePrice() {
+        double price = 0;
+        String doubleValue;
         for(String item:selectedItems){
-            intValue = item.replaceAll("[^0-9]", "");
-            //Utilities.showToast(getApplicationContext(), intValue);
-            price = price + Integer.parseInt(intValue);
+            doubleValue = item.replaceAll("[^\\d.]", "");
+            Utilities.showToast(getApplicationContext(), doubleValue);
+            price = price + Double.parseDouble(doubleValue);
         }
-        totalPriceText.setText(String.valueOf(price));
+        //totalPriceText.setText(String.valueOf(price) + " €");
+        return price;
     }
 
     private ArrayList<String> fillList() {
         //Establecemos la conexión con la db
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.dishTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
-        String[] fields = {Utilities.dishName, Utilities.price};
+        String[] fields = {Utilities.dishName, Utilities.price, Utilities.ingredients};
         String[] parameters = {restaurantName};
-        String price;
+        String price, ingredients;
         ArrayList<String> list = new ArrayList<String>();
         try {
             Cursor cursor = db.query(Utilities.dishTable, fields, Utilities.restaurant + "=?", parameters, null, null, null);
@@ -83,7 +84,8 @@ public class OrderEditorActivity extends AppCompatActivity {
                 while (!cursor.isAfterLast()) {
                     dishName = cursor.getString(0);
                     price = cursor.getString(1);
-                    list.add(dishName + ": " + price + " €");
+                    ingredients = cursor.getString(2);
+                    list.add(dishName + ": " + price + " €\n" + ingredients);
                     cursor.moveToNext();
                 }
             }

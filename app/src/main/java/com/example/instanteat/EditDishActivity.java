@@ -63,12 +63,12 @@ public class EditDishActivity extends AppCompatActivity {
         addIngredientButton.setOnClickListener(v -> {
             ingredients.add(ingredientField.getText().toString());
             ingredientField.setText("");
-            ingredientsListText.setText(arrayListToString(ingredients));
+            ingredientsListText.setText(Utilities.arrayListToString(ingredients));
         });
 
         removeIngredientButton.setOnClickListener(v -> {
             ingredients.remove(ingredients.size()-1);
-            ingredientsListText.setText(arrayListToString(ingredients));
+            ingredientsListText.setText(Utilities.arrayListToString(ingredients));
         });
 
         addDishEditorButton.setOnClickListener(v -> {
@@ -142,7 +142,7 @@ public class EditDishActivity extends AppCompatActivity {
             priceField.setText(cursor.getString(3));
             isGlutenFreeCheckBox.setChecked(cursor.getInt(4) > 0);
             isVeganCheckBox.setChecked(cursor.getInt(5) > 0);
-            ingredients = stringToArrayList(strIngredients);
+            ingredients = Utilities.stringToArrayList(strIngredients);
             ingredientsListText.setText(strIngredients);
             cursor.close();
             db.close();
@@ -155,37 +155,26 @@ public class EditDishActivity extends AppCompatActivity {
     }
     //Instancia la clase plato y mete sus datos en un content values
     private ContentValues createDish() {
-        Plato dish = factoryPlato.creaPlato(dishNameField.getText().toString(), Integer.parseInt(priceField.getText().toString()), ingredients,isVeganCheckBox.isChecked(),isGlutenFreeCheckBox .isChecked());
+        Plato dish = factoryPlato.creaPlato(dishNameField.getText().toString(), restaurantName, ingredients, Double.parseDouble(priceField.getText().toString()),isVeganCheckBox.isChecked(),isGlutenFreeCheckBox .isChecked());
         ContentValues values = new ContentValues();
-        values.put(Utilities.restaurant, restaurantName);
         values.put(Utilities.dishName, dish.getNombre());
-        values.put(Utilities.ingredients, arrayListToString(dish.getIngredientes()));
+        values.put(Utilities.restaurant, dish.getRestaurante());
+        values.put(Utilities.ingredients, Utilities.arrayListToString(dish.getIngredientes()));
         values.put(Utilities.price, dish.getPrecio());
-        values.put(Utilities.isVegan, dish.getEsVegano());
-        values.put(Utilities.isGlutenFree, dish.getTieneGluten());
+        values.put(Utilities.isVegan, dish.isVegano());
+        values.put(Utilities.isGlutenFree, dish.isGluten());
         return values;
     }
 
-    private String arrayListToString(ArrayList<String> list){
-        String myString = "";
-        for (int i = 0; i < list.size(); i++) {
-            myString = myString+list.get(i)+", ";
-        }
-        return myString;
-    }
 
-    private ArrayList<String> stringToArrayList(String str) {
-        ArrayList<String> list = new ArrayList<String>();
-        StringTokenizer tokens=new StringTokenizer(str, ", ");
-        while(tokens.hasMoreTokens()){
-            list.add(tokens.nextToken());
-        }
-        return list;
-    }
 
     private Boolean checkDishName() {
         String name;
         name = dishNameField.getText().toString();
+        if (name.matches(".*\\d.*")) {
+            Utilities.showToast(getApplicationContext(), "El nombre del plato no puede contener números");
+            return false;
+        }
         if (name.length() < 3) {
             Utilities.showToast(getApplicationContext(), "Nombre del plato incorrecto");
             return false;

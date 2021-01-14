@@ -15,8 +15,8 @@ public class AbstractFactoryPlato implements IAbstractFactoryPlato{
      * @return Objeto de tipo Plato.
      */
     @Override
-    public Plato creaPlato(String nombre,double precio, ArrayList<String> ingredientes, boolean esVegano, boolean tieneGluten){
-        return factoriaPlato.crearPlato(nombre, precio, ingredientes, esVegano, tieneGluten);
+    public Plato creaPlato(String nombre,String restaurante,ArrayList<String> ingredientes,double precio,boolean tieneGluten, boolean esVegano){
+        return factoriaPlato.crearPlato(nombre,restaurante,ingredientes,precio,tieneGluten,esVegano);
     }
 
     /**

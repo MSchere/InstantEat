@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Utilities {
     //User table variables
@@ -29,6 +30,12 @@ public class Utilities {
     public static final String isVegan = "vegan";
     public static final String price = "price";
 
+    public static final String cardTable = "cardDB";
+    public static final String cardNumber = "card_number";
+    public static final String cardOwnerName = "owner_name";
+    public static final String ccv = "ccv";
+    public static final String date = "date";
+
     public static final String objectTable = "ObjectDB";
     public static final String object = "object";
     public static final String id = "id";
@@ -46,15 +53,21 @@ public class Utilities {
             "(" + dishName + " varchar(40) primary key,\n" +
             restaurant + " varchar(40) not null,\n" +
             ingredients + " varchar(40) not null,\n" +
-            price + " int not null,\n" +
+            price + " double not null,\n" +
             isGlutenFree + " bit not null,\n" +
             isVegan + " bit not null);";
+
+    public static final String create_card_table = "create table " + cardTable + "\n" +
+            "(" + cardNumber + " int primary key,\n" +
+            cardOwnerName + " varchar(40) not null,\n" +
+            ccv + " int not null,\n" +
+            date + " varchar(40) not null);";
 
     public static final String create_object_table = "create table " + objectTable + "\n" +
             "(" + id + " int primary key,\n" +
             object + " blob not null);";
 
-    public static final ArrayList<Plato> getDishes(Context context, String userEmail) {
+    public static final ArrayList<Plato> getObjects(Context context, String userEmail) {
         ArrayList<Plato> dishes = new ArrayList<Plato>();
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -69,9 +82,32 @@ public class Utilities {
             dishes = gson.fromJson(json, new TypeToken<ArrayList<Plato>>() {}.getType());
             cursor.close();
 
-
         db.close();
         return dishes;
+    }
+
+    public static final ArrayList<Plato> getDishes(Context context) {
+        ArrayList<Plato> list = new ArrayList<Plato>();
+        AbstractFactoryPlato factoryPlato = new AbstractFactoryPlato();
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, dishTable, null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] fields = {"*"};
+        Cursor cursor = db.query(userTable, fields, "*", null, null, null, null);
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                //nombre, restaurante, ingredientes, precio, vegano, gluten
+                list.add(factoryPlato.creaPlato(cursor.getString(0),
+                        cursor.getString(1),
+                        stringToArrayList(cursor.getString(2)),
+                        cursor.getDouble(3),
+                        cursor.getInt(4) > 0,
+                        cursor.getInt(5) > 0));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+        return list;
     }
 
     public static final void addDishes(Context context, ArrayList<Plato> dishes, String userEmail) {
@@ -92,8 +128,21 @@ public class Utilities {
         db.close();
     }
 
-    public static final void updateUser(Context context, User user) {
+    public static final String arrayListToString(ArrayList<String> list){
+        String myString = "";
+        for (int i = 0; i < list.size(); i++) {
+            myString = myString+list.get(i)+", ";
+        }
+        return myString;
+    }
 
+    public static final ArrayList<String> stringToArrayList(String str) {
+        ArrayList<String> list = new ArrayList<String>();
+        StringTokenizer tokens=new StringTokenizer(str, ", ");
+        while(tokens.hasMoreTokens()){
+            list.add(tokens.nextToken());
+        }
+        return list;
     }
 
     public static final void showToast(Context context, String text) {

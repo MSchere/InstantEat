@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class PlatoFactory {
     
-    public Plato crearPlato(String nombre, double precio, ArrayList<String> ingredientes, boolean esVegano, boolean tieneGluten){
-        return new Plato(nombre,precio,ingredientes,esVegano,tieneGluten);
+    public Plato crearPlato(String nombre,String restaurante,ArrayList<String> ingredientes,double precio,boolean tieneGluten, boolean esVegano){
+        return new Plato(nombre,restaurante,ingredientes,precio,tieneGluten,esVegano);
     }
     
 }

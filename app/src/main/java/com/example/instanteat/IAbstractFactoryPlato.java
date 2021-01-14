@@ -9,7 +9,7 @@ public interface IAbstractFactoryPlato {
      *
      * @return Objeto de tipo Plato.
      */
-    public Plato creaPlato(String nombre,double precio,ArrayList<String> ingredientes, boolean esVegano, boolean tieneGluten);
+    public Plato creaPlato(String nombre,String restaurante,ArrayList<String> ingredientes,double precio,boolean tieneGluten, boolean esVegano);
 
     /**
      * Crea un objeto de tipo Hamburguesa.
