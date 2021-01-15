@@ -17,6 +17,7 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
     ListView restaurantList;
     ArrayAdapter<String> adapter;
     ArrayList<String> restaurants;
+    String selection, restaurantName, address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,10 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Has pulsado: " + dishes.get(i), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), OrderEditorActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("restaurantName", restaurants.get(i)); //Parámetro para la actividad
+                //Nos quedamos solo con el nombre del restaurante
+                selection = restaurants.get(i).substring(0, restaurants.get(i).indexOf(" en "));
+                selection.trim();
+                bundle.putString("restaurantName", selection); //Parámetro para la actividad
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -43,15 +47,15 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ArrayList<String> list = new ArrayList<String>();
-        String[] fields = {Utilities.name};
+        String[] fields = {Utilities.name, Utilities.address};
         String[] parameters = {"owner"};
-        String restaurantName;
         try {
             Cursor cursor = db.query(Utilities.userTable, fields, Utilities.userType+"=?", parameters, null, null, null);
             if(cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     restaurantName = cursor.getString(0);
-                    list.add(restaurantName);
+                    address = cursor.getString(1);
+                    list.add(restaurantName + " en " + address);
                     cursor.moveToNext();
                 }
             }

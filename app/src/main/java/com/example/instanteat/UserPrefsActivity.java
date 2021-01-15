@@ -18,7 +18,7 @@ public class UserPrefsActivity extends AppCompatActivity {
     EditText emailField, passwordField, nameField, addressField, phoneNumberField;
     Button saveButton, deleteAccountButton, logoffButton, addCardButton;
     CheckBox offersCheckBox;
-    String userType;
+    String userType, email;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
@@ -30,6 +30,7 @@ public class UserPrefsActivity extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = prefs.edit();
         //Recuperamos el tipo de usuario desde la caché
+        email = prefs.getString("email", "NULL");
         userType = prefs.getString("userType", "client");
         //Parámetros para hacer queries y actualizaciones en la db
 
@@ -81,7 +82,7 @@ public class UserPrefsActivity extends AppCompatActivity {
         //Establecemos la conexión con la db
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
-        String[] parameters = {prefs.getString("email", "NULL")};
+        String[] parameters = {email};
         String[] fields = {Utilities.email, Utilities.password, Utilities.name, Utilities.address, Utilities.phoneNumber};
         try {
             Cursor cursor = db.query(Utilities.userTable, fields, Utilities.email + "=?", parameters, null, null, null);

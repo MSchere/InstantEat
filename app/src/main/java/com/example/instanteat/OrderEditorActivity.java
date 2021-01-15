@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,11 +21,13 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 public class OrderEditorActivity extends AppCompatActivity {
-    TextView totalPriceText, restaurantNameText;
+    TextView totalPriceText;
     ListView dishList;
+    Button finishOrderEditorButton;
     ArrayAdapter<String> adapter;
-    ArrayList<String> dishes, selectedItems;
+    ArrayList<String> dishDescriptions, selectedDishesprices, selectedDishes, selectedItems;
     String restaurantName, dishName;
+    Double price;
     Bundle bundle;
 
     @Override
@@ -35,13 +38,14 @@ public class OrderEditorActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         restaurantName = bundle.getString("restaurantName");
 
-        restaurantNameText = findViewById(R.id.restaurantNameText);
         totalPriceText = findViewById(R.id.totalPriceText);
+        finishOrderEditorButton = findViewById(R.id.finishOrderEditorButton);
 
-        restaurantNameText.setText(restaurantName);
+        setTitle("Pedido de " + restaurantName);
         selectedItems = new ArrayList<String>();
-        dishes = fillList();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, dishes);
+        selectedDishes = new ArrayList<String>();
+        dishDescriptions = fillList();
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, dishDescriptions);
 
         dishList = findViewById(R.id.orderDishList);
         dishList.setItemsCanFocus(false);
@@ -53,21 +57,56 @@ public class OrderEditorActivity extends AppCompatActivity {
                 String selectedDish=((TextView)view).getText().toString();
                 if(selectedItems.contains(selectedDish))selectedItems.remove(selectedDish); //deselecciona el objeto
                 else selectedItems.add(selectedDish);
-                calculatePrice();
+                price = calculatePrice();
+                selectedDishes = getDishesList();
+                selectedDishesprices = getPricesList();
             }
+        });
+
+        finishOrderEditorButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), OrderSummary.class);
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("dishList", selectedDishes); //Parámetros para la actividad
+            bundle.putStringArrayList("priceList", selectedDishesprices);
+            bundle.putDouble("totalPrice", price);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
     }
     //Calcula el precio extrayendo los numeros de la string.
-    public double calculatePrice() {
+    private double calculatePrice() {
         double price = 0;
         String doubleValue;
         for(String item:selectedItems){
             doubleValue = item.replaceAll("[^\\d.]", "");
-            Utilities.showToast(getApplicationContext(), doubleValue);
+            //Utilities.showToast(getApplicationContext(), doubleValue);
             price = price + Double.parseDouble(doubleValue);
         }
-        //totalPriceText.setText(String.valueOf(price) + " €");
+        totalPriceText.setText(String.valueOf(price) + " €");
         return price;
+    }
+
+    private ArrayList<String> getPricesList(){
+        ArrayList<String> list = new ArrayList<String>();
+        String priceStr = "";
+        for(String item:selectedItems){
+            priceStr = item.replaceAll("[^\\d.]", "");
+            //Utilities.showToast(getApplicationContext(), dishName);
+            list.add(priceStr);
+        }
+        return list;
+    }
+
+    private ArrayList<String> getDishesList(){
+        ArrayList<String> list = new ArrayList<String>();
+        String dishName = "";
+        for(String item:selectedItems){
+            dishName = item.substring(0, item.indexOf(": "));
+            dishName.trim();
+            //Utilities.showToast(getApplicationContext(), dishName);
+            list.add(dishName);
+        }
+        return list;
     }
 
     private ArrayList<String> fillList() {

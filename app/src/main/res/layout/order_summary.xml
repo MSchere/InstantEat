@@ -8,10 +8,10 @@
 
     <TextView
         android:id="@+id/restaurantNameBoxText"
-        android:layout_width="match_parent"
-        android:layout_height="85dp"
+        android:layout_width="416dp"
+        android:layout_height="1dp"
         android:layout_weight="1"
-        android:background="#6200EE"
+        android:background="#FFFFFF"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -21,61 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="85dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-            android:id="@+id/restaurantNameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="RESUMEN DEL PEDIDO"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.11"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.491" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/totalPriceTitleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total:"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
-        app:layout_constraintVertical_bias="0.745" />
-
-    <TextView
-        android:id="@+id/totalPriceText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NULL"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.54"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
-        app:layout_constraintVertical_bias="0.745" />
 
     <TextView
         android:id="@+id/orderIdTitleText"
@@ -87,24 +32,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintHorizontal_bias="0.077"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
-        app:layout_constraintVertical_bias="0.694" />
-
-    <TextView
-        android:id="@+id/orderIdText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NULL"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.54"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
-        app:layout_constraintVertical_bias="0.694" />
+        app:layout_constraintVertical_bias="0.575" />
 
     <TextView
         android:id="@+id/addressTitleText"
@@ -116,10 +47,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintHorizontal_bias="0.063"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
-        app:layout_constraintVertical_bias="0.803" />
+        app:layout_constraintVertical_bias="0.684" />
 
     <TextView
         android:id="@+id/addressText"
@@ -130,10 +61,68 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintHorizontal_bias="0.543"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
-        app:layout_constraintVertical_bias="0.803" />
+        app:layout_constraintVertical_bias="0.684" />
+
+    <TextView
+        android:id="@+id/phoneNumberTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Teléfono:"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
+        app:layout_constraintVertical_bias="0.743" />
+
+    <TextView
+        android:id="@+id/phoneNumberText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NULL"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.543"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
+        app:layout_constraintVertical_bias="0.743" />
+
+    <TextView
+        android:id="@+id/totalPriceTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total:"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
+        app:layout_constraintVertical_bias="0.626" />
+
+    <TextView
+        android:id="@+id/totalPriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NULL"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.543"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
+        app:layout_constraintVertical_bias="0.626" />
 
     <TextView
         android:id="@+id/cardTitleText"
@@ -145,24 +134,35 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintHorizontal_bias="0.072"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
-        app:layout_constraintVertical_bias="0.864" />
+        app:layout_constraintVertical_bias="0.8" />
+
+    <Spinner
+        android:id="@+id/paymentMethodSpinner"
+        android:layout_width="119dp"
+        android:layout_height="29dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.684"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.806" />
 
     <TextView
-        android:id="@+id/cardNumberText"
+        android:id="@+id/orderIdText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Añada una tarjeta"
+        android:text="NULL"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.639"
+        app:layout_constraintHorizontal_bias="0.543"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
-        app:layout_constraintVertical_bias="0.864" />
+        app:layout_constraintVertical_bias="0.575" />
 
     <TextView
         android:id="@+id/dishesTitleText"
@@ -181,32 +181,17 @@
 
     <ListView
         android:id="@+id/orderDishList"
-        android:layout_width="350dp"
-        android:layout_height="309dp"
+        android:layout_width="335dp"
+        android:layout_height="252dp"
         android:background="#FFFFFF"
-        android:choiceMode="multipleChoice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.329" />
+        app:layout_constraintVertical_bias="0.273" />
 
     <Button
-        android:id="@+id/addCardSummaryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Añadir tarjeta"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.635"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/restaurantNameBoxText"
-        app:layout_constraintVertical_bias="0.881" />
-
-    <Button
-        android:id="@+id/finishButton"
+        android:id="@+id/finishOrderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Finalizar pedido"

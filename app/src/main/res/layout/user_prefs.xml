@@ -15,15 +15,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/chooseRestaurantText"
+            <Space
                 android:layout_width="match_parent"
-                android:layout_height="85dp"
-                android:layout_weight="1"
-                android:background="#6200EE"
-                android:text="MODIFICAR DATOS DE LA CUENTA"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:layout_height="48dp" />
 
             <EditText
                 android:id="@+id/emailField"

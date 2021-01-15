@@ -20,18 +20,18 @@
 
     <TextView
         android:id="@+id/chooseRestaurantText"
-        android:layout_width="match_parent"
-        android:layout_height="85dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#6200EE"
-        android:text="\nElige un restaurante para comenzar el pedido: "
-        android:textColor="#FFFFFF"
+        android:background="#FFFFFF"
+        android:text="Elige un restaurante para comenzar el pedido: "
+        android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.076" />
 </androidx.constraintlayout.widget.ConstraintLayout>
