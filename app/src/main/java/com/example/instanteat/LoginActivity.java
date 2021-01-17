@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         editor = prefs.edit();
 
         //Utilities.deleteDb(getApplicationContext());
-        //getApplicationContext().deleteDatabase("dishDB");
+        //getApplicationContext().deleteDatabase("cardDB");
 
         emailField = findViewById(R.id.emailFieldLogin);
         passwordField = findViewById(R.id.passwordFieldLogin);

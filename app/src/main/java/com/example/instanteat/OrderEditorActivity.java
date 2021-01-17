@@ -51,6 +51,7 @@ public class OrderEditorActivity extends AppCompatActivity {
         dishList.setItemsCanFocus(false);
         dishList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         dishList.setAdapter(adapter);
+
         //Contiene una lista auxiliar para los elementos seleccionados
         dishList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

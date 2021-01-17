@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,11 +33,11 @@ public class UserPrefsActivity extends AppCompatActivity {
         userType = prefs.getString("userType", "client");
         //Parámetros para hacer queries y actualizaciones en la db
 
-        emailField = findViewById(R.id.emailField);
+        emailField = findViewById(R.id.cardHolderNameField);
         passwordField = findViewById(R.id.passwordField);
-        addressField = findViewById(R.id.addressField);
-        nameField = findViewById(R.id.nameField);
-        phoneNumberField = findViewById(R.id.phoneNumberField);
+        addressField = findViewById(R.id.cardDateField);
+        nameField = findViewById(R.id.cardCCVField);
+        phoneNumberField = findViewById(R.id.cardNumberField);
         offersCheckBox = findViewById(R.id.offersCheckBox);
 
         saveButton = findViewById(R.id.saveButton);
@@ -49,10 +48,9 @@ public class UserPrefsActivity extends AppCompatActivity {
         //Rellenamos los campos con sus datos
         fillFields();
 
-        if (userType.equals("owner")){
-            ((ViewGroup) addCardButton.getParent()).removeView(addCardButton);
-            ((ViewGroup) offersCheckBox.getParent()).removeView(offersCheckBox);
-        }
+        addCardButton.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), EditCardActivity.class));
+        });
 
         saveButton.setOnClickListener(v -> {
             if (userType.equals("client")) {
@@ -76,6 +74,12 @@ public class UserPrefsActivity extends AppCompatActivity {
         });
 
         deleteAccountButton.setOnClickListener(v -> deleteUser());
+
+        if (userType.equals("owner")){
+            ((ViewGroup) addCardButton.getParent()).removeView(addCardButton);
+            ((ViewGroup) offersCheckBox.getParent()).removeView(offersCheckBox);
+        }
+
     }
     //Para rellenar los diferentes campos
     private void fillFields() {

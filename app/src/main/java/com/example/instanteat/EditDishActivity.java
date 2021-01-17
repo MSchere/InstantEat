@@ -79,7 +79,6 @@ public class EditDishActivity extends AppCompatActivity {
         });
 
         deleteDishEditorButton.setOnClickListener(v -> deleteDish());
-
     }
 
     private void registerDish() {
@@ -165,8 +164,6 @@ public class EditDishActivity extends AppCompatActivity {
         values.put(Utilities.isGlutenFree, dish.isGluten());
         return values;
     }
-
-
 
     private Boolean checkDishName() {
         String name;

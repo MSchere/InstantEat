@@ -32,7 +32,7 @@ public class Utilities {
 
     public static final String cardTable = "cardDB";
     public static final String cardNumber = "card_number";
-    public static final String cardOwnerName = "owner_name";
+    public static final String cardHolderName = "holder_name";
     public static final String ccv = "ccv";
     public static final String date = "date";
 
@@ -58,8 +58,9 @@ public class Utilities {
             isVegan + " bit not null);";
 
     public static final String create_card_table = "create table " + cardTable + "\n" +
-            "(" + cardNumber + " int primary key,\n" +
-            cardOwnerName + " varchar(40) not null,\n" +
+            "(" + cardNumber + " long primary key,\n" +
+            email + " varchar(40) not null,\n" +
+            cardHolderName + " varchar(40) not null,\n" +
             ccv + " int not null,\n" +
             date + " varchar(40) not null);";
 

@@ -23,12 +23,12 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.register_screen);
         userType = "client";
 
-        emailField = findViewById(R.id.emailField);
+        emailField = findViewById(R.id.cardHolderNameField);
         passwordField = findViewById(R.id.passwordField);
         repeatPasswordField = findViewById(R.id.repeatPasswordField);
-        addressField = findViewById(R.id.addressField);
-        nameField = findViewById(R.id.nameField);
-        phoneNumberField = findViewById(R.id.phoneNumberField);
+        addressField = findViewById(R.id.cardDateField);
+        nameField = findViewById(R.id.cardCCVField);
+        phoneNumberField = findViewById(R.id.cardNumberField);
 
         offersCheckBox = findViewById(R.id.offersCheckBox);
         registerButton = findViewById(R.id.saveButton);

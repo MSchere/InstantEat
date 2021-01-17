@@ -26,39 +26,39 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="52dp" />
+                    android:layout_height="42dp" />
 
                 <EditText
-                    android:id="@+id/emailField"
+                    android:id="@+id/cardHolderNameField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="nombre del titular"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="text" />
 
                 <EditText
-                    android:id="@+id/phoneNumberField"
+                    android:id="@+id/cardNumberField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="número de tarjeta"
-                    android:inputType="phone" />
+                    android:inputType="number" />
 
                 <EditText
-                    android:id="@+id/nameField"
+                    android:id="@+id/cardCCVField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="CCV"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
 
                 <EditText
-                    android:id="@+id/addressField"
+                    android:id="@+id/cardDateField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="fecha de caducidad"
-                    android:inputType="textPostalAddress" />
+                    android:inputType="date" />
 
                 <Space
                     android:layout_width="match_parent"

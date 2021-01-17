@@ -20,7 +20,7 @@
                 android:layout_height="48dp" />
 
             <EditText
-                android:id="@+id/emailField"
+                android:id="@+id/cardHolderNameField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -36,7 +36,7 @@
                 android:inputType="textPassword" />
 
             <EditText
-                android:id="@+id/nameField"
+                android:id="@+id/cardCCVField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -44,7 +44,7 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/addressField"
+                android:id="@+id/cardDateField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -52,7 +52,7 @@
                 android:inputType="textPostalAddress" />
 
             <EditText
-                android:id="@+id/phoneNumberField"
+                android:id="@+id/cardNumberField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
