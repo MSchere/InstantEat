@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/restaurantOrDishSwitch"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -19,10 +20,10 @@
         app:layout_constraintVertical_bias="0.837" />
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/search"
         android:layout_width="386dp"
         android:layout_height="33dp"
-        android:queryHint="Search"
+        android:queryHint="Buscar..."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
@@ -53,20 +54,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.155" />
+        app:layout_constraintVertical_bias="0.364" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="283dp"
-        android:layout_height="334dp"
+        android:layout_width="298dp"
+        android:layout_height="234dp"
         android:text="-Order1\n-Order2\n-Order3\n-Order4\n-Order5\n-Order6\n-Order7\n-Order8\n-Order9\n-Order10"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.395" />
+        app:layout_constraintVertical_bias="0.613" />
 
     <ImageButton
         android:id="@+id/clientPrefsButton"

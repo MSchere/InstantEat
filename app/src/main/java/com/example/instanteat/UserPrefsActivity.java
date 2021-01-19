@@ -13,6 +13,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import backend.User;
+
 public class UserPrefsActivity extends AppCompatActivity {
     EditText emailField, passwordField, nameField, addressField, phoneNumberField;
     Button saveButton, deleteAccountButton, logoffButton, addCardButton;
@@ -53,16 +55,9 @@ public class UserPrefsActivity extends AppCompatActivity {
         });
 
         saveButton.setOnClickListener(v -> {
-            if (userType.equals("client")) {
                 if (checkEmail() && checkPassword() && checkName() && checkAddress() && checkPhoneNumber()) {
                     updateUser();
                 }
-            }
-            else {
-                if (checkEmail() && checkPassword() && checkName() && checkPhoneNumber()) {
-                    updateUser();
-                }
-            }
         });
 
         logoffButton.setOnClickListener(v -> {
@@ -74,6 +69,17 @@ public class UserPrefsActivity extends AppCompatActivity {
         });
 
         deleteAccountButton.setOnClickListener(v -> deleteUser());
+
+        if (email.equals("dummy@email.com")) {
+            emailField.setEnabled(false);
+            passwordField.setEnabled(false);
+            addressField.setText("");
+            phoneNumberField.setText("");
+            nameField.setEnabled(false);
+            offersCheckBox.setEnabled(false);
+            deleteAccountButton.setEnabled(false);
+            addCardButton.setEnabled(false);
+        }
 
         if (userType.equals("owner")){
             ((ViewGroup) addCardButton.getParent()).removeView(addCardButton);
@@ -100,7 +106,7 @@ public class UserPrefsActivity extends AppCompatActivity {
             db.close();
         }
         catch (Exception e){
-            Utilities.showToast(getApplicationContext(), "Error en la base de datos");
+            Utilities.showToast(getApplicationContext(), "Usuario no encontrado");
             db.close();
             e.printStackTrace();
         }
@@ -110,20 +116,19 @@ public class UserPrefsActivity extends AppCompatActivity {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parameters = {prefs.getString("email", "NULL")};
-
-        ContentValues values = new ContentValues();
-        values.put(Utilities.email, emailField.getText().toString());
-        values.put(Utilities.password, passwordField.getText().toString());
-        values.put(Utilities.name, nameField.getText().toString());
-        values.put(Utilities.address, addressField.getText().toString());
-        values.put(Utilities.phoneNumber, phoneNumberField.getText().toString());
-        db.update(Utilities.userTable, values, Utilities.email+"=?", parameters);
-
-        editor.putString("name", nameField.getText().toString());
+        ContentValues values;
+        if (email.equals("dummy@email.com")) {
+            Utilities.showToast(getApplicationContext(), "Datos de usuario temporal actualizados");
+            values = createDummyUser();
+        }
+        else {
+            Utilities.showToast(getApplicationContext(), "Datos de usuario actualizados");
+            values = createUser();
+        }
+        int index = db.update(Utilities.userTable, values, Utilities.email + "=?", parameters);
         editor.putString("email", emailField.getText().toString());
         editor.commit();
-        Utilities.showToast(getApplicationContext(), "Datos de usuario actualizados");
-        //startActivity(new Intent(UserPrefsActivity.this, MenuActivity.class));
+        startActivity(new Intent(UserPrefsActivity.this, ClientMenuActivity.class));
         db.close();
     }
 
@@ -137,6 +142,37 @@ public class UserPrefsActivity extends AppCompatActivity {
 
         startActivity(new Intent(UserPrefsActivity.this, LoginActivity.class));
         db.close();
+    }
+
+    private ContentValues createUser() {
+        User user = new User(emailField.getText().toString(),
+                passwordField.getText().toString(),
+                userType,
+                nameField.getText().toString(),
+                addressField.getText().toString(),
+                Integer.valueOf(phoneNumberField.getText().toString()));
+        ContentValues values = new ContentValues();
+        values.put(Utilities.email, user.getEmail());
+        values.put(Utilities.password, user.getPassword());
+        values.put(Utilities.userType, user.getUserType());
+        values.put(Utilities.name, user.getName());
+        values.put(Utilities.address, user.getAddress());
+        values.put(Utilities.phoneNumber, user.getPhoneNumber());
+        return values;
+    }
+
+    private ContentValues createDummyUser() {
+        User user = (User) Utilities.getDefaultUser().copy();
+        user.setAddress(addressField.getText().toString());
+        user.setPhoneNumber(Integer.valueOf(phoneNumberField.getText().toString()));
+        ContentValues values = new ContentValues();
+        values.put(Utilities.email, user.getEmail());
+        values.put(Utilities.password, user.getPassword());
+        values.put(Utilities.userType, user.getUserType());
+        values.put(Utilities.name, user.getName());
+        values.put(Utilities.address, user.getAddress());
+        values.put(Utilities.phoneNumber, user.getPhoneNumber());
+        return values;
     }
 
     private Boolean checkPassword() {

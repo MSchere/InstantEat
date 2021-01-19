@@ -11,6 +11,10 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import backend.AbstractFactoryPlato;
+import backend.Plato;
+import backend.User;
+
 public class Utilities {
     //User table variables
     public static final String userTable = "userDB";
@@ -18,7 +22,6 @@ public class Utilities {
     public static final String password = "user_password";
     public static final String userType = "user_type";
     public static final String name = "name";
-    public static final String surname = "surname";
     public static final String address = "address";
     public static final String phoneNumber = "phone_number";
 
@@ -144,6 +147,11 @@ public class Utilities {
             list.add(tokens.nextToken());
         }
         return list;
+    }
+
+    public static final User getDefaultUser(){
+        User user = new User("dummy@email.com", "dummy", "client", "dummy", "dummyAddress", 999999999);
+        return user;
     }
 
     public static final void showToast(Context context, String text) {

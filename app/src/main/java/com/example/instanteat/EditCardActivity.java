@@ -3,7 +3,6 @@ package com.example.instanteat;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,15 +10,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+
+import backend.Card;
 
 public class EditCardActivity extends AppCompatActivity {
     SharedPreferences prefs;

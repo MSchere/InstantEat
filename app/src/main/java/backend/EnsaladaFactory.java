@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.instanteat;
+package backend;
 
 import java.util.ArrayList;
 
@@ -11,45 +11,44 @@ import java.util.ArrayList;
  *
  * @author ajpaz
  */
-public class PizzaFactory {
+public class EnsaladaFactory {
     
-    String[] masa = {"Masa normal","Masa fina","Masa sin gluten"};
-    String rellenoBorde = "Queso";
-    String[] base1 = {"Tomate","Salsa barbacoa"};
-    String base2 = "Queso";
-    String[] ingrediente1 = {"Bacon","Pollo","Espinacas"};
-    String[] ingrediente2 = {"Anchoas","Maiz","Salami"};
-    String[] ingrediente3 = {"Setas","Pimiento","Aceitunas"};
+    String[] base = {"Lechuga","Canonigos","Rucula"};
+    String[] carne = {"Pollo","Pavo"};
+    String[] queso = {"Chedar","Azul"};
+    String maiz = "Maiz";
+    String[] tomate = {"Normal","Cherry"};
+    String[] aceitunas = {"Aceitunas","Olivas"};
+    String[] salsa = {"Mayonesa","Alioli","Cesar"};
     
-    public PizzaFactory(){}
+    public EnsaladaFactory(){}
     
-    public Plato crearPizza(String nombre,int[] opciones){
+    public Plato crearEnsalada(String nombre, int[] opciones){
         ArrayList<String> ingredientes = new ArrayList();
         boolean esVegano = false;
         boolean tieneGluten = true;
         
         if(opciones[0] != 0){
-            ingredientes.add(masa[opciones[0]-1]);
+            ingredientes.add(base[opciones[0]-1]);
         }
         if(opciones[1] != 0){
-            ingredientes.add(rellenoBorde);
+            ingredientes.add(carne[opciones[0]-1]);
         }
         if(opciones[2] != 0){
-            ingredientes.add(base1[opciones[0]-1]);
+            ingredientes.add(queso[opciones[0]-1]);
         }
         if(opciones[3] != 0){
-            ingredientes.add(base2);
+            ingredientes.add(maiz);
         }
         if(opciones[4] != 0){
-            ingredientes.add(ingrediente1[opciones[0]-1]);
+            ingredientes.add(tomate[opciones[0]-1]);
         }
         if(opciones[5] != 0){
-            ingredientes.add(ingrediente2[opciones[0]-1]);
+            ingredientes.add(aceitunas[opciones[0]-1]);
         }
         if(opciones[6] != 0){
-            ingredientes.add(ingrediente3[opciones[0]-1]);
+            ingredientes.add(salsa[opciones[0]-1]);
         }
-        if(opciones[0]==3) tieneGluten = false;
         if(opciones[1]==0 && (opciones[2]==0 || opciones[2]==1) && opciones[3]==0 &&
                 (opciones[4]==0 || opciones[4]==3) && (opciones[5]==0 || opciones[5]==2)) esVegano = true;
         

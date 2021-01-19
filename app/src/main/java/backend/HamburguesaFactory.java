@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.instanteat;
+package backend;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class HamburguesaFactory {
     
     public HamburguesaFactory(){}
     
-    public Plato crearHamburguesa(String nombre,int[] opciones){
+    public Plato crearHamburguesa(String nombre, int[] opciones){
         ArrayList<String> ingredientes = new ArrayList();
         boolean esVegano = false;
         boolean tieneGluten = true;

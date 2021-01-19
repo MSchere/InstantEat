@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.*;
 
+import backend.User;
+
 public class LoginActivity extends AppCompatActivity {
     //Variable declaration
     EditText emailField, passwordField;
-    Button loginButton, registerButton;
+    Button loginButton, registerButton, loginNoAccountButton;
     CheckBox rememberCheckBox;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -34,15 +36,20 @@ public class LoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.passwordFieldLogin);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
+        loginNoAccountButton = findViewById(R.id.loginNoAccountButton);
+
         rememberCheckBox = findViewById(R.id.rememberCheckBox);
-        //Listeners
-        loginButton.setOnClickListener(v -> validate());
-        registerButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
+
         //Ponemos las credenciales recordadas si existen
         cacheData[0] = prefs.getString("savedEmail", "");
         cacheData[1] = prefs.getString("savedPassword", "");
         emailField.setText(cacheData[0]);
         passwordField.setText(cacheData[1]);
+
+        //Listeners
+        loginButton.setOnClickListener(v -> validate());
+        registerButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
+        loginNoAccountButton.setOnClickListener(v -> loginNoAccount());
     }
 
     private void validate() {
@@ -65,12 +72,11 @@ public class LoginActivity extends AppCompatActivity {
             if(password.equals(inputPassword)) {
                 //SI EL LOGIN ES EXITOSO:
                 editor.putString("email", parameters[0]);
-                editor.putString("name", name);
                 if (rememberCheckBox.isChecked()) {
                     editor.putString("savedEmail", parameters[0]);
                     editor.putString("savedPassword", inputPassword);
                 }
-                Toast.makeText(getApplicationContext(), "Inicio de sesión correcto\nBienvenido " + name, Toast.LENGTH_SHORT).show();
+                Utilities.showToast(getApplicationContext(), "Inicio de sesión correcto\nBienvenido " + name);
                 if (userType.equals("client")) {
                     editor.putString("userType", "client");
                     //Vamos al menú
@@ -85,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.commit();
             }
             else{
-                Toast.makeText(getApplicationContext(), "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                Utilities.showToast(getApplicationContext(), "Contraseña incorrecta");
             }
             cursor.close();
             db.close();
@@ -93,8 +99,14 @@ public class LoginActivity extends AppCompatActivity {
             //Una excepción significa que no se ha encontrado el email en la db
             e.printStackTrace();
             db.close();
-            Toast.makeText(getApplicationContext(), "Email incorrecto", Toast.LENGTH_SHORT).show();
+            Utilities.showToast(getApplicationContext(), "Email incorrecto");
         }
-
+    }
+    private void loginNoAccount(){
+        User user = (User) Utilities.getDefaultUser().copy();
+        editor.putString("email", user.getEmail());
+        editor.commit();
+        finish();
+        startActivity(new Intent(getApplicationContext(), UserPrefsActivity.class));
     }
 }

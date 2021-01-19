@@ -1,19 +1,17 @@
-package com.example.instanteat;
-public class User {
+package backend;
+public class User implements Clonable{
     private String email;
     private String password;
     private String userType;
     private String name;
-    private String surname;
     private String address;
     private int phoneNumber;
 
-    public User(String email, String password, String userType, String name, String surname, String address, int phoneNumber) {
+    public User(String email, String password, String userType, String name, String address, int phoneNumber) {
         this.email = email;
         this.password = password;
         this.userType = userType;
         this.name = name;
-        this.surname = surname;
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
@@ -50,14 +48,6 @@ public class User {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -72,5 +62,10 @@ public class User {
 
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public Object copy() {
+        return new User(this.email, this.password, this.userType, this.name, this.address, this.phoneNumber);
     }
 }

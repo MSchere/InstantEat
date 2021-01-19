@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package backend;
 
 import java.util.Date;
 

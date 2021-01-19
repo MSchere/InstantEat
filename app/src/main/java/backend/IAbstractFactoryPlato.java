@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package backend;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ public interface IAbstractFactoryPlato {
      *
      * @return Objeto de tipo Plato.
      */
-    public Plato creaPlato(String nombre,String restaurante,ArrayList<String> ingredientes,double precio,boolean tieneGluten, boolean esVegano);
+    public Plato creaPlato(String nombre, String restaurante, ArrayList<String> ingredientes, double precio, boolean tieneGluten, boolean esVegano);
 
     /**
      * Crea un objeto de tipo Hamburguesa.

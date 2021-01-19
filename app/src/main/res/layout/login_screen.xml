@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.746" />
+        app:layout_constraintVertical_bias="0.689" />
 
     <EditText
         android:id="@+id/passwordFieldLogin"
@@ -52,22 +52,22 @@
         android:text="¿No tienes una cuenta?"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.917" />
+        app:layout_constraintVertical_bias="0.839" />
 
     <Button
         android:id="@+id/registerButton"
-        android:layout_width="105dp"
-        android:layout_height="33dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Registrarse"
-        android:textSize="8sp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977" />
+        app:layout_constraintVertical_bias="0.994" />
 
     <CheckBox
         android:id="@+id/rememberCheckBox"
@@ -76,10 +76,10 @@
         android:text="Recordar?"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.816" />
+        app:layout_constraintVertical_bias="0.774" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -92,5 +92,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.129"
         app:srcCompat="@drawable/logo" />
+
+    <Button
+        android:id="@+id/loginNoAccountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Entrar sin registrarse"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

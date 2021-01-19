@@ -29,7 +29,6 @@ public class OrderSummary extends AppCompatActivity {
     Button finishOrderButton;
     ArrayAdapter<String> adapter;
     ArrayList<String> dishes, prices;
-    String[] paymentMethods = {"Efectivo", "Tarjeta", "PayPal", "Bitcoin"};
     SharedPreferences prefs;
     String email, address, phoneNumber, cardNumber, paypalEmail;
     Random rand;
@@ -60,6 +59,12 @@ public class OrderSummary extends AppCompatActivity {
         totalPrice = bundle.getDouble("totalPrice");
 
         email = prefs.getString("email", "NULL");
+
+        String[] paymentMethods = {"Efectivo", "Tarjeta", "PayPal", "Bitcoin"};
+
+        if (email.equals("dummy@email.com")) {
+             paymentMethods = new String[]{"Efectivo"};
+        }
 
         fillFields();
 

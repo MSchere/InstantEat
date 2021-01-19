@@ -11,6 +11,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import backend.User;
+
 public class RegisterActivity extends AppCompatActivity {
     EditText emailField, passwordField, repeatPasswordField, nameField, addressField, phoneNumberField;
     Button registerButton, ownerButton;
@@ -41,7 +43,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         ownerButton.setOnClickListener(v -> {
-            //setContentView(R.layout.register_owner);
             nameField.setHint("nombre del local");
             ((ViewGroup) ownerButton.getParent()).removeView(ownerButton);
             ((ViewGroup) offersCheckBox.getParent()).removeView(offersCheckBox);
@@ -52,13 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser() {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(Utilities.email, emailField.getText().toString());
-        values.put(Utilities.password, passwordField.getText().toString());
-        values.put(Utilities.userType, userType);
-        values.put(Utilities.name, nameField.getText().toString());
-        values.put(Utilities.address, addressField.getText().toString());
-        values.put(Utilities.phoneNumber, phoneNumberField.getText().toString());
+        ContentValues values = createUser();
 
         long index = db.insert(Utilities.userTable, Utilities.email, values);
 
@@ -71,6 +66,23 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "ERROR, NO SE PUDO REGISTRAR " + index, Toast.LENGTH_SHORT).show();
         }
         db.close();
+    }
+
+    private ContentValues createUser() {
+        User user = new User(emailField.getText().toString(),
+                passwordField.getText().toString(),
+                userType,
+                nameField.getText().toString(),
+                addressField.getText().toString(),
+                Integer.valueOf(phoneNumberField.getText().toString()));
+        ContentValues values = new ContentValues();
+        values.put(Utilities.email, user.getEmail());
+        values.put(Utilities.password, user.getPassword());
+        values.put(Utilities.userType, user.getUserType());
+        values.put(Utilities.name, user.getName());
+        values.put(Utilities.address, user.getAddress());
+        values.put(Utilities.phoneNumber, user.getPhoneNumber());
+        return values;
     }
 
     private Boolean checkPassword() {
