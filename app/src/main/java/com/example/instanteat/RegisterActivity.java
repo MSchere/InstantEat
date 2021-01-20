@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import backend.User;
+import backend.ViewRemoverDecorator;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText emailField, passwordField, repeatPasswordField, nameField, addressField, phoneNumberField;
@@ -44,8 +46,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         ownerButton.setOnClickListener(v -> {
             nameField.setHint("nombre del local");
-            ((ViewGroup) ownerButton.getParent()).removeView(ownerButton);
-            ((ViewGroup) offersCheckBox.getParent()).removeView(offersCheckBox);
+            ViewRemoverDecorator decorator = new ViewRemoverDecorator(getApplicationContext(), new View[]{ownerButton, offersCheckBox});
+            decorator.decorate();
             userType = "owner";
         });
     }

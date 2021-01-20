@@ -80,6 +80,8 @@ public class OwnerMenuActivity extends AppCompatActivity {
                     cursor.moveToNext();
                 }
             }
+            cursor.close();
+            db.close();
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "ERROR EN LA BASE DE DATOS", Toast.LENGTH_SHORT).show();
             db.close();

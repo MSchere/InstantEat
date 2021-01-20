@@ -57,7 +57,7 @@ public class EditCardActivity extends AppCompatActivity {
         deleteCardButton.setOnClickListener(v -> deleteCard());
 
         if(!isUpdate) {
-            ((ViewGroup) deleteCardButton.getParent()).removeView(deleteCardButton);
+            deleteCardButton.setEnabled(false);
         }
     }
 

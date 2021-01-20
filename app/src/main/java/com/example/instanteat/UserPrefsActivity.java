@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,6 +14,8 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import backend.User;
+import backend.ViewEnablerDecorator;
+import backend.ViewRemoverDecorator;
 
 public class UserPrefsActivity extends AppCompatActivity {
     EditText emailField, passwordField, nameField, addressField, phoneNumberField;
@@ -71,19 +73,15 @@ public class UserPrefsActivity extends AppCompatActivity {
         deleteAccountButton.setOnClickListener(v -> deleteUser());
 
         if (email.equals("dummy@email.com")) {
-            emailField.setEnabled(false);
-            passwordField.setEnabled(false);
+            ViewEnablerDecorator decorator = new ViewEnablerDecorator(getApplicationContext(), new View[]{emailField, passwordField, nameField, offersCheckBox, deleteAccountButton, addCardButton}, false);
+            decorator.decorate();
             addressField.setText("");
             phoneNumberField.setText("");
-            nameField.setEnabled(false);
-            offersCheckBox.setEnabled(false);
-            deleteAccountButton.setEnabled(false);
-            addCardButton.setEnabled(false);
         }
 
         if (userType.equals("owner")){
-            ((ViewGroup) addCardButton.getParent()).removeView(addCardButton);
-            ((ViewGroup) offersCheckBox.getParent()).removeView(offersCheckBox);
+            ViewRemoverDecorator decorator = new ViewRemoverDecorator(getApplicationContext(), new View[]{offersCheckBox, addCardButton});
+            decorator.decorate();
         }
 
     }

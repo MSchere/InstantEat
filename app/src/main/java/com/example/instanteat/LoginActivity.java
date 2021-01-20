@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             if(password.equals(inputPassword)) {
                 //SI EL LOGIN ES EXITOSO:
                 editor.putString("email", parameters[0]);
+                editor.putString("name", name);
                 if (rememberCheckBox.isChecked()) {
                     editor.putString("savedEmail", parameters[0]);
                     editor.putString("savedPassword", inputPassword);
