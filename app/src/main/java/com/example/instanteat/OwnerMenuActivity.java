@@ -18,15 +18,22 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import backend.Buscador;
+import backend.BuscadorConcreto;
+import backend.Plato;
+
 public class OwnerMenuActivity extends AppCompatActivity {
     SharedPreferences prefs;
+    TextView totalDishesText, totalVeganDishesText, totalGlutenFreeDishesText;
     Button addDishButton;
     ListView dishList;
     ImageButton ownerPrefsButton;
-    TextView myLocalText;
     String restaurantName;
-    ArrayAdapter<String> adapter;
-    ArrayList<String> dishes;
+    MyAdapter myAdapter;
+    ArrayList<Plato> dishes;
+    ArrayList<String> dishNames, dishIngredients, dishPrices;
+    BuscadorConcreto buscador;
+    Buscador iBuscador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +43,29 @@ public class OwnerMenuActivity extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         restaurantName = prefs.getString("name", "NULL");
 
-        myLocalText = findViewById(R.id.myLocalText);
-        myLocalText.setText(restaurantName);
+        setTitle("Platos de " + restaurantName);
         dishList = findViewById(R.id.dishList);
 
         addDishButton = findViewById(R.id.addDishMenuButton);
         ownerPrefsButton = findViewById(R.id.ownerPrefsButton);
+        totalDishesText = findViewById(R.id.totalDishesText);
+        totalGlutenFreeDishesText = findViewById(R.id.totalGlutenFreeDishesText);
+        totalVeganDishesText = findViewById(R.id.totalVeganDishesText);
 
-        dishes = fillList();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dishes);
-        dishList.setAdapter(adapter);
+        dishes = Utilities.getDishList(this, restaurantName);
+
+        buscador = new BuscadorConcreto(dishes);
+        iBuscador = buscador;
+        fillLists(dishes);
+        fillDashboard();
+        myAdapter = new MyAdapter(this, dishNames, dishIngredients, dishPrices);
+        dishList.setAdapter(myAdapter);
         dishList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //Toast.makeText(getApplicationContext(), "Has pulsado: " + dishes.get(i), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), EditDishActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("dishName", dishes.get(i)); //Parámetro para la actividad
+                bundle.putString("dishName", dishNames.get(i)); //Parámetro para la actividad
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -62,32 +76,22 @@ public class OwnerMenuActivity extends AppCompatActivity {
         ownerPrefsButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), UserPrefsActivity.class)));
     }
 
-    private ArrayList<String> fillList() {
-        //Establecemos la conexión con la db
-        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.dishTable, null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ArrayList<String> list = new ArrayList<String>();
-        String[] fields = {Utilities.dishName, Utilities.price};
-        String[] parameters = {restaurantName};
-        String dishName, price;
-        try {
-            Cursor cursor = db.query(Utilities.dishTable, fields, Utilities.restaurant+"=?", parameters, null, null, null);
-            if(cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    dishName = cursor.getString(0);
-                    price = cursor.getString(1);
-                    list.add(dishName);
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-            db.close();
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "ERROR EN LA BASE DE DATOS", Toast.LENGTH_SHORT).show();
-            db.close();
-            e.printStackTrace();
+    private void fillLists(ArrayList<Plato> dishList) {
+        dishNames = new ArrayList<String>();
+        dishIngredients = new ArrayList<String>();
+        dishPrices = new ArrayList<String>();
+        for (Plato plato : dishList) {
+            dishNames.add(plato.getNombre());
+            dishIngredients.add(Utilities.arrayListToString(plato.getIngredientes()));
+            dishPrices.add(String.valueOf(plato.getPrecio()));
+
         }
-        db.close();
-        return list;
     }
+        private void fillDashboard(){
+            totalDishesText.setText(String.valueOf(dishes.size()));
+            totalGlutenFreeDishesText.setText(String.valueOf(buscador.mostrarNoGluten().size()));
+            buscador.resetLista();
+            totalVeganDishesText.setText(String.valueOf(buscador.mostrarVeganos().size()));
+        }
+
 }

@@ -30,6 +30,7 @@ public class OrderSummary extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<String> dishes, prices;
     SharedPreferences prefs;
+    String[] paymentMethods = {"Efectivo", "Tarjeta", "PayPal", "Bitcoin"};
     String email, address, phoneNumber, cardNumber, paypalEmail;
     Random rand;
     int orderId;
@@ -54,13 +55,12 @@ public class OrderSummary extends AppCompatActivity {
         dishes = new ArrayList<String>();
         prices = new ArrayList<String>();
 
-        dishes = bundle.getStringArrayList("dishList");
-        prices = bundle.getStringArrayList("priceList");
+        dishes = bundle.getStringArrayList("namesList");
+        prices = bundle.getStringArrayList("pricesList");
         totalPrice = bundle.getDouble("totalPrice");
 
         email = prefs.getString("email", "NULL");
 
-        String[] paymentMethods = {"Efectivo", "Tarjeta", "PayPal", "Bitcoin"};
 
         if (email.equals("dummy@email.com")) {
              paymentMethods = new String[]{"Efectivo"};
@@ -87,13 +87,13 @@ public class OrderSummary extends AppCompatActivity {
                         break;
                     case "Tarjeta":
                         getCard();
-                        paymentTitleText.setText("Se pagará con la tarjeta:\n\n" + cardNumber);
+                        paymentTitleText.setText("Se pagará con la tarjeta:\n" + cardNumber);
                         break;
                     case "Paypal":
                         paymentTitleText.setText("Se pagará con la cuenta de PayPal asociada"); //No Funciona
                         break;
                     case "Bitcoin":
-                        paymentTitleText.setText("Pague el importe a esta dirección:\n\n0x3a94cd13afd58ede00488735ca771fb3784272c1");
+                        paymentTitleText.setText("Pague el importe a esta dirección:\n0x3a94cd13afd58ede00488735ca771fb3784272c1");
                         break;
                     default:
                         paymentTitleText.setText("");

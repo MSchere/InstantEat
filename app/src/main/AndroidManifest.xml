@@ -9,40 +9,44 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.InstantEat">
-        <activity android:name=".EditCardActivity"
+        <activity android:name=".SearchActivity"></activity>
+        <activity
+            android:name=".EditCardActivity"
             android:noHistory="true" />
-
-        <activity android:name=".OrderSummary"
-            android:noHistory="true"
-            android:label="Resumen del Pedido" />
-
-        <activity android:name=".OrderEditorActivity"
+        <activity
+            android:name=".OrderSummary"
+            android:label="Resumen del Pedido"
+            android:noHistory="true" />
+        <activity
+            android:name=".OrderEditorActivity"
             android:label="Editor deñ Pedido" />
-
-        <activity android:name=".ChooseRestaurantActivity"
+        <activity
+            android:name=".ChooseRestaurantActivity"
             android:label="Elija restaurante" />
-        <activity android:name=".EditDishActivity"
-            android:noHistory="true"
-            android:label="Edición de Plato" />
-
-        <activity android:name=".OwnerMenuActivity"
+        <activity
+            android:name=".EditDishActivity"
+            android:label="Edición de Plato"
+            android:noHistory="true" />
+        <activity
+            android:name=".OwnerMenuActivity"
             android:label="Menú Principal" />
-
-        <activity android:name=".UserPrefsActivity"
+        <activity
+            android:name=".UserPrefsActivity"
             android:label="Preferencias de Usuario" />
-
-        <activity android:name=".RegisterActivity"
-            android:noHistory="true"
-            android:label="Registro de Nuevo Usuario" />
-
-        <activity android:name=".ClientMenuActivity"
+        <activity
+            android:name=".RegisterActivity"
+            android:label="Registro de Nuevo Usuario"
+            android:noHistory="true" />
+        <activity
+            android:name=".ClientMenuActivity"
             android:label="InstantEat" />
-
-        <activity android:name=".LoginActivity"
-            android:noHistory="true"
-            android:label="InstantEat">
+        <activity
+            android:name=".LoginActivity"
+            android:label="InstantEat"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

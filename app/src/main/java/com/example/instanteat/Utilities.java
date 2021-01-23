@@ -90,30 +90,6 @@ public class Utilities {
         return dishes;
     }
 
-    public static final ArrayList<Plato> getDishes(Context context) {
-        ArrayList<Plato> list = new ArrayList<Plato>();
-        AbstractFactoryPlato factoryPlato = new AbstractFactoryPlato();
-        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, dishTable, null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        String[] fields = {"*"};
-        Cursor cursor = db.query(userTable, fields, "*", null, null, null, null);
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                //nombre, restaurante, ingredientes, precio, vegano, gluten
-                list.add(factoryPlato.creaPlato(cursor.getString(0),
-                        cursor.getString(1),
-                        stringToArrayList(cursor.getString(2)),
-                        cursor.getDouble(3),
-                        cursor.getInt(4) > 0,
-                        cursor.getInt(5) > 0));
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-        db.close();
-        return list;
-    }
-
     public static final void addDishes(Context context, ArrayList<Plato> dishes, String userEmail) {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -130,6 +106,69 @@ public class Utilities {
             showToast(context, "ERROR ACTUALIZANDO PLATO");
         }
         db.close();
+    }
+
+    public static final ArrayList<Plato> getDishList(Context context, String restaurant) {
+        ArrayList<Plato> list = new ArrayList<Plato>();
+        AbstractFactoryPlato factoryPlato = new AbstractFactoryPlato();
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, Utilities.dishTable, null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] fields = {"*"};
+        String[] parameters = {restaurant};
+        try {
+            Cursor cursor = db.query(Utilities.dishTable, fields, Utilities.restaurant + "=?", parameters, null, null, null);
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    //nombre, restaurante, ingredientes, precio, vegano, gluten
+                    list.add(factoryPlato.creaPlato(cursor.getString(0),
+                            cursor.getString(1),
+                            Utilities.stringToArrayList(cursor.getString(2)),
+                            cursor.getDouble(3),
+                            cursor.getInt(4) > 0,
+                            cursor.getInt(5) > 0));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            db.close();
+        }
+        catch (Exception e) {
+            showToast(context, "ERROR EN LA BASE DE DATOS");
+            db.close();
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static final ArrayList<Plato> getDishList(Context context) {
+        ArrayList<Plato> list = new ArrayList<Plato>();
+        AbstractFactoryPlato factoryPlato = new AbstractFactoryPlato();
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, Utilities.dishTable, null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] fields = {"*"};
+        try {
+            Cursor cursor = db.query(Utilities.dishTable, fields, null, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    //nombre, restaurante, ingredientes, precio, vegano, gluten
+                    list.add(factoryPlato.creaPlato(cursor.getString(0),
+                            cursor.getString(1),
+                            Utilities.stringToArrayList(cursor.getString(2)),
+                            cursor.getDouble(3),
+                            cursor.getInt(4) > 0,
+                            cursor.getInt(5) > 0));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            db.close();
+        }
+        catch (Exception e) {
+            showToast(context, "ERROR EN LA BASE DE DATOS");
+            db.close();
+            e.printStackTrace();
+        }
+        return list;
     }
 
     public static final String arrayListToString(ArrayList<String> list){
@@ -162,4 +201,6 @@ public class Utilities {
         context.deleteDatabase("dishDB");
         //context.deleteDatabase("objectDB");
     }
+
+
 }

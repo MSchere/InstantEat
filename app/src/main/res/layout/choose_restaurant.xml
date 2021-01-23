@@ -7,7 +7,7 @@
     tools:context=".ChooseRestaurantActivity">
 
     <ListView
-        android:id="@+id/restaurantList"
+        android:id="@+id/searchResults"
         android:layout_width="382dp"
         android:layout_height="574dp"
         android:layout_marginTop="107dp"

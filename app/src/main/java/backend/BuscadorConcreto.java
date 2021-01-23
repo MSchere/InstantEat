@@ -5,15 +5,18 @@ import java.util.Iterator;
 
 public class BuscadorConcreto implements Buscador{
     
-    private ArrayList<Plato> lista,listaOriginal;
-
+    private ArrayList<Plato> lista,descartes,listaOriginal;
+    private ComandoDeshacer deshacer;
     public BuscadorConcreto(ArrayList<Plato> lista) {
         this.lista = new ArrayList();
+        this.descartes = new ArrayList();
         this.listaOriginal = new ArrayList();
         for(int i=0;i<lista.size();i++){
             this.lista.add(lista.get(i));
             this.listaOriginal.add(lista.get(i));
         }
+        Deshacer deshacer = new Deshacer();
+        this.deshacer = deshacer;
     }
     
     @Override
@@ -22,37 +25,93 @@ public class BuscadorConcreto implements Buscador{
         for(int i=0;i<listaOriginal.size();i++){
             lista.add(listaOriginal.get(i));
         }
+        descartes.clear();
+    }
+    
+    @Override
+    public ArrayList<Plato> getLista(){
+        return lista;
+    }
+    
+    @Override
+    public void deshacerNombre(){
+        ArrayList<ArrayList<Plato>> listas = new ArrayList();
+        listas.add(lista);
+        listas.add(descartes);
+        listas = deshacer.deshacerNombre(listas);
+        lista = listas.get(0);
+        descartes = listas.get(1);
+    }
+    
+    @Override
+    public void deshacerRestaurante(){
+        ArrayList<ArrayList<Plato>> listas = new ArrayList();
+        listas.add(this.lista);
+        listas.add(this.descartes);
+        listas = deshacer.deshacerRestaurante(listas);
+        lista = listas.get(0);
+        descartes = listas.get(1);
+    }
+    
+    @Override
+    public void deshacerGluten(){
+        ArrayList<ArrayList<Plato>> listas = new ArrayList();
+        listas.add(this.lista);
+        listas.add(this.descartes);
+        listas = deshacer.deshacerGluten(listas);
+        lista = listas.get(0);
+        descartes = listas.get(1);
+    }
+    
+    @Override
+    public void deshacerVegano(){
+        ArrayList<ArrayList<Plato>> listas = new ArrayList();
+        listas.add(this.lista);
+        listas.add(this.descartes);
+        listas = deshacer.deshacerVegano(listas);
+        lista = listas.get(0);
+        descartes = listas.get(1);
     }
     
     @Override
     public ArrayList<Plato> buscarNombrePlato(String nombre){
-        ArrayList<Plato> listaTemp = new ArrayList();
-        Plato temp;
-        Iterator<Plato> it = lista.iterator();
-        while(it.hasNext()){
-            temp = it.next();
-            if(temp.getNombre().toUpperCase().contains(nombre.toUpperCase())){
-                listaTemp.add(temp);
+        if(!nombre.equals("")){
+            ArrayList<Plato> listaTemp = new ArrayList();
+            Plato temp;
+            deshacer.setFiltroNombre(nombre);
+            Iterator<Plato> it = lista.iterator();
+            while(it.hasNext()){
+                temp = it.next();
+                if(temp.getNombre().toUpperCase().contains(nombre.toUpperCase())){
+                    listaTemp.add(temp);
+                }
+                else{
+                    descartes.add(temp);
+                }
             }
+            lista = listaTemp;
         }
-        lista = listaTemp;
-        
         return lista;
     }
     
     @Override
     public ArrayList<Plato> buscarNombreRestaurante(String nombre){
-        ArrayList<Plato> listaTemp = new ArrayList();
-        Plato temp;
-        Iterator<Plato> it = lista.iterator();
-        while(it.hasNext()){
-            temp = it.next();
-            if(temp.getRestaurante().toUpperCase().contains(nombre.toUpperCase())){
-                listaTemp.add(temp);
+        if(!nombre.equals("")){
+            ArrayList<Plato> listaTemp = new ArrayList();
+            Plato temp;
+            deshacer.setFiltroRestaurante(nombre);
+            Iterator<Plato> it = lista.iterator();
+            while(it.hasNext()){
+                temp = it.next();
+                if(temp.getRestaurante().toUpperCase().contains(nombre.toUpperCase())){
+                    listaTemp.add(temp);
+                }
+                else{
+                    descartes.add(temp);
+                }
             }
+            lista = listaTemp;
         }
-        lista = listaTemp;
-        
         return lista;
     }
 
@@ -104,43 +163,15 @@ public class BuscadorConcreto implements Buscador{
     public ArrayList<Plato> mostrarVeganos(){
         ArrayList<Plato> listaTemp = new ArrayList();
         Plato temp;
+        deshacer.setFiltroVegano(true);
         Iterator<Plato> it = lista.iterator();
         while(it.hasNext()){
             temp = it.next();
             if(temp.isVegano()){
                 listaTemp.add(temp);
             }
-        }
-        lista = listaTemp;
-        
-        return lista;
-    }
-
-    @Override
-    public ArrayList<Plato> mostrarNoVeganos(){
-        ArrayList<Plato> listaTemp = new ArrayList();
-        Plato temp;
-        Iterator<Plato> it = lista.iterator();
-        while(it.hasNext()){
-            temp = it.next();
-            if(!temp.isVegano()){
-                listaTemp.add(temp);
-            }
-        }
-        lista = listaTemp;
-        
-        return lista;
-    }
-
-    @Override
-    public ArrayList<Plato> mostrarGluten(){
-        ArrayList<Plato> listaTemp = new ArrayList();
-        Plato temp;
-        Iterator<Plato> it = lista.iterator();
-        while(it.hasNext()){
-            temp = it.next();
-            if(temp.isGluten()){
-                listaTemp.add(temp);
+            else{
+                descartes.add(temp);
             }
         }
         lista = listaTemp;
@@ -152,11 +183,15 @@ public class BuscadorConcreto implements Buscador{
     public ArrayList<Plato> mostrarNoGluten(){
         ArrayList<Plato> listaTemp = new ArrayList();
         Plato temp;
+        deshacer.setFiltroGluten(false);
         Iterator<Plato> it = lista.iterator();
         while(it.hasNext()){
             temp = it.next();
-            if(!temp.isGluten()){
+            if(temp.isGlutenFree()){
                 listaTemp.add(temp);
+            }
+            else{
+                descartes.add(temp);
             }
         }
         lista = listaTemp;

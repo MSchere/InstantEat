@@ -24,7 +24,7 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose_restaurant);
 
-        restaurantList = findViewById(R.id.restaurantList);
+        restaurantList = findViewById(R.id.searchResults);
         restaurants = fillList();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, restaurants);
         restaurantList.setAdapter(adapter);

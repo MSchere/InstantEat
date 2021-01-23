@@ -158,14 +158,14 @@ public class EditDishActivity extends AppCompatActivity {
     }
     //Instancia la clase plato y mete sus datos en un content values
     private ContentValues createDish() {
-        Plato dish = factoryPlato.creaPlato(dishNameField.getText().toString(), restaurantName, ingredients, Double.parseDouble(priceField.getText().toString()),isVeganCheckBox.isChecked(),isGlutenFreeCheckBox .isChecked());
+        Plato dish = factoryPlato.creaPlato(dishNameField.getText().toString(), restaurantName, ingredients, Double.parseDouble(priceField.getText().toString()),isGlutenFreeCheckBox.isChecked(),isVeganCheckBox.isChecked());
         ContentValues values = new ContentValues();
         values.put(Utilities.dishName, dish.getNombre());
         values.put(Utilities.restaurant, dish.getRestaurante());
         values.put(Utilities.ingredients, Utilities.arrayListToString(dish.getIngredientes()));
         values.put(Utilities.price, dish.getPrecio());
+        values.put(Utilities.isGlutenFree, dish.isGlutenFree());
         values.put(Utilities.isVegan, dish.isVegano());
-        values.put(Utilities.isGlutenFree, dish.isGluten());
         return values;
     }
 

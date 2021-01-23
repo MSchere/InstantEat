@@ -51,7 +51,7 @@ public class Plato {
         this.ingredientes = ingredientes;
     }
 
-    public boolean isGluten() {
+    public boolean isGlutenFree() {
         return gluten;
     }
 
