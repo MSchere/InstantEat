@@ -1,6 +1,7 @@
 package com.example.instanteat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,17 +23,19 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import backend.User;
+
 public class OrderSummary extends AppCompatActivity {
-    TextView orderIdText, totalPriceText, addressText, phoneNumberText, paymentTitleText;
+    TextView orderIdText, totalPriceText, restaurantAddressText, restauranAddressTitleText, clientAddressText, phoneNumberText, paymentTitleText;
     ListView orderDishList;
     Spinner paymentMethodSpinner;
     Button finishOrderButton;
     ArrayAdapter<String> adapter;
-    ArrayList<String> dishes, prices;
+    ArrayList<String> dishes, prices, fusedList;
     SharedPreferences prefs;
     String[] paymentMethods = {"Efectivo", "Tarjeta", "PayPal", "Bitcoin"};
-    String email, address, phoneNumber, cardNumber, paypalEmail;
-    Random rand;
+    User client, restaurant;
+    String email, cardNumber, selectedMethod, state;
     int orderId;
     Double totalPrice;
     Bundle bundle;
@@ -40,10 +43,13 @@ public class OrderSummary extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_summary);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         orderIdText = findViewById(R.id.orderIdText);
         totalPriceText = findViewById(R.id.totalPriceText);
-        addressText = findViewById(R.id.addressText);
+        clientAddressText = findViewById(R.id.clientAddressText);
+        restaurantAddressText = findViewById(R.id.restaurantAddressText);
+        restauranAddressTitleText = findViewById(R.id.restaurantAddressTitleText);
         phoneNumberText = findViewById(R.id.phoneNumberText);
         paymentTitleText= findViewById(R.id.paymentTitleText);
 
@@ -58,17 +64,18 @@ public class OrderSummary extends AppCompatActivity {
         dishes = bundle.getStringArrayList("namesList");
         prices = bundle.getStringArrayList("pricesList");
         totalPrice = bundle.getDouble("totalPrice");
+        restaurant = (User) bundle.getSerializable("restaurant");
 
         email = prefs.getString("email", "NULL");
-
 
         if (email.equals("dummy@email.com")) {
              paymentMethods = new String[]{"Efectivo"};
         }
 
         fillFields();
+        fusedList = mergeLists(dishes, prices);
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mergeLists(dishes, prices));
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fusedList);
         orderDishList = findViewById(R.id.orderDishList);
         orderDishList.setAdapter(adapter);
 
@@ -80,8 +87,8 @@ public class OrderSummary extends AppCompatActivity {
         paymentMethodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
-                String selectedOption=((TextView)view).getText().toString();
-                switch (selectedOption) {
+                selectedMethod=((TextView)view).getText().toString();
+                switch (selectedMethod) {
                     case "Efectivo":
                         paymentTitleText.setText("Se pagará al repartidor en efectivo");
                         break;
@@ -89,8 +96,8 @@ public class OrderSummary extends AppCompatActivity {
                         getCard();
                         paymentTitleText.setText("Se pagará con la tarjeta:\n" + cardNumber);
                         break;
-                    case "Paypal":
-                        paymentTitleText.setText("Se pagará con la cuenta de PayPal asociada"); //No Funciona
+                    case "PayPal":
+                        paymentTitleText.setText("Se pagará con la cuenta de PayPal asociada"); //No hace nada
                         break;
                     case "Bitcoin":
                         paymentTitleText.setText("Pague el importe a esta dirección:\n0x3a94cd13afd58ede00488735ca771fb3784272c1");
@@ -108,6 +115,8 @@ public class OrderSummary extends AppCompatActivity {
 
         finishOrderButton.setOnClickListener(v -> {
             Utilities.showToast(getApplicationContext(), "Pedido finalizado");
+            state = "Preparando";
+            Utilities.insertOrder(getApplicationContext(), orderId, client.getEmail(), client.getPhoneNumber(), client.getAddress(), restaurant.getName(), restaurant.getAddress(), dishes, totalPrice, selectedMethod, state);
             startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class).addFlags(
                     Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
@@ -143,31 +152,14 @@ public class OrderSummary extends AppCompatActivity {
     }
 
     private void fillFields() {
-        //Establecemos la conexión con la db
-        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.userTable, null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        String[] parameters = {email};
-        String[] fields = {Utilities.address, Utilities.phoneNumber};
-        try {
-            Cursor cursor = db.query(Utilities.userTable, fields, Utilities.email + "=?", parameters, null, null, null);
-            cursor.moveToFirst();
-            address = cursor.getString(0);
-            phoneNumber = cursor.getString(1);
-
-            cursor.close();
-            db.close();
-        }
-        catch (Exception e){
-            Toast.makeText(getApplicationContext(), "Error en la base de datos", Toast.LENGTH_SHORT).show();
-            db.close();
-            e.printStackTrace();
-        }
-        rand = new Random();
-        orderId = rand.nextInt(10000);
-        orderIdText.setText(String.format("%04d", orderId));
-        addressText.setText(address);
-        phoneNumberText.setText(phoneNumber);
-        totalPriceText.setText(Double.toString(totalPrice) + " €");
+        client = Utilities.getUser(getApplicationContext(), email, false);
+        orderId = new Random().nextInt(1000000);
+        orderIdText.setText(String.format("%06d", orderId));
+        clientAddressText.setText(client.getAddress());
+        restauranAddressTitleText.setText("Dirección de " + restaurant.getName() + ":");
+        restaurantAddressText.setText(restaurant.getAddress());
+        phoneNumberText.setText(String.valueOf(client.getPhoneNumber()));
+        totalPriceText.setText(totalPrice + " €");
     }
 
 }

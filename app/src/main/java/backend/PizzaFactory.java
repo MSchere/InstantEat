@@ -7,8 +7,6 @@ package backend;
 
 import java.util.ArrayList;
 
-import backend.Plato;
-
 /**
  *
  * @author ajpaz
@@ -25,10 +23,10 @@ public class PizzaFactory {
     
     public PizzaFactory(){}
     
-    public Plato crearPizza(String nombre, int[] opciones){
+    public Plato crearPizza(String nombre,int[] opciones){
         ArrayList<String> ingredientes = new ArrayList();
         boolean esVegano = false;
-        boolean tieneGluten = true;
+        boolean glutenFree = false;
         
         if(opciones[0] != 0){
             ingredientes.add(masa[opciones[0]-1]);
@@ -51,10 +49,10 @@ public class PizzaFactory {
         if(opciones[6] != 0){
             ingredientes.add(ingrediente3[opciones[0]-1]);
         }
-        if(opciones[0]==3) tieneGluten = false;
+        if(opciones[0]==3) glutenFree = true;
         if(opciones[1]==0 && (opciones[2]==0 || opciones[2]==1) && opciones[3]==0 &&
                 (opciones[4]==0 || opciones[4]==3) && (opciones[5]==0 || opciones[5]==2)) esVegano = true;
         
-        return new Plato(nombre,"Tu eliges",ingredientes,5.0,tieneGluten,esVegano);
+        return new Plato(nombre,"Tu eliges",ingredientes,5.0,glutenFree,esVegano);
     }
 }

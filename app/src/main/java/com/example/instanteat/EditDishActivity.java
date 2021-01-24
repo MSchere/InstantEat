@@ -1,5 +1,7 @@
 package com.example.instanteat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import java.util.ArrayList;
 
 import android.content.ContentValues;
@@ -35,6 +37,7 @@ public class EditDishActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_dish);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         bundle = getIntent().getExtras();
         dishName = "null";
@@ -71,8 +74,11 @@ public class EditDishActivity extends AppCompatActivity {
         });
 
         removeIngredientButton.setOnClickListener(v -> {
-            ingredients.remove(ingredients.size()-1);
-            ingredientsListText.setText(Utilities.arrayListToString(ingredients));
+            if (ingredients.size() == 0) removeIngredientButton.setEnabled(false);
+            else {
+                ingredients.remove(ingredients.size() - 1);
+                ingredientsListText.setText(Utilities.arrayListToString(ingredients));
+            }
         });
 
         addDishEditorButton.setOnClickListener(v -> {

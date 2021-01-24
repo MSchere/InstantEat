@@ -9,9 +9,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import backend.AbstractFactoryPlato;
+import backend.Pedido;
 import backend.Plato;
 import backend.User;
 
@@ -39,9 +41,19 @@ public class Utilities {
     public static final String ccv = "ccv";
     public static final String date = "date";
 
+    public static final String orderTable ="orderDB";
+    public static final String id = "id";
+    public static final String clientAddress = "client_address";
+    public static final String restaurantAddress = "restaurant_address";
+    public static final String state = "state";
+    public static final String dishes = "dishes";
+    public static final String totalPrice = "total_price";
+    public static final String client = "client";
+    public static final String paymentMethod = "payment_method";
+
+
     public static final String objectTable = "ObjectDB";
     public static final String object = "object";
-    public static final String id = "id";
 
     public static final String create_user_table = "create table " + userTable + "\n" +
             "(" + email + " varchar(40) primary key,\n" +
@@ -67,45 +79,106 @@ public class Utilities {
             ccv + " int not null,\n" +
             date + " varchar(40) not null);";
 
+    public static final String create_order_table = "create table " + orderTable + "\n" +
+            "(" + id + " int primary key,\n" +
+            email + " varchar(40) not null,\n" +
+            clientAddress + " varchar(40) not null,\n" +
+            phoneNumber + " int not null,\n" +
+            restaurant + " varchar(40) not null,\n" +
+            restaurantAddress + " blob not null,\n" +
+            dishes + " varchar(40) not null,\n" +
+            totalPrice + " double not null,\n" +
+            paymentMethod + " varchar(40) not null,\n" +
+            state + " varchar(9) not null);";
+
     public static final String create_object_table = "create table " + objectTable + "\n" +
             "(" + id + " int primary key,\n" +
             object + " blob not null);";
 
-    public static final ArrayList<Plato> getObjects(Context context, String userEmail) {
-        ArrayList<Plato> dishes = new ArrayList<Plato>();
-        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, userTable, null, 1);
+    public static final User getUser(Context context, String parameter, Boolean byName) {
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, Utilities.userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
-        String[] fields = {object};
-        String[] parameters = {userEmail};
-
-            Cursor cursor = db.query(userTable, fields, email + "=?", parameters, null, null, null);
+        String method;
+        User user = null;
+        if (byName) method = Utilities.name;
+        else method = Utilities.email;
+        String[] parameters = {parameter};
+        String[] fields = {"*"};
+        Cursor cursor;
+        try {
+            cursor = db.query(Utilities.userTable, fields, method + "=?", parameters, null, null, null);
             cursor.moveToFirst();
-            byte[] blob = cursor.getBlob(0);
-            String json = new String(blob);
-            Gson gson = new Gson();
-            dishes = gson.fromJson(json, new TypeToken<ArrayList<Plato>>() {}.getType());
+            user = new User(cursor.getString(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getInt(5));
             cursor.close();
-
-        db.close();
-        return dishes;
+            db.close();
+        }
+        catch (Exception e){
+            //showToast(context, "Email incorrecto");
+            db.close();
+            e.printStackTrace();
+        }
+        return user;
     }
 
-    public static final void addDishes(Context context, ArrayList<Plato> dishes, String userEmail) {
-        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, userTable, null, 1);
+    public static final void insertOrder(Context context, int id, String email, int phoneNumber,  String clientAddress,
+                                         String restaurant, String restaurantAddress, ArrayList<String> dishes,
+                                         double totalPrice, String paymentMethod, String state) {
+
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, orderTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
-        String[] parameters = {userEmail};
-        Gson gson = new Gson();
         ContentValues values = new ContentValues();
-        values.put(object, gson.toJson(dishes).getBytes());
+        values.put(Utilities.id, String.valueOf(id));
+        values.put(Utilities.email, email);
+        values.put(Utilities.phoneNumber, String.valueOf(phoneNumber));
+        values.put(Utilities.clientAddress, clientAddress);
+        values.put(Utilities.restaurant, restaurant);
+        values.put(Utilities.restaurantAddress, restaurantAddress);
+        values.put(Utilities.dishes, arrayListToString(dishes));
+        values.put(Utilities.totalPrice, totalPrice);
+        values.put(Utilities.paymentMethod, paymentMethod);
+        values.put(Utilities.state, state);
         try {
-            db.update(Utilities.userTable, values, Utilities.email+"=?", parameters);
-            showToast(context, "PLATO ACTUALIZADO");
+            long index = db.insert(Utilities.orderTable, Utilities.id, values);
+            showToast(context, "pedido completado");
         }
         catch (Exception e) {
             e.printStackTrace();
-            showToast(context, "ERROR ACTUALIZANDO PLATO");
+            showToast(context, "error creando pedido");
         }
         db.close();
+    }
+
+    public static final ArrayList<Pedido> getOrders(Context context, String email) {
+        ArrayList<Pedido> list = new ArrayList<Pedido>();
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, orderTable, null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] fields = {"*"};
+        String[] parameters = {email};
+        try {
+            Cursor cursor = db.query(orderTable, fields, Utilities.email + "=?", parameters, null, null, null);
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    //id, email, telefono, dircliente, restaurante, dirrestaurante, platos, total, pago, estado
+                    list.add(new Pedido(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
+                            cursor.getString(3), cursor.getString(4), cursor.getString(5),
+                            stringToArrayList(cursor.getString(6)), cursor.getDouble(7),
+                            cursor.getString(8), cursor.getString(9)));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            db.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            showToast(context, "No tiene pedidos");
+        }
+        return list;
     }
 
     public static final ArrayList<Plato> getDishList(Context context, String restaurant) {
@@ -153,7 +226,7 @@ public class Utilities {
                     //nombre, restaurante, ingredientes, precio, vegano, gluten
                     list.add(factoryPlato.creaPlato(cursor.getString(0),
                             cursor.getString(1),
-                            Utilities.stringToArrayList(cursor.getString(2)),
+                            stringToArrayList(cursor.getString(2)),
                             cursor.getDouble(3),
                             cursor.getInt(4) > 0,
                             cursor.getInt(5) > 0));
@@ -173,8 +246,11 @@ public class Utilities {
 
     public static final String arrayListToString(ArrayList<String> list){
         String myString = "";
-        for (int i = 0; i < list.size(); i++) {
-            myString = myString+list.get(i)+", ";
+        for (String item:list) {
+            if (list.indexOf(item) == (list.size() -1)){
+                myString = myString + item;
+            }
+            else myString = myString + item + ", ";
         }
         return myString;
     }

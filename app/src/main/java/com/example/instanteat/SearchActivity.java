@@ -1,11 +1,9 @@
 package com.example.instanteat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,10 +16,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import backend.AbstractFactoryPlato;
 import backend.Buscador;
 import backend.BuscadorConcreto;
 import backend.Plato;
+import backend.User;
 
 public class SearchActivity extends AppCompatActivity {
     SearchView searcher;
@@ -32,7 +30,7 @@ public class SearchActivity extends AppCompatActivity {
     ListView searchResults;
     ArrayAdapter<String> adapter;
     ArrayList<Plato> dishList;
-    MyAdapter myAdapter;
+    AdapterDish adapterDish;
     ArrayList<String> dishNames, dishIngredients, dishPrices;
     BuscadorConcreto buscador;
     Buscador iBuscador;
@@ -41,6 +39,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         veganSwitch = findViewById(R.id.veganSwitch);
         glutenFreeSwitch = findViewById(R.id.glutenFreeSwitch);
@@ -59,17 +58,18 @@ public class SearchActivity extends AppCompatActivity {
         orderPriceSpinner.setAdapter(adapter);
 
         searchResults = findViewById(R.id.searchResults);
-        myAdapter = new MyAdapter(this, dishNames, dishIngredients, dishPrices);
-        searchResults.setAdapter(myAdapter);
+        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices);
+        searchResults.setAdapter(adapterDish);
         searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Utilities.showToast(getApplicationContext(), dishNames.get(i));
-                view.setBackgroundColor(getResources().getColor(R.color.purple_200));
-                /*Intent intent = new Intent(getApplicationContext(), OrderEditorActivity.class);
+                String selection = buscador.getLista().get(i).getRestaurante();
+
+                Intent intent = new Intent(getApplicationContext(), OrderEditorActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("restaurantName", selection); //Parámetro para la actividad
+                User restaurant = (User) Utilities.getUser(getApplicationContext(), selection, true);
+                bundle.putSerializable("restaurant", restaurant); //Parámetro para la actividad
                 intent.putExtras(bundle);
-                startActivity(intent);*/
+                startActivity(intent);
             }
         });
 
@@ -86,7 +86,6 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 if(newText.length() < previousQuery.length()) {
                     buscador.deshacerNombre();
-                    if (newText.equals("")) buscador.resetLista();
                 }
                 else buscador.resetLista();
 
@@ -131,10 +130,10 @@ public class SearchActivity extends AppCompatActivity {
                 break;
             case R.id.glutenFreeSwitch:
                 if (glutenFreeSwitch.isChecked()) {
-                    fillLists(buscador.mostrarNoGluten());
+                    fillLists(buscador.mostrarGlutenFree());
                 }
                 else {
-                    buscador.deshacerGluten();
+                    buscador.deshacerGlutenFree();
                     fillLists(buscador.getLista());
                 }
                 break;
@@ -150,8 +149,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void updateResult(){
-        myAdapter = new MyAdapter(this, dishNames, dishIngredients, dishPrices);
-        searchResults.setAdapter(myAdapter);
+        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices);
+        searchResults.setAdapter(adapterDish);
     }
 
     private void fillLists(ArrayList<Plato> dishList){

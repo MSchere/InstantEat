@@ -1,5 +1,6 @@
 package com.example.instanteat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -25,8 +26,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_screen);
-        userType = "client";
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
+        userType = "client";
         emailField = findViewById(R.id.cardHolderNameField);
         passwordField = findViewById(R.id.passwordField);
         repeatPasswordField = findViewById(R.id.repeatPasswordField);

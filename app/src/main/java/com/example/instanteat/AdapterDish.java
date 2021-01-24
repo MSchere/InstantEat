@@ -13,13 +13,13 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 
-public class MyAdapter extends ArrayAdapter {
+public class AdapterDish extends ArrayAdapter {
     Context context;
     ArrayList<String> rName, rIngredients, rPrice;
     int[] image;
 
-    public MyAdapter(Context context, ArrayList<String> rName, ArrayList<String> rIngredients, ArrayList<String> rPrice) {
-        super(context, R.layout.row, R.id.textView, rName);
+    public AdapterDish(Context context, ArrayList<String> rName, ArrayList<String> rIngredients, ArrayList<String> rPrice) {
+        super(context, R.layout.row_dish, R.id.textView, rName);
         this.context = context;
         this.rName = rName;
         this.rIngredients = rIngredients;
@@ -30,7 +30,7 @@ public class MyAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = layoutInflater.inflate(R.layout.row, parent, false);
+        View row = layoutInflater.inflate(R.layout.row_dish, parent, false);
         TextView name = row.findViewById(R.id.dishNameListField);
         TextView ingredients = row.findViewById(R.id.ingredientsListField);
         TextView price = row.findViewById(R.id.dishPriceListField);

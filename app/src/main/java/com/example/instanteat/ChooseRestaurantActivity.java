@@ -1,5 +1,6 @@
 package com.example.instanteat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,6 +24,7 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose_restaurant);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         restaurantList = findViewById(R.id.searchResults);
         restaurants = fillList();
@@ -30,13 +32,13 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
         restaurantList.setAdapter(adapter);
         restaurantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Toast.makeText(getApplicationContext(), "Has pulsado: " + dishes.get(i), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), OrderEditorActivity.class);
                 Bundle bundle = new Bundle();
                 //Nos quedamos solo con el nombre del restaurante
                 selection = restaurants.get(i).substring(0, restaurants.get(i).indexOf(" en "));
                 selection.trim();
-                bundle.putString("restaurantName", selection); //Parámetro para la actividad
+                bundle.putSerializable("restaurant", Utilities.getUser(getApplicationContext(), selection, true)); //Parámetro para la actividad
+                //Utilities.showToast(getApplicationContext(), selection);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -47,14 +49,14 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, Utilities.userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ArrayList<String> list = new ArrayList<String>();
-        String[] fields = {Utilities.name, Utilities.address};
+        String[] fields = {Utilities.email, Utilities.name, Utilities.address};
         String[] parameters = {"owner"};
         try {
             Cursor cursor = db.query(Utilities.userTable, fields, Utilities.userType+"=?", parameters, null, null, null);
             if(cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
-                    restaurantName = cursor.getString(0);
-                    address = cursor.getString(1);
+                    restaurantName = cursor.getString(1);
+                    address = cursor.getString(2);
                     list.add(restaurantName + " en " + address);
                     cursor.moveToNext();
                 }

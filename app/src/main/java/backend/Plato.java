@@ -7,7 +7,7 @@ public class Plato {
     private String restaurante;
     private double precio;
     private ArrayList<String> ingredientes;
-    private boolean gluten;
+    private boolean glutenFree;
     private boolean vegano;
     
     public Plato(String nombre,String restaurante,ArrayList<String> ingredientes,double precio,boolean tieneGluten, boolean esVegano){
@@ -16,7 +16,7 @@ public class Plato {
         this.precio = precio;
         this.ingredientes = ingredientes;
         this.vegano = esVegano;
-        this.gluten = tieneGluten;
+        this.glutenFree = tieneGluten;
     }
 
     public String getNombre() {
@@ -52,11 +52,11 @@ public class Plato {
     }
 
     public boolean isGlutenFree() {
-        return gluten;
+        return glutenFree;
     }
 
-    public void setGluten(boolean tieneGluten) {
-        this.gluten = tieneGluten;
+    public void setGlutenFree(boolean tieneGluten) {
+        this.glutenFree = tieneGluten;
     }
 
     public boolean isVegano() {
@@ -72,8 +72,8 @@ public class Plato {
         String cadVegano="No";
         String cadGluten="No";
         if(vegano) cadVegano="Si";
-        if(gluten) cadGluten="Si";
+        if(glutenFree) cadGluten="Si";
         return("Nombre: "+nombre+", Restaurante: "+restaurante+", Ingredientes: "+ingredientes.toString()+
-                ", Precio: "+precio+", Gluten: "+cadGluten+", Vegano: "+cadVegano);
+                ", Precio: "+precio+", GlutenFree: "+cadGluten+", Vegano: "+cadVegano);
     }
 }

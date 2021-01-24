@@ -1,6 +1,7 @@
 package com.example.instanteat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.ContentValues;
 import android.content.SharedPreferences;
@@ -23,7 +24,7 @@ public class EditCardActivity extends AppCompatActivity {
     SharedPreferences prefs;
     Button saveCardButton, deleteCardButton;
     EditText cardHolderNameField, cardNumberField, cardCCVField, cardDateField;
-    DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("mm/yy");
     Bundle bundle;
     String email, dishName;
     Boolean isUpdate = false;
@@ -31,6 +32,7 @@ public class EditCardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_card);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         bundle = getIntent().getExtras();
         dishName = "null";
@@ -170,7 +172,7 @@ public class EditCardActivity extends AppCompatActivity {
     private Boolean checkDate() {
         String date = cardDateField.getText().toString();
         //Regular expression for email E.g: john123@gmail.com
-        String regex = "\\d{2}/\\d{2}/\\d{4}";
+        String regex = "\\d{2}/\\d{2}";
         if (date.matches(regex)) {
             return true;
         }

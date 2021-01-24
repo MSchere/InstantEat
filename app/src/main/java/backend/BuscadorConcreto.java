@@ -54,11 +54,11 @@ public class BuscadorConcreto implements Buscador{
     }
     
     @Override
-    public void deshacerGluten(){
+    public void deshacerGlutenFree(){
         ArrayList<ArrayList<Plato>> listas = new ArrayList();
         listas.add(this.lista);
         listas.add(this.descartes);
-        listas = deshacer.deshacerGluten(listas);
+        listas = deshacer.deshacerGlutenFree(listas);
         lista = listas.get(0);
         descartes = listas.get(1);
     }
@@ -180,10 +180,10 @@ public class BuscadorConcreto implements Buscador{
     }
 
     @Override
-    public ArrayList<Plato> mostrarNoGluten(){
+    public ArrayList<Plato> mostrarGlutenFree(){
         ArrayList<Plato> listaTemp = new ArrayList();
         Plato temp;
-        deshacer.setFiltroGluten(false);
+        deshacer.setFiltroGlutenFree(false);
         Iterator<Plato> it = lista.iterator();
         while(it.hasNext()){
             temp = it.next();

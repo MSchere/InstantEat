@@ -1,5 +1,8 @@
 package backend;
-public class User implements Clonable{
+
+import java.io.Serializable;
+
+public class User implements Clonable, Serializable {
     private String email;
     private String password;
     private String userType;

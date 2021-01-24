@@ -23,10 +23,10 @@ public class HamburguesaFactory {
     
     public HamburguesaFactory(){}
     
-    public Plato crearHamburguesa(String nombre, int[] opciones){
+    public Plato crearHamburguesa(String nombre,int[] opciones){
         ArrayList<String> ingredientes = new ArrayList();
         boolean esVegano = false;
-        boolean tieneGluten = true;
+        boolean glutenFree = false;
         
         if(opciones[0] != 0){
             ingredientes.add(pan[opciones[0]-1]);
@@ -49,9 +49,9 @@ public class HamburguesaFactory {
         if(opciones[6] != 0){
             ingredientes.add(estadoCarne[opciones[6]-1]);
         }
-        if(opciones[0]==3) tieneGluten = false;
+        if(opciones[0]==3) glutenFree = true;
         if(opciones[4]==0 && (opciones[5]==0 || opciones[5]==3)) esVegano = true;
         
-        return new Plato(nombre,"Tu eliges",ingredientes,5.0,tieneGluten,esVegano);
+        return new Plato(nombre,"Tu eliges",ingredientes,5.0,glutenFree,esVegano);
     }
 }

@@ -1,35 +1,33 @@
 package com.example.instanteat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import java.util.ArrayList;
 
-import backend.AbstractFactoryPlato;
 import backend.Plato;
+import backend.User;
 
 public class OrderEditorActivity extends AppCompatActivity {
     TextView totalPriceText;
     ListView dishList;
     Button finishOrderEditorButton;
-    ArrayAdapter<String> adapter;
-    MyAdapter myAdapter;
+    AdapterDish adapterDish;
+    User restaurant;
     ArrayList<String> selectedDishesPrices, selectedDishesNames, selectedDishesIngredients;
+    ArrayList<Integer> selectedPositions;
     ArrayList<String> dishNames, dishIngredients, dishPrices;
-    String restaurantName, dishName;
+    String restaurantName;
     Double price;
     Bundle bundle;
 
@@ -37,9 +35,11 @@ public class OrderEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_editor);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         bundle = getIntent().getExtras();
-        restaurantName = bundle.getString("restaurantName");
+        restaurant = (User) bundle.getSerializable("restaurant");
+        restaurantName = restaurant.getName();
 
         totalPriceText = findViewById(R.id.totalPriceText);
         finishOrderEditorButton = findViewById(R.id.finishOrderEditorButton);
@@ -48,14 +48,15 @@ public class OrderEditorActivity extends AppCompatActivity {
         selectedDishesNames = new ArrayList<String>();
         selectedDishesIngredients = new ArrayList<String>();
         selectedDishesPrices = new ArrayList<String>();
+        selectedPositions = new ArrayList<Integer>();
 
         fillLists(Utilities.getDishList(this, restaurantName));
 
-        adapter = new MyAdapter(this, dishNames, dishIngredients, dishPrices);
+        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices);
         dishList = findViewById(R.id.orderDishList);
         dishList.setItemsCanFocus(false);
         dishList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        dishList.setAdapter(adapter);
+        dishList.setAdapter(adapterDish);
 
         //Contiene una lista auxiliar para los elementos seleccionados
         dishList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,16 +69,32 @@ public class OrderEditorActivity extends AppCompatActivity {
                     selectedDishesNames.remove(selectedDish);
                     selectedDishesIngredients.remove(selectedIngredients);
                     selectedDishesPrices.remove(selectedPrice);
+                    selectedPositions.remove(i);
                 }
                 else {
                     view.setBackgroundColor(getResources().getColor(R.color.purple_200));
                     selectedDishesNames.add(selectedDish);
                     selectedDishesIngredients.add(selectedIngredients);
                     selectedDishesPrices.add(selectedPrice);
+                    selectedPositions.add(i);
                 }
                 price = calculatePrice();
             }
         });
+        dishList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                for(int pos:selectedPositions){
+                    getViewByPosition(pos, dishList).setBackgroundColor(getResources().getColor(R.color.purple_200));
+                }
+            }
+        });
+
 
         finishOrderEditorButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), OrderSummary.class);
@@ -86,10 +103,24 @@ public class OrderEditorActivity extends AppCompatActivity {
             //bundle.putStringArrayList("ingredientsList", selectedDishesIngredients);
             bundle.putStringArrayList("pricesList", selectedDishesPrices);
             bundle.putDouble("totalPrice", price);
+            bundle.putSerializable("restaurant", restaurant);
             intent.putExtras(bundle);
             startActivity(intent);
         });
     }
+    //Encontrado en stack overflow, créditos al usuario VVB
+    //Devuelve la view deseada dada la listView y una posición
+    public View getViewByPosition(int pos, ListView listView) {
+        int firstPos = listView.getFirstVisiblePosition();
+        int lastPos = firstPos + listView.getChildCount() - 1;
+        if (pos < firstPos || pos > lastPos ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            int childIndex = pos - firstPos;
+            return listView.getChildAt(childIndex);
+        }
+    }
+
     //Calcula el precio extrayendo los numeros de la string.
     private double calculatePrice() {
         double price = 0;

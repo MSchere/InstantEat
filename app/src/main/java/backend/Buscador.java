@@ -12,7 +12,7 @@ public interface Buscador {
     
     public void deshacerRestaurante();
     
-    public void deshacerGluten();
+    public void deshacerGlutenFree();
     
     public void deshacerVegano();
     
@@ -26,5 +26,5 @@ public interface Buscador {
 
     public ArrayList<Plato> mostrarVeganos();
 
-    public ArrayList<Plato> mostrarNoGluten();
+    public ArrayList<Plato> mostrarGlutenFree();
 }

@@ -1,20 +1,17 @@
 package com.example.instanteat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,7 +26,7 @@ public class OwnerMenuActivity extends AppCompatActivity {
     ListView dishList;
     ImageButton ownerPrefsButton;
     String restaurantName;
-    MyAdapter myAdapter;
+    AdapterDish adapterDish;
     ArrayList<Plato> dishes;
     ArrayList<String> dishNames, dishIngredients, dishPrices;
     BuscadorConcreto buscador;
@@ -39,6 +36,7 @@ public class OwnerMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.owner_menu);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         restaurantName = prefs.getString("name", "NULL");
@@ -58,8 +56,8 @@ public class OwnerMenuActivity extends AppCompatActivity {
         iBuscador = buscador;
         fillLists(dishes);
         fillDashboard();
-        myAdapter = new MyAdapter(this, dishNames, dishIngredients, dishPrices);
-        dishList.setAdapter(myAdapter);
+        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices);
+        dishList.setAdapter(adapterDish);
         dishList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //Toast.makeText(getApplicationContext(), "Has pulsado: " + dishes.get(i), Toast.LENGTH_SHORT).show();
@@ -89,7 +87,7 @@ public class OwnerMenuActivity extends AppCompatActivity {
     }
         private void fillDashboard(){
             totalDishesText.setText(String.valueOf(dishes.size()));
-            totalGlutenFreeDishesText.setText(String.valueOf(buscador.mostrarNoGluten().size()));
+            totalGlutenFreeDishesText.setText(String.valueOf(buscador.mostrarGlutenFree().size()));
             buscador.resetLista();
             totalVeganDishesText.setText(String.valueOf(buscador.mostrarVeganos().size()));
         }

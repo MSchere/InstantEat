@@ -1,5 +1,6 @@
 package com.example.instanteat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,13 +25,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
 
         //Importamos preferencias
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = prefs.edit();
 
-        //Utilities.deleteDb(getApplicationContext());
-        //getApplicationContext().deleteDatabase("cardDB");
+        //getApplicationContext().deleteDatabase("orderDB");
 
         emailField = findViewById(R.id.emailFieldLogin);
         passwordField = findViewById(R.id.passwordFieldLogin);
@@ -53,28 +55,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validate() {
-        //Establecemos conexion con la db
-        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(this, "userDB", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        //Query para db
-        String[] parameters = {emailField.getText().toString()};
-        String inputPassword = passwordField.getText().toString();
-        //Los campos que necesitamos
-        String[] fields = {Utilities.email, Utilities.password, Utilities.userType, Utilities.name};
+        String email = emailField.getText().toString();
         try {
-            Cursor cursor = db.query(Utilities.userTable, fields, Utilities.email+"=?", parameters, null, null, null);
-            //El cursor empieza en el campo email
-            cursor.moveToFirst();
-            //String email = cursor.getString(0);
-            String password = cursor.getString(1);
-            String userType = cursor.getString(2);
-            String name = cursor.getString(3);
+            User user = Utilities.getUser(getApplicationContext(), email, false);
+            String password = user.getPassword();
+            String userType = user.getUserType();
+            String name = user.getName();
+            String inputPassword = passwordField.getText().toString();
             if(password.equals(inputPassword)) {
                 //SI EL LOGIN ES EXITOSO:
-                editor.putString("email", parameters[0]);
+                editor.putString("email", email);
                 editor.putString("name", name);
                 if (rememberCheckBox.isChecked()) {
-                    editor.putString("savedEmail", parameters[0]);
+                    editor.putString("savedEmail", email);
                     editor.putString("savedPassword", inputPassword);
                 }
                 Utilities.showToast(getApplicationContext(), "Inicio de sesión correcto\nBienvenido " + name);
@@ -94,12 +87,9 @@ public class LoginActivity extends AppCompatActivity {
             else{
                 Utilities.showToast(getApplicationContext(), "Contraseña incorrecta");
             }
-            cursor.close();
-            db.close();
         } catch (Exception e) {
             //Una excepción significa que no se ha encontrado el email en la db
             e.printStackTrace();
-            db.close();
             Utilities.showToast(getApplicationContext(), "Email incorrecto");
         }
     }
