@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp"
-    >
+    android:padding="10dp">
+
     <ImageView
+        android:id="@+id/orderListImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:src="@drawable/order_icon"
-        android:id="@+id/orderListImage"
-        />
+        android:src="@drawable/order_icon" />
 
     <LinearLayout
-        android:layout_width="225dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="225dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/orderIdListField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="000000"
-            android:textColor="#000"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/orderIdListField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="000000"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/restaurantNameListField"
                 android:layout_width="match_parent"
@@ -43,6 +42,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/dishListField"
             android:layout_width="match_parent"
@@ -54,16 +54,32 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/totalPriceListField"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:background="#FFFFFF"
-        android:text="100.00€"
-        android:textColor="#000"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/totalPriceListField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="#00FFFFFF"
+            android:text="100.00€"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/stateListField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="#00FFFFFF"
+            android:text="Completado"
+            android:textColor="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 </LinearLayout>

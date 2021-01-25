@@ -23,18 +23,21 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import backend.Pedido;
 import backend.User;
 
 public class OrderSummary extends AppCompatActivity {
-    TextView orderIdText, totalPriceText, restaurantAddressText, restauranAddressTitleText, clientAddressText, phoneNumberText, paymentTitleText;
+    TextView orderIdText, totalPriceText, restaurantAddressText, restaurantAddressTitleText, clientAddressText, phoneNumberText, paymentTitleText;
     ListView orderDishList;
     Spinner paymentMethodSpinner;
     Button finishOrderButton;
     ArrayAdapter<String> adapter;
     ArrayList<String> dishes, prices, fusedList;
     SharedPreferences prefs;
+    Boolean isUpdate;
     String[] paymentMethods = {"Efectivo", "Tarjeta", "PayPal", "Bitcoin"};
     User client, restaurant;
+    Pedido order;
     String email, cardNumber, selectedMethod, state;
     int orderId;
     Double totalPrice;
@@ -49,7 +52,7 @@ public class OrderSummary extends AppCompatActivity {
         totalPriceText = findViewById(R.id.totalPriceText);
         clientAddressText = findViewById(R.id.clientAddressText);
         restaurantAddressText = findViewById(R.id.restaurantAddressText);
-        restauranAddressTitleText = findViewById(R.id.restaurantAddressTitleText);
+        restaurantAddressTitleText = findViewById(R.id.restaurantAddressTitleText);
         phoneNumberText = findViewById(R.id.phoneNumberText);
         paymentTitleText= findViewById(R.id.paymentTitleText);
 
@@ -61,20 +64,24 @@ public class OrderSummary extends AppCompatActivity {
         dishes = new ArrayList<String>();
         prices = new ArrayList<String>();
 
-        dishes = bundle.getStringArrayList("namesList");
+        isUpdate = bundle.getBoolean("isUpdate");
+        dishes = bundle.getStringArrayList("dishesList");
         prices = bundle.getStringArrayList("pricesList");
-        totalPrice = bundle.getDouble("totalPrice");
-        restaurant = (User) bundle.getSerializable("restaurant");
-
         email = prefs.getString("email", "NULL");
+        if (isUpdate) {
+            order = (Pedido) bundle.getSerializable("order");
+        }
+        else {
+            totalPrice = bundle.getDouble("totalPrice");
+            restaurant = (User) bundle.getSerializable("restaurant");
+        }
+        fillFields();
 
         if (email.equals("dummy@email.com")) {
              paymentMethods = new String[]{"Efectivo"};
         }
 
-        fillFields();
         fusedList = mergeLists(dishes, prices);
-
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fusedList);
         orderDishList = findViewById(R.id.orderDishList);
         orderDishList.setAdapter(adapter);
@@ -115,8 +122,14 @@ public class OrderSummary extends AppCompatActivity {
 
         finishOrderButton.setOnClickListener(v -> {
             Utilities.showToast(getApplicationContext(), "Pedido finalizado");
-            state = "Preparando";
-            Utilities.insertOrder(getApplicationContext(), orderId, client.getEmail(), client.getPhoneNumber(), client.getAddress(), restaurant.getName(), restaurant.getAddress(), dishes, totalPrice, selectedMethod, state);
+
+            if (!isUpdate) {
+                Utilities.insertOrder(getApplicationContext(), orderId, client.getEmail(), client.getPhoneNumber(), client.getAddress(),
+                        restaurant.getName(), restaurant.getAddress(), fusedList, totalPrice, selectedMethod, state);
+            }
+            else {
+                Utilities.updateOrderState(getApplicationContext(), orderId, state);
+            }
             startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class).addFlags(
                     Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
@@ -153,13 +166,21 @@ public class OrderSummary extends AppCompatActivity {
 
     private void fillFields() {
         client = Utilities.getUser(getApplicationContext(), email, false);
-        orderId = new Random().nextInt(1000000);
-        orderIdText.setText(String.format("%06d", orderId));
+        if (isUpdate){
+            orderId = order.getId();
+            restaurant = Utilities.getUser(getApplicationContext(), order.getRestaurante(), true);
+            totalPrice = order.getPrecioTotal();
+        }
+        else {
+            orderId = new Random().nextInt(1000000);
+        }
         clientAddressText.setText(client.getAddress());
-        restauranAddressTitleText.setText("Dirección de " + restaurant.getName() + ":");
+        restaurantAddressTitleText.setText("Dirección de " + restaurant.getName() + ":");
         restaurantAddressText.setText(restaurant.getAddress());
         phoneNumberText.setText(String.valueOf(client.getPhoneNumber()));
         totalPriceText.setText(totalPrice + " €");
+        state = "Preparando";
+
     }
 
 }

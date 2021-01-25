@@ -11,11 +11,11 @@
     <ListView
         android:id="@+id/orderDishList"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="300dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -33,34 +33,19 @@
         app:layout_constraintVertical_bias="1.0">
 
         <TextView
-            android:id="@+id/restaurantAddressTitleText"
-            android:layout_width="wrap_content"
+            android:id="@+id/clientAddressText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dirección del local:"
+            android:gravity="center"
+            android:text="dirección cliente calle x num x"
             android:textColor="#000000"
             android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.042" />
-
-    <TextView
-        android:id="@+id/clientAddressText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="dirección cliente calle x num x"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.273" />
+            app:layout_constraintVertical_bias="0.273" />
 
         <TextView
             android:id="@+id/addressTitleText"
@@ -75,64 +60,7 @@
             app:layout_constraintHorizontal_bias="0.045"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.21" />
-
-        <TextView
-            android:id="@+id/restaurantAddressText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="dirección restaurante calle x num x"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.106" />
-
-        <TextView
-            android:id="@+id/paymentTitleText"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="Se pagará al repartidor en efectivo"
-            android:textColor="#FF0000"
-            android:textIsSelectable="true"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.461"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.724" />
-
-        <Spinner
-            android:id="@+id/paymentMethodSpinner"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.563"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.595" />
-
-        <TextView
-            android:id="@+id/cardTitleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Método de pago:"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.04"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.59" />
+            app:layout_constraintVertical_bias="0.191" />
 
         <TextView
             android:id="@+id/orderIdTitleText"
@@ -144,10 +72,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.033"
+            app:layout_constraintHorizontal_bias="0.048"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.385" />
+            app:layout_constraintVertical_bias="0.502" />
 
         <TextView
             android:id="@+id/orderIdText"
@@ -158,39 +86,39 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.465"
+            app:layout_constraintHorizontal_bias="0.531"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.385" />
+            app:layout_constraintVertical_bias="0.502" />
 
         <TextView
-            android:id="@+id/totalPriceTitleText"
+            android:id="@+id/cardTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TOTAL:"
+            android:text="Método de pago:"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.917"
+            app:layout_constraintHorizontal_bias="0.058"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.486" />
+            app:layout_constraintVertical_bias="0.704" />
 
         <TextView
-            android:id="@+id/phoneNumberText"
-            android:layout_width="wrap_content"
+            android:id="@+id/paymentMethodText"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="000000000"
+            android:text="Pagado con tarjeta"
             android:textColor="#000000"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.509"
+            app:layout_constraintHorizontal_bias="0.886"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.486" />
+            app:layout_constraintVertical_bias="0.704" />
 
         <TextView
             android:id="@+id/phoneNumberTitleText"
@@ -202,10 +130,39 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.032"
+            app:layout_constraintHorizontal_bias="0.047"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.489" />
+            app:layout_constraintVertical_bias="0.603" />
+
+        <TextView
+            android:id="@+id/phoneNumberText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="000000000"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.58"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.601" />
+
+        <TextView
+            android:id="@+id/totalPriceTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TOTAL:"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.382" />
 
         <TextView
             android:id="@+id/totalPriceText"
@@ -217,22 +174,38 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.941"
+            app:layout_constraintHorizontal_bias="0.545"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.584" />
+            app:layout_constraintVertical_bias="0.386" />
 
         <Button
-            android:id="@+id/finishOrderButton"
+            android:id="@+id/orderDoneButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Finalizar pedido"
+            android:text="Pedido Terminado"
             android:textSize="12sp"
+            app:backgroundTint="#4CAF50"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.934"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.916" />
+            app:layout_constraintVertical_bias="0.954" />
+
+        <Button
+            android:id="@+id/orderCanceledButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pedido Cancelado"
+            android:textSize="12sp"
+            app:backgroundTint="#912D26"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.065"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.954" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

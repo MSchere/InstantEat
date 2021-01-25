@@ -62,12 +62,12 @@ public class RegisterActivity extends AppCompatActivity {
         long index = db.insert(Utilities.userTable, Utilities.email, values);
 
         if (index > 0) {
-            Toast.makeText(getApplicationContext(), "Registrado nuevo usuario, inicie sesión", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getApplicationContext(), "Índice de " + userType + " " + index, Toast.LENGTH_SHORT).show();
+            Utilities.showToast(getApplicationContext(), "Registrado nuevo usuario, inicie sesión");
+            //Toast.makeText(getApplicationContext(), "Índice de " + userType + " " + index, Toast.LENGTH_SHORT).show();
             db.close();
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         } else {
-            Toast.makeText(getApplicationContext(), "ERROR, NO SE PUDO REGISTRAR " + index, Toast.LENGTH_SHORT).show();
+            Utilities.showToast(getApplicationContext(), "Usuario ya registrado");
         }
         db.close();
     }

@@ -32,7 +32,7 @@ public class EditDishActivity extends AppCompatActivity {
     IAbstractFactoryPlato iAbstractFactoryPlato;
     ArrayList<String> ingredients = new ArrayList();
     Bundle bundle;
-    String restaurantName, dishName;
+    String restaurantName, dishName, strIngredients;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,13 +64,17 @@ public class EditDishActivity extends AppCompatActivity {
             fillFields();
         }
         else {
+            removeIngredientButton.setEnabled(false);
             ((ViewGroup) deleteDishEditorButton.getParent()).removeView(deleteDishEditorButton);
         }
 
         addIngredientButton.setOnClickListener(v -> {
-            ingredients.add(ingredientField.getText().toString());
-            ingredientField.setText("");
-            ingredientsListText.setText(Utilities.arrayListToString(ingredients));
+            if(checkIngredient()) {
+                removeIngredientButton.setEnabled(true);
+                ingredients.add(ingredientField.getText().toString());
+                ingredientField.setText("");
+                ingredientsListText.setText(Utilities.arrayListToString(ingredients));
+            }
         });
 
         removeIngredientButton.setOnClickListener(v -> {
@@ -100,7 +104,7 @@ public class EditDishActivity extends AppCompatActivity {
         if (index > 0) {
             Toast.makeText(getApplicationContext(), "Registrado nuevo plato", Toast.LENGTH_SHORT).show();
             db.close();
-            startActivity(new Intent(getApplicationContext(), OwnerMenuActivity.class));
+            startActivity(new Intent(getApplicationContext(), OwnerDashboardActivity.class));
         } else {
             db.close();
             Toast.makeText(getApplicationContext(), "ERROR, NO SE PUDO REGISTRAR " + index, Toast.LENGTH_SHORT).show();
@@ -118,7 +122,7 @@ public class EditDishActivity extends AppCompatActivity {
         if (index > 0) {
             Toast.makeText(getApplicationContext(), "Plato actualizado", Toast.LENGTH_SHORT).show();
             db.close();
-            startActivity(new Intent(getApplicationContext(), OwnerMenuActivity.class));
+            startActivity(new Intent(getApplicationContext(), OwnerDashboardActivity.class));
         } else {
             db.close();
             Toast.makeText(getApplicationContext(), "ERROR, NO SE PUDO ACTUALIZAR " + index, Toast.LENGTH_SHORT).show();
@@ -132,7 +136,7 @@ public class EditDishActivity extends AppCompatActivity {
         db.delete(Utilities.dishTable, Utilities.restaurant + "=? AND " + Utilities.dishName + "=?", parameters);
 
         Toast.makeText(getApplicationContext(), "Plato eliminado", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(getApplicationContext(), OwnerMenuActivity.class));
+        startActivity(new Intent(getApplicationContext(), OwnerDashboardActivity.class));
         db.close();
     }
 
@@ -147,10 +151,11 @@ public class EditDishActivity extends AppCompatActivity {
             cursor.moveToFirst();
             dishNameField.setText(cursor.getString(0));
             //El 1 es restaurant name
-            String strIngredients = cursor.getString(2);
+            strIngredients = cursor.getString(2);
             priceField.setText(cursor.getString(3));
             isGlutenFreeCheckBox.setChecked(cursor.getInt(4) > 0);
             isVeganCheckBox.setChecked(cursor.getInt(5) > 0);
+
             ingredients = Utilities.stringToArrayList(strIngredients);
             ingredientsListText.setText(strIngredients);
             cursor.close();
@@ -186,6 +191,18 @@ public class EditDishActivity extends AppCompatActivity {
             Utilities.showToast(getApplicationContext(), "Nombre del plato incorrecto");
             return false;
         } else {
+            return true;
+        }
+    }
+
+    private Boolean checkIngredient() {
+        String ingredient;
+        ingredient = ingredientField.getText().toString();
+        if (ingredient.equals("")) {
+            Utilities.showToast(getApplicationContext(), "Ingrediente vacío");
+            return false;
+        }
+        else {
             return true;
         }
     }

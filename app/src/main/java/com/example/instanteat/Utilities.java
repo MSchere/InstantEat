@@ -1,6 +1,7 @@
 package com.example.instanteat;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -82,8 +84,8 @@ public class Utilities {
     public static final String create_order_table = "create table " + orderTable + "\n" +
             "(" + id + " int primary key,\n" +
             email + " varchar(40) not null,\n" +
-            clientAddress + " varchar(40) not null,\n" +
             phoneNumber + " int not null,\n" +
+            clientAddress + " varchar(40) not null,\n" +
             restaurant + " varchar(40) not null,\n" +
             restaurantAddress + " blob not null,\n" +
             dishes + " varchar(40) not null,\n" +
@@ -94,6 +96,7 @@ public class Utilities {
     public static final String create_object_table = "create table " + objectTable + "\n" +
             "(" + id + " int primary key,\n" +
             object + " blob not null);";
+
 
     public static final User getUser(Context context, String parameter, Boolean byName) {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, Utilities.userTable, null, 1);
@@ -125,6 +128,37 @@ public class Utilities {
         return user;
     }
 
+    public static final ArrayList<Pedido> getOrders(Context context, String[] parameters, boolean byOpenOrders) {
+        ArrayList<Pedido> list = new ArrayList<Pedido>();
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, orderTable, null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String method;
+        //name, address, state
+        if (byOpenOrders) method = Utilities.restaurant + "=? AND " + Utilities.restaurantAddress + "=? AND " + Utilities.state + "=?";
+        else method = Utilities.email + "=?";
+        String[] fields = {"*"};
+        try {
+            Cursor cursor = db.query(orderTable, fields, method, parameters, null, null, null);
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    //id, email, telefono, dircliente, restaurante, dirrestaurante, platos, total, pago, estado
+                    list.add(new Pedido(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
+                            cursor.getString(3), cursor.getString(4), cursor.getString(5),
+                            stringToArrayList(cursor.getString(6)), cursor.getDouble(7),
+                            cursor.getString(8), cursor.getString(9)));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            db.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            showToast(context, "No tiene pedidos");
+        }
+        return list;
+    }
+
     public static final void insertOrder(Context context, int id, String email, int phoneNumber,  String clientAddress,
                                          String restaurant, String restaurantAddress, ArrayList<String> dishes,
                                          double totalPrice, String paymentMethod, String state) {
@@ -153,32 +187,21 @@ public class Utilities {
         db.close();
     }
 
-    public static final ArrayList<Pedido> getOrders(Context context, String email) {
-        ArrayList<Pedido> list = new ArrayList<Pedido>();
-        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, orderTable, null, 1);
+    public static final void updateOrderState(Context context, int orderId, String state) {
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, Utilities.orderTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
-        String[] fields = {"*"};
-        String[] parameters = {email};
-        try {
-            Cursor cursor = db.query(orderTable, fields, Utilities.email + "=?", parameters, null, null, null);
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    //id, email, telefono, dircliente, restaurante, dirrestaurante, platos, total, pago, estado
-                    list.add(new Pedido(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
-                            cursor.getString(3), cursor.getString(4), cursor.getString(5),
-                            stringToArrayList(cursor.getString(6)), cursor.getDouble(7),
-                            cursor.getString(8), cursor.getString(9)));
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
+        String[] parameters = {String.valueOf(orderId)};
+        ContentValues values = new ContentValues();
+        values.put(Utilities.state, state);
+        int index = db.update(Utilities.orderTable, values, Utilities.id + "=?", parameters);
+
+        if (index > 0) {
+            Toast.makeText(context, "Pedido actualizado", Toast.LENGTH_SHORT).show();
             db.close();
+        } else {
+            db.close();
+            Toast.makeText(context, "Error, no se pudo actualizar " + index, Toast.LENGTH_SHORT).show();
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            showToast(context, "No tiene pedidos");
-        }
-        return list;
     }
 
     public static final ArrayList<Plato> getDishList(Context context, String restaurant) {
@@ -256,11 +279,8 @@ public class Utilities {
     }
 
     public static final ArrayList<String> stringToArrayList(String str) {
-        ArrayList<String> list = new ArrayList<String>();
-        StringTokenizer tokens=new StringTokenizer(str, ", ");
-        while(tokens.hasMoreTokens()){
-            list.add(tokens.nextToken());
-        }
+        String[] arr = str.split(", ");
+        ArrayList<String> list = new ArrayList<String>(Arrays.asList(arr));
         return list;
     }
 

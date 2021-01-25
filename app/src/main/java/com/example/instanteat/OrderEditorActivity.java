@@ -61,24 +61,31 @@ public class OrderEditorActivity extends AppCompatActivity {
         //Contiene una lista auxiliar para los elementos seleccionados
         dishList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String selectedDish=dishNames.get(i);
-                String selectedIngredients=dishIngredients.get(i);
-                String selectedPrice=dishPrices.get(i);
-                if(selectedDishesNames.contains(selectedDish)){ //deselecciona el objeto
-                    view.setBackgroundColor(getResources().getColor(R.color.white));
-                    selectedDishesNames.remove(selectedDish);
-                    selectedDishesIngredients.remove(selectedIngredients);
-                    selectedDishesPrices.remove(selectedPrice);
-                    selectedPositions.remove(i);
+                try {
+                    String selectedDish = dishNames.get(i);
+                    String selectedIngredients = dishIngredients.get(i);
+                    String selectedPrice = dishPrices.get(i);
+                    Integer pos = i;
+                    if (selectedDishesNames.contains(selectedDish)) { //deselecciona el objeto
+                        view.setBackgroundColor(getResources().getColor(R.color.white));
+                        selectedDishesNames.remove(selectedDish);
+                        selectedDishesIngredients.remove(selectedIngredients);
+                        selectedDishesPrices.remove(selectedPrice);
+                        selectedPositions.remove(pos);
+                    } else {
+                        view.setBackgroundColor(getResources().getColor(R.color.purple_200));
+                        selectedDishesNames.add(selectedDish);
+                        selectedDishesIngredients.add(selectedIngredients);
+                        selectedDishesPrices.add(selectedPrice);
+                        selectedPositions.add(pos);
+                    }
+                    //Utilities.showToast(getApplicationContext(), selectedPositions.get(i) + "");
+                    price = calculatePrice();
                 }
-                else {
-                    view.setBackgroundColor(getResources().getColor(R.color.purple_200));
-                    selectedDishesNames.add(selectedDish);
-                    selectedDishesIngredients.add(selectedIngredients);
-                    selectedDishesPrices.add(selectedPrice);
-                    selectedPositions.add(i);
+                catch (Exception e) {
+                    e.printStackTrace();
+                    Utilities.showToast(getApplicationContext(), "Error en posición: " + i);
                 }
-                price = calculatePrice();
             }
         });
         dishList.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -95,12 +102,11 @@ public class OrderEditorActivity extends AppCompatActivity {
             }
         });
 
-
         finishOrderEditorButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), OrderSummary.class);
             Bundle bundle = new Bundle();
-            bundle.putStringArrayList("namesList", selectedDishesNames); //Parámetros para la actividad
-            //bundle.putStringArrayList("ingredientsList", selectedDishesIngredients);
+            bundle.putBoolean("isUpdate", false);
+            bundle.putStringArrayList("dishesList", selectedDishesNames); //Parámetros para la actividad
             bundle.putStringArrayList("pricesList", selectedDishesPrices);
             bundle.putDouble("totalPrice", price);
             bundle.putSerializable("restaurant", restaurant);
@@ -127,10 +133,9 @@ public class OrderEditorActivity extends AppCompatActivity {
         String doubleValue;
         for(String item:selectedDishesPrices){
             doubleValue = item.replaceAll("[^\\d.]", "");
-            //Utilities.showToast(getApplicationContext(), doubleValue);
             price = price + Double.parseDouble(doubleValue);
         }
-        totalPriceText.setText(String.valueOf(price) + " €");
+        totalPriceText.setText(price + " €");
         return price;
     }
 

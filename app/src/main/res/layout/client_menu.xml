@@ -8,16 +8,16 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <Button
-        android:id="@+id/searchButton"
-        android:layout_width="204dp"
-        android:layout_height="48dp"
+        android:id="@+id/dishDashboardButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:text="Buscador"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.077"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.837" />
+        app:layout_constraintVertical_bias="0.971" />
 
     <ImageView
         android:id="@+id/menuLogo"
@@ -28,46 +28,45 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.041"
         app:srcCompat="@drawable/logo" />
 
     <Button
         android:id="@+id/newOrderButton"
-        android:layout_width="204dp"
-        android:layout_height="47dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:text="Nuevo Pedido"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.922"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.942" />
+        app:layout_constraintVertical_bias="0.971" />
 
     <TextView
-        android:id="@+id/myLocalText"
+        android:id="@+id/recentOrdersTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pedidos recientes:"
-        android:textStyle="bold"
         android:textColor="#000000"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintHorizontal_bias="0.061"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
+        app:layout_constraintVertical_bias="0.046" />
 
     <ListView
         android:id="@+id/clientOrderList"
         android:layout_width="match_parent"
-        android:layout_height="234dp"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.613" />
+        app:layout_constraintVertical_bias="0.495" />
 
     <ImageButton
         android:id="@+id/clientPrefsButton"

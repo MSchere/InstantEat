@@ -18,18 +18,25 @@
             android:label="Resumen del Pedido"
             android:noHistory="true" />
         <activity
+            android:name=".OrderSummaryOwner"
+            android:label="Resumen del Pedido"
+            android:noHistory="true" />
+        <activity
             android:name=".OrderEditorActivity"
-            android:label="Editor deñ Pedido" />
+            android:label="Editor del Pedido" />
         <activity
             android:name=".ChooseRestaurantActivity"
-            android:label="Elija restaurante" />
+            android:label="Elija Restaurante" />
         <activity
             android:name=".EditDishActivity"
             android:label="Edición de Plato"
             android:noHistory="true" />
         <activity
+            android:name=".OwnerDashboardActivity"
+            android:label="Visualizador de platos" />
+        <activity
             android:name=".OwnerMenuActivity"
-            android:label="Menú Principal" />
+            android:label="Menú de propietario" />
         <activity
             android:name=".UserPrefsActivity"
             android:label="Preferencias de Usuario" />
