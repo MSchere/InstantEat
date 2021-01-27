@@ -70,6 +70,7 @@ public class OrderSummary extends AppCompatActivity {
         email = prefs.getString("email", "NULL");
         if (isUpdate) {
             order = (Pedido) bundle.getSerializable("order");
+            finishOrderButton.setText("Repetir pedido");
         }
         else {
             totalPrice = bundle.getDouble("totalPrice");
@@ -121,8 +122,6 @@ public class OrderSummary extends AppCompatActivity {
 
 
         finishOrderButton.setOnClickListener(v -> {
-            Utilities.showToast(getApplicationContext(), "Pedido finalizado");
-
             if (!isUpdate) {
                 Utilities.insertOrder(getApplicationContext(), orderId, client.getEmail(), client.getPhoneNumber(), client.getAddress(),
                         restaurant.getName(), restaurant.getAddress(), fusedList, totalPrice, selectedMethod, state);
@@ -172,8 +171,9 @@ public class OrderSummary extends AppCompatActivity {
             totalPrice = order.getPrecioTotal();
         }
         else {
-            orderId = new Random().nextInt(1000000);
+            orderId = new Random().nextInt(10000);
         }
+        orderIdText.setText(String.format("%04d", orderId));
         clientAddressText.setText(client.getAddress());
         restaurantAddressTitleText.setText("Dirección de " + restaurant.getName() + ":");
         restaurantAddressText.setText(restaurant.getAddress());

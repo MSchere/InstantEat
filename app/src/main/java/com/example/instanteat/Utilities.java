@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -66,6 +67,8 @@ public class Utilities {
             phoneNumber + " varchar(9),\n" +
             object + " blob);";
 
+    public static final String insert_dummy_user = "INSERT INTO " + userTable + " (dummy@email.com, dummy, client, dummy, dummy, 999999999);";
+
     public static final String create_dish_table = "create table " + dishTable + "\n" +
             "(" + dishName + " varchar(40) primary key,\n" +
             restaurant + " varchar(40) not null,\n" +
@@ -93,9 +96,7 @@ public class Utilities {
             paymentMethod + " varchar(40) not null,\n" +
             state + " varchar(9) not null);";
 
-    public static final String create_object_table = "create table " + objectTable + "\n" +
-            "(" + id + " int primary key,\n" +
-            object + " blob not null);";
+
 
 
     public static final User getUser(Context context, String parameter, Boolean byName) {
@@ -178,7 +179,7 @@ public class Utilities {
         values.put(Utilities.state, state);
         try {
             long index = db.insert(Utilities.orderTable, Utilities.id, values);
-            showToast(context, "pedido completado");
+            showToast(context, "Pedido creado");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -201,6 +202,21 @@ public class Utilities {
         } else {
             db.close();
             Toast.makeText(context, "Error, no se pudo actualizar " + index, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static final void deleteOrders(Context context, String email) {
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, Utilities.orderTable, null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parameters = {email};
+        try {
+            db.delete(Utilities.orderTable, Utilities.email + "=?", parameters);
+            showToast(context, "Pedidos eliminados");
+            db.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            showToast(context, "No hay pedidos");
         }
     }
 
@@ -265,6 +281,10 @@ public class Utilities {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static final String formatPrice(Double d){
+        return new DecimalFormat("#.##").format(d) + "€";
     }
 
     public static final String arrayListToString(ArrayList<String> list){

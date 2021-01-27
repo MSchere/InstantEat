@@ -24,7 +24,7 @@ public class EditCardActivity extends AppCompatActivity {
     SharedPreferences prefs;
     Button saveCardButton, deleteCardButton;
     EditText cardHolderNameField, cardNumberField, cardCCVField, cardDateField;
-    DateFormat dateFormat = new SimpleDateFormat("mm/yy");
+    DateFormat dateFormat = new SimpleDateFormat("MM/yy");
     Bundle bundle;
     String email, dishName;
     Boolean isUpdate = false;
@@ -86,7 +86,6 @@ public class EditCardActivity extends AppCompatActivity {
         String[] parameters = {email};
         ContentValues values = createCard();
         int index = db.update(Utilities.cardTable, values, Utilities.email + "=?", parameters);
-
         if (index > 0) {
             Toast.makeText(getApplicationContext(), "Tarjeta actualizada", Toast.LENGTH_SHORT).show();
             db.close();
@@ -144,7 +143,7 @@ public class EditCardActivity extends AppCompatActivity {
         values.put(Utilities.email, card.getEmail());
         values.put(Utilities.cardHolderName, card.getCardHolderName());
         values.put(Utilities.ccv, card.getCcv());
-        values.put(Utilities.date, dateFormat.format(card.getDate()));
+        values.put(Utilities.date, cardDateField.getText().toString());
         return values;
     }
 

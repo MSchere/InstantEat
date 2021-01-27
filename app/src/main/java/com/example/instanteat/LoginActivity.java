@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_screen);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-
         //Importamos preferencias
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = prefs.edit();

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -41,7 +42,7 @@ public class AdapterOrder extends ArrayAdapter {
 
         id.setText(rID.get(position));
         restaurant.setText(rRestaurantName.get(position));
-        total.setText(rTotalPrices.get(position) + "€");
+        total.setText(new DecimalFormat("#.00").format(Double.valueOf(rTotalPrices.get(position))) + "€");
         dishes.setText(rDishes.get(position));
         state = rStates.get(position);
         switch (state){

@@ -63,7 +63,6 @@ public class SearchActivity extends AppCompatActivity {
         searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = buscador.getLista().get(i).getRestaurante();
-
                 Intent intent = new Intent(getApplicationContext(), OrderEditorActivity.class);
                 Bundle bundle = new Bundle();
                 User restaurant = (User) Utilities.getUser(getApplicationContext(), selection, true);

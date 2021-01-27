@@ -18,6 +18,7 @@ public class ConnectSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL(Utilities.create_dish_table);
         db.execSQL(Utilities.create_card_table);
         db.execSQL(Utilities.create_order_table);
+        db.execSQL(Utilities.insert_dummy_user);
     }
 
     @Override

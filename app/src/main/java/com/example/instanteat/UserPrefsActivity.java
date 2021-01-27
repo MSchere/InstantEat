@@ -20,9 +20,9 @@ import backend.ViewRemoverDecorator;
 
 public class UserPrefsActivity extends AppCompatActivity {
     EditText emailField, passwordField, nameField, addressField, phoneNumberField;
-    Button saveButton, deleteAccountButton, logoffButton, addCardButton;
+    Button saveButton, deleteAccountButton, logoffButton, addCardButton, deleteOrdersButton;
     CheckBox offersCheckBox;
-    String userType, email;
+    String userType, email, userName;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
@@ -39,17 +39,18 @@ public class UserPrefsActivity extends AppCompatActivity {
         userType = prefs.getString("userType", "client");
         //Parámetros para hacer queries y actualizaciones en la db
 
-        emailField = findViewById(R.id.cardHolderNameField);
+        emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
-        addressField = findViewById(R.id.cardDateField);
-        nameField = findViewById(R.id.cardCCVField);
-        phoneNumberField = findViewById(R.id.cardNumberField);
+        addressField = findViewById(R.id.addressField);
+        nameField = findViewById(R.id.nameField);
+        phoneNumberField = findViewById(R.id.phoneNumberField);
         offersCheckBox = findViewById(R.id.offersCheckBox);
 
         saveButton = findViewById(R.id.saveButton);
         deleteAccountButton = findViewById(R.id.deleteAccountButton);
         logoffButton = findViewById(R.id.logoffButton);
         addCardButton = findViewById(R.id.addCardButton);
+        deleteOrdersButton = findViewById(R.id.deleteOrdersButton);
 
         //Rellenamos los campos con sus datos
         fillFields();
@@ -61,6 +62,12 @@ public class UserPrefsActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> {
                 if (checkEmail() && checkPassword() && checkName() && checkAddress() && checkPhoneNumber()) {
                     updateUser();
+                }
+                if (email.equals("dummy@email.com")){
+                    startActivity(new Intent(UserPrefsActivity.this, ClientMenuActivity.class));
+                }
+                else {
+                    finish();
                 }
         });
 
@@ -74,6 +81,8 @@ public class UserPrefsActivity extends AppCompatActivity {
 
         deleteAccountButton.setOnClickListener(v -> deleteUser());
 
+        deleteOrdersButton.setOnClickListener(v -> Utilities.deleteOrders(this, email));
+
         if (email.equals("dummy@email.com")) {
             ViewEnablerDecorator decorator = new ViewEnablerDecorator(getApplicationContext(), new View[]{emailField, passwordField, nameField, offersCheckBox, deleteAccountButton, addCardButton}, false);
             decorator.decorate();
@@ -82,7 +91,7 @@ public class UserPrefsActivity extends AppCompatActivity {
         }
 
         if (userType.equals("owner")){
-            ViewRemoverDecorator decorator = new ViewRemoverDecorator(getApplicationContext(), new View[]{offersCheckBox, addCardButton});
+            ViewRemoverDecorator decorator = new ViewRemoverDecorator(getApplicationContext(), new View[]{offersCheckBox, addCardButton, deleteOrdersButton});
             decorator.decorate();
         }
 
@@ -128,7 +137,6 @@ public class UserPrefsActivity extends AppCompatActivity {
         int index = db.update(Utilities.userTable, values, Utilities.email + "=?", parameters);
         editor.putString("email", emailField.getText().toString());
         editor.commit();
-        startActivity(new Intent(UserPrefsActivity.this, ClientMenuActivity.class));
         db.close();
     }
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -37,7 +38,7 @@ public class AdapterDish extends ArrayAdapter {
 
         name.setText(rName.get(position));
         ingredients.setText(rIngredients.get(position));
-        price.setText(rPrice.get(position) + "€");
+        price.setText(new DecimalFormat("#.00").format(Double.valueOf(rPrice.get(position))) + "€");
         return row;
     }
 }

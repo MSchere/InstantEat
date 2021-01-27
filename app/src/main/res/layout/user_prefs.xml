@@ -20,7 +20,7 @@
                 android:layout_height="48dp" />
 
             <EditText
-                android:id="@+id/cardHolderNameField"
+                android:id="@+id/emailField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -36,7 +36,7 @@
                 android:inputType="textPassword" />
 
             <EditText
-                android:id="@+id/cardCCVField"
+                android:id="@+id/nameField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -44,7 +44,7 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/cardDateField"
+                android:id="@+id/addressField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -52,7 +52,7 @@
                 android:inputType="textPostalAddress" />
 
             <EditText
-                android:id="@+id/cardNumberField"
+                android:id="@+id/phoneNumberField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -71,6 +71,18 @@
                 android:layout_height="371dp">
 
                 <Button
+                    android:id="@+id/addCardButton"
+                    android:layout_width="325dp"
+                    android:layout_height="wrap_content"
+                    android:text="Añadir tarjeta de crédito/débito"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.281" />
+
+                <Button
                     android:id="@+id/deleteAccountButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -81,11 +93,11 @@
                     app:layout_constraintHorizontal_bias="0.936"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.848" />
+                    app:layout_constraintVertical_bias="0.693" />
 
                 <Button
                     android:id="@+id/saveButton"
-                    android:layout_width="324dp"
+                    android:layout_width="325dp"
                     android:layout_height="wrap_content"
                     android:text="Guardar"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -93,7 +105,7 @@
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.594" />
+                    app:layout_constraintVertical_bias="0.498" />
 
                 <Button
                     android:id="@+id/logoffButton"
@@ -106,19 +118,18 @@
                     app:layout_constraintHorizontal_bias="0.061"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.848" />
+                    app:layout_constraintVertical_bias="0.693" />
 
                 <Button
-                    android:id="@+id/addCardButton"
-                    android:layout_width="324dp"
+                    android:id="@+id/deleteOrdersButton"
+                    android:layout_width="325dp"
                     android:layout_height="wrap_content"
-                    android:text="Añadir tarjeta de crédito/débito"
+                    android:text="Borrar pedidos"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.352" />
+                    app:layout_constraintVertical_bias="0.08" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
