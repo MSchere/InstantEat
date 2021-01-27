@@ -67,7 +67,7 @@ public class Utilities {
             phoneNumber + " varchar(9),\n" +
             object + " blob);";
 
-    public static final String insert_dummy_user = "INSERT INTO " + userTable + " (dummy@email.com, dummy, client, dummy, dummy, 999999999);";
+    public static final String insert_dummy_user = "INSERT INTO " + userTable + " VALUES ('dummy@email.com', 'dummy', 'client', 'dummy', 'dummy', '999999999','');";
 
     public static final String create_dish_table = "create table " + dishTable + "\n" +
             "(" + dishName + " varchar(40) primary key,\n" +
