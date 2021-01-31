@@ -36,7 +36,7 @@ public class EditDishActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_dish);
+        setContentView(R.layout.dish_editor);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         bundle = getIntent().getExtras();

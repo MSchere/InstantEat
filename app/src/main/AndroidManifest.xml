@@ -25,6 +25,9 @@
             android:name=".OrderEditorActivity"
             android:label="Editor del Pedido" />
         <activity
+            android:name=".CustomDishEditorActivity"
+            android:label="Editor del Pedido" />
+        <activity
             android:name=".ChooseRestaurantActivity"
             android:label="Elija Restaurante" />
         <activity

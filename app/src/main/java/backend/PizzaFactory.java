@@ -14,12 +14,12 @@ import java.util.ArrayList;
 public class PizzaFactory {
     
     String[] masa = {"Masa normal","Masa fina","Masa sin gluten"};
-    String rellenoBorde = "Queso";
+    String rellenoBorde = "Borde relleno de queso";
     String[] base1 = {"Tomate","Salsa barbacoa"};
     String base2 = "Queso";
     String[] ingrediente1 = {"Bacon","Pollo","Espinacas"};
     String[] ingrediente2 = {"Anchoas","Maiz","Salami"};
-    String[] ingrediente3 = {"Setas","Pimiento","Aceitunas"};
+    String[] ingrediente3 = {"Champiñones","Pimiento","Aceitunas"};
     
     public PizzaFactory(){}
     

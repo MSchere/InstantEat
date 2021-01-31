@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -178,7 +179,8 @@ public class OrderSummary extends AppCompatActivity {
         restaurantAddressTitleText.setText("Dirección de " + restaurant.getName() + ":");
         restaurantAddressText.setText(restaurant.getAddress());
         phoneNumberText.setText(String.valueOf(client.getPhoneNumber()));
-        totalPriceText.setText(totalPrice + " €");
+        DecimalFormat df = new DecimalFormat("#.00");
+        totalPriceText.setText(df.format(totalPrice) + " €");
         state = "Preparando";
 
     }

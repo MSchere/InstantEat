@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import backend.Plato;
@@ -103,9 +104,8 @@ public class OrderEditorActivity extends AppCompatActivity {
         });
 
         finishOrderEditorButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), OrderSummary.class);
+            Intent intent = new Intent(getApplicationContext(), CustomDishEditorActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putBoolean("isUpdate", false);
             bundle.putStringArrayList("dishesList", selectedDishesNames); //Parámetros para la actividad
             bundle.putStringArrayList("pricesList", selectedDishesPrices);
             bundle.putDouble("totalPrice", price);
@@ -135,7 +135,8 @@ public class OrderEditorActivity extends AppCompatActivity {
             doubleValue = item.replaceAll("[^\\d.]", "");
             price = price + Double.parseDouble(doubleValue);
         }
-        totalPriceText.setText(price + " €");
+        DecimalFormat df = new DecimalFormat("#.00");
+        totalPriceText.setText(df.format(price) + " €");
         return price;
     }
 

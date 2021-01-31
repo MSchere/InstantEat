@@ -38,7 +38,8 @@ public class AdapterDish extends ArrayAdapter {
 
         name.setText(rName.get(position));
         ingredients.setText(rIngredients.get(position));
-        price.setText(new DecimalFormat("#.00").format(Double.valueOf(rPrice.get(position))) + "€");
+        DecimalFormat df = new DecimalFormat("#.00");
+        price.setText(df.format(Double.valueOf(rPrice.get(position))) + "€");
         return row;
     }
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class EnsaladaFactory {
     
-    String[] base = {"Lechuga","Canonigos","Rucula"};
+    String[] base = {"Lechuga","Canonigos","Rúcula"};
     String[] carne = {"Pollo","Pavo"};
     String[] queso = {"Chedar","Azul"};
     String maiz = "Maiz";
