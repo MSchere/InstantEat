@@ -1,21 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package backend;
 
 import java.util.ArrayList;
 
 /**
- *
- * @author ajpaz
+ * Clase que implementa los métodos para deshacer los filtros del buscador
  */
 public class Deshacer implements ComandoDeshacer{
 
-    private String filtroNombre,filtroRestaurante;
-    private boolean filtroGlutenFree,filtroVegano;
+    private String filtroNombre,filtroRestaurante; // Contenido del filtro de nombre de plato y nombre de restaurante
+    private boolean filtroGlutenFree,filtroVegano; // Estado de los filtros de GlutenFree y vegano
     
+    /**
+     * Constructor
+     */
     public Deshacer() {
         filtroNombre = "";
         filtroRestaurante = "";
@@ -23,18 +20,22 @@ public class Deshacer implements ComandoDeshacer{
         filtroVegano = false;
     }
 
+    @Override
     public void setFiltroNombre(String filtroNombre) {
         this.filtroNombre = filtroNombre;
     }
 
+    @Override
     public void setFiltroRestaurante(String filtroRestaurante) {
         this.filtroRestaurante = filtroRestaurante;
     }
 
+    @Override
     public void setFiltroGlutenFree(boolean filtroGlutenFree) {
         this.filtroGlutenFree = filtroGlutenFree;
     }
 
+    @Override
     public void setFiltroVegano(boolean filtroVegano) {
         this.filtroVegano = filtroVegano;
     }

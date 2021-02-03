@@ -1,28 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package backend;
 
 import java.util.ArrayList;
 
 /**
- *
- * @author ajpaz
+ * Clase que fabrica ensaladas
  */
 public class EnsaladaFactory {
     
-    String[] base = {"Lechuga","Canonigos","Rúcula"};
-    String[] carne = {"Pollo","Pavo"};
-    String[] queso = {"Chedar","Azul"};
-    String maiz = "Maiz";
-    String[] tomate = {"Normal","Cherry"};
-    String[] aceitunas = {"Aceitunas","Olivas"};
-    String[] salsa = {"Mayonesa","Alioli","Cesar"};
+    String[] base = {"Lechuga","Canonigos","Rucula"}; // Primera base de la ensalada
+    String[] carne = {"Pollo","Pavo"}; // Tipos de carne
+    String[] queso = {"Chedar","Azul"}; // Tipos de quesos
+    String maiz = "Maiz"; // Maíz
+    String[] tomate = {"Normal","Cherry"}; // Tipos de tomate
+    String[] aceitunas = {"Aceitunas","Olivas"}; // Tipos de aceitunas
+    String[] salsa = {"Mayonesa","Alioli","Cesar"}; // Tipos de salsa
     
+    /**
+     * Constructor
+     */
     public EnsaladaFactory(){}
     
+    /**
+     * Crea un objeto de tipo Ensalada.
+     *
+     * @param nombre Nombre de la ensalada
+     * @param opciones Opciones para seleccionar los ingredientes
+     * @return Instancia de la clase Plato.
+     */
     public Plato crearEnsalada(String nombre,int[] opciones){
         ArrayList<String> ingredientes = new ArrayList();
         boolean esVegano = false;

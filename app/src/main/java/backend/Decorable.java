@@ -1,5 +1,12 @@
 package backend;
 
+/**
+ * Interfaz del patrón decorator
+ */
 public interface Decorable {
-        void decorate();
+
+    /**
+     * Añade o quita elementos de la interfaz gráfica dependiendo de que instancia lo llame
+     */
+    void decorate();
 }

@@ -3,10 +3,18 @@ package backend;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Clase que implementa los métodos del buscador
+ */
 public class BuscadorConcreto implements Buscador{
     
     private ArrayList<Plato> lista,descartes,listaOriginal;
     private ComandoDeshacer deshacer;
+
+    /**
+     * Constructor
+     * @param lista Lista con los platos a la que hay que aplicar los filtros
+     */
     public BuscadorConcreto(ArrayList<Plato> lista) {
         this.lista = new ArrayList();
         this.descartes = new ArrayList();
@@ -62,7 +70,7 @@ public class BuscadorConcreto implements Buscador{
         lista = listas.get(0);
         descartes = listas.get(1);
     }
-    
+
     @Override
     public void deshacerVegano(){
         ArrayList<ArrayList<Plato>> listas = new ArrayList();

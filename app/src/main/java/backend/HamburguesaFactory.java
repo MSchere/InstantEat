@@ -1,28 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package backend;
 
 import java.util.ArrayList;
 
 /**
- *
- * @author ajpaz
+ * Clase que fabrica hamburguesas
  */
 public class HamburguesaFactory {
     
-    String[] pan = {"Pan normal","Pan de masa madre","Pan sin gluten"};
-    String lechuga = "Lechuga";
-    String tomate = "Tomate";
-    String[] cebolla = {"Cebolla cruda","Cebolla caramelizada"};
-    String bacon = "Bacon";
-    String[] tipoCarne = {"Vaca","Pollo","Vegana"};
-    String[] estadoCarne = {"Poco hecha","Al punto","Muy hecha"};
+    String[] pan = {"Pan normal","Pan de masa madre","Pan sin gluten"}; // Tipos de panes de la hamburguesa
+    String lechuga = "Lechuga"; // Lechuga
+    String tomate = "Tomate"; // Tomate
+    String[] cebolla = {"Cebolla cruda","Cebolla caramelizada"}; // Tipos de cebollas
+    String bacon = "Bacon"; // Bacon
+    String[] tipoCarne = {"Vaca","Pollo","Vegana"}; // Tipos de carne
+    String[] estadoCarne = {"Poco hecha","Al punto","Muy hecha"}; // Estado de la carne
     
+    /**
+     * Constructor
+     */
     public HamburguesaFactory(){}
     
+    /**
+     * Crea un objeto de tipo Hamburguesa.
+     *
+     * @param nombre Nombre de la hamburguesa
+     * @return Instancia de la clase Plato.
+     */
     public Plato crearHamburguesa(String nombre,int[] opciones){
         ArrayList<String> ingredientes = new ArrayList();
         boolean esVegano = false;

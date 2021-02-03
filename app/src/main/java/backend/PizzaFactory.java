@@ -8,21 +8,29 @@ package backend;
 import java.util.ArrayList;
 
 /**
- *
- * @author ajpaz
+ * Clase que fabrica pizzas
  */
 public class PizzaFactory {
     
-    String[] masa = {"Masa normal","Masa fina","Masa sin gluten"};
-    String rellenoBorde = "Borde relleno de queso";
-    String[] base1 = {"Tomate","Salsa barbacoa"};
-    String base2 = "Queso";
-    String[] ingrediente1 = {"Bacon","Pollo","Espinacas"};
-    String[] ingrediente2 = {"Anchoas","Maiz","Salami"};
-    String[] ingrediente3 = {"Champiñones","Pimiento","Aceitunas"};
+    String[] masa = {"Masa normal","Masa fina","Masa sin gluten"}; // Tipos de masas
+    String rellenoBorde = "Queso"; // Tipos de rellenos para el borde
+    String[] base1 = {"Tomate","Salsa barbacoa"}; // Primer tipo de bases en la masa
+    String base2 = "Queso"; // Segundo tipo de base
+    String[] ingrediente1 = {"Bacon","Pollo","Espinacas"}; // Lista de primeros ingredientes
+    String[] ingrediente2 = {"Anchoas","Maiz","Salami"}; // Lista de segundos ingredientes
+    String[] ingrediente3 = {"Setas","Pimiento","Aceitunas"}; // Lista de terceros ingredientes
     
+    /**
+     * Constructor
+     */
     public PizzaFactory(){}
     
+    /**
+     * Devuelve un objeto de la clase Plato con el nombre y las opciones para la pizza seleccionadas
+     * @param nombre Nombre de la pizza
+     * @param opciones Opciones para seleccionar los ingredientes
+     * @return objeto de la clase Plato con el nombre y las opciones para la pizza seleccionadas
+     */
     public Plato crearPizza(String nombre,int[] opciones){
         ArrayList<String> ingredientes = new ArrayList();
         boolean esVegano = false;

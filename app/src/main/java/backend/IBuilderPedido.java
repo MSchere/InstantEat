@@ -7,7 +7,6 @@ package backend;
 
 /**
  *
- * @author ajpaz
  */
 public interface IBuilderPedido {
     

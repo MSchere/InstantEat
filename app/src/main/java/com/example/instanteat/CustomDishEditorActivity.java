@@ -38,6 +38,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
     Boolean isSuborder;
     RadioButton radioButton, burgerRadioButton, pizzaRadioButton, saladRadioButton;
     RadioGroup radioGroup;
+    DecimalFormat df = new DecimalFormat("#.00");
     AbstractFactoryPlato factoryPlato = new AbstractFactoryPlato();
     IAbstractFactoryPlato iAbstractFactoryPlato;
     User restaurant;
@@ -79,7 +80,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
         option = "Ensalada";
         checkButton(saladRadioButton);
         setTitle("Pedido de " + restaurantName);
-        totalPriceText.setText(totalPrice+" €");
+        totalPriceText.setText(df.format(totalPrice)+" €");
 
         finishDishButton.setOnClickListener(v -> {
             Plato plato = null;
@@ -97,7 +98,6 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
                     prices.add("4.50");
                     break;
             }
-            DecimalFormat df = new DecimalFormat("#.00");
             totalPrice = Double.valueOf(prices.get(prices.size()-1))+totalPrice;
             totalPriceText.setText(df.format(totalPrice) + " €");
             dishes.add(plato.getNombre());
