@@ -1,6 +1,5 @@
 package com.example.instanteat;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,47 +13,46 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
+import backend.Encargo;
 import backend.Pedido;
 import backend.User;
+import backend.ViewRemoverDecorator;
 
-public class OrderSummaryOwner extends AppCompatActivity {
-    TextView orderIdText, totalPriceText, clientAddressText, phoneNumberText, paymentMethodText, subordersText, subordersTitleText;
+public class SuborderSummary extends AppCompatActivity {
+    TextView orderIdText, totalPriceText, restaurantAddressText, restaurantAddressTitleText;
     ListView orderDishList;
-    Button orderDoneButton, orderCanceledButton;
+    Button finishSuborderButton;
     ArrayAdapter<String> adapter;
     ArrayList<String> dishes, prices, fusedList;
+    Pedido order;
     SharedPreferences prefs;
     User client, restaurant;
-    Pedido order;
-    String email, cardNumber, state;
+    Boolean isUpdate;
+    Encargo encargo = new Encargo();
+    String email, state;
     int orderId;
     Double totalPrice;
     Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.order_summary_owner);
+        setContentView(R.layout.suborder_summary);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         orderIdText = findViewById(R.id.orderIdText);
         totalPriceText = findViewById(R.id.totalPriceText);
-        clientAddressText = findViewById(R.id.clientAddressText);
-        subordersText = findViewById(R.id.subordersText);
-        subordersTitleText= findViewById(R.id.subordersTitleText);
+        restaurantAddressText = findViewById(R.id.restaurantAddressText);
+        restaurantAddressTitleText = findViewById(R.id.restaurantAddressTitleText);
 
-        phoneNumberText = findViewById(R.id.phoneNumberText);
-        paymentMethodText = findViewById(R.id.paymentMethodText);
-
-        orderDoneButton = findViewById(R.id.orderDoneButton);
-        orderCanceledButton = findViewById(R.id.orderCanceledButton);
+        finishSuborderButton = findViewById(R.id.finishOrderButton);
 
         bundle = getIntent().getExtras();
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -62,10 +60,19 @@ public class OrderSummaryOwner extends AppCompatActivity {
         dishes = new ArrayList<String>();
         prices = new ArrayList<String>();
 
+        isUpdate = bundle.getBoolean("isUpdate");
         dishes = bundle.getStringArrayList("dishesList");
         prices = bundle.getStringArrayList("pricesList");
         email = prefs.getString("email", "NULL");
-        order = (Pedido) bundle.getSerializable("order");
+
+        totalPrice = bundle.getDouble("totalPrice");
+        restaurant = (User) bundle.getSerializable("restaurant");
+
+        if (isUpdate) {
+            order = (Pedido) bundle.getSerializable("order");
+            ViewRemoverDecorator decorator = new ViewRemoverDecorator(getApplicationContext(), new View[] {finishSuborderButton});
+            decorator.decorate();
+        }
 
         fillFields();
 
@@ -74,17 +81,12 @@ public class OrderSummaryOwner extends AppCompatActivity {
         orderDishList = findViewById(R.id.orderDishList);
         orderDishList.setAdapter(adapter);
 
-        orderDoneButton.setOnClickListener(v -> {
-            Utilities.updateOrderState(getApplicationContext(), orderId, "Completado");
-            startActivity(new Intent(getApplicationContext(), OwnerMenuActivity.class).addFlags(
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                            Intent.FLAG_ACTIVITY_NEW_TASK));
-        });
+        finishSuborderButton.setOnClickListener(v -> {
+            encargo.crearPedido(orderId, client.getEmail(), 0, "",
+                    restaurant.getName(), restaurant.getAddress(), fusedList, totalPrice, "", state);
+            Utilities.insertOrder(getApplicationContext(), encargo.getPedido());
 
-        orderCanceledButton.setOnClickListener(v -> {
-            Utilities.updateOrderState(getApplicationContext(), orderId, "Cancelado");
-            startActivity(new Intent(getApplicationContext(), OwnerMenuActivity.class).addFlags(
+            startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class).addFlags(
                     Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -101,17 +103,18 @@ public class OrderSummaryOwner extends AppCompatActivity {
 
     private void fillFields() {
         client = Utilities.getUser(getApplicationContext(), email, false);
-        orderId = order.getId();
-        subordersText.setText(Utilities.getSuborders(getApplicationContext(), orderId+""));
-        if (subordersText.getText().equals("")){
-            subordersText.setText("sin subpedidos");
+        if (isUpdate){
+            orderId = order.getId();
+            restaurant = Utilities.getUser(getApplicationContext(), order.getRestaurante(), true);
+            totalPrice = order.getPrecioTotal();
         }
-        restaurant = Utilities.getUser(getApplicationContext(), order.getRestaurante(), true);
-        totalPrice = order.getPrecioTotal();
-        orderIdText.setText(String.format("%06d", orderId));
-        clientAddressText.setText(client.getAddress());
-        phoneNumberText.setText(String.valueOf(client.getPhoneNumber()));
-        totalPriceText.setText(totalPrice + " €");
-        paymentMethodText.setText("Pagado con " + order.getMetodoPago());
+        orderId = new Random().nextInt(10000);
+        orderIdText.setText(String.format("%04d", orderId));
+        restaurantAddressTitleText.setText("Dirección de " + restaurant.getName() + ":");
+        restaurantAddressText.setText(restaurant.getAddress());
+        DecimalFormat df = new DecimalFormat("#.00");
+        totalPriceText.setText(df.format(totalPrice) + " €");
+        state = "Subpedido";
     }
+
 }

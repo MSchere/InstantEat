@@ -3,7 +3,8 @@ package backend;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Pedido implements Serializable {
+public abstract class Pedido implements Serializable {
+
 	private int id;
 	private String email;
 	private int telefono;
@@ -14,8 +15,11 @@ public class Pedido implements Serializable {
 	private double precioTotal;
 	private String metodoPago;
 	private String estado;
+	private EstadoPedido estadoPedido;
 
-	public Pedido(int id, String email, int telefono, String direccionCliente, String restaurante, String direccionRestaurante, ArrayList<String> platos, double precioTotal, String metodoPago, String estado) {
+	public Pedido(int id, String email, int telefono, String direccionCliente, String restaurante,
+			String direccionRestaurante, ArrayList<String> platos, double precioTotal, String metodoPago,
+			String estado) {
 		this.id = id;
 		this.email = email;
 		this.telefono = telefono;
@@ -26,6 +30,9 @@ public class Pedido implements Serializable {
 		this.precioTotal = precioTotal;
 		this.metodoPago = metodoPago;
 		this.estado = estado;
+
+		estadoPedido = new EstadoPedidoPreparando();
+
 	}
 
 	public int getId() {
@@ -107,7 +114,45 @@ public class Pedido implements Serializable {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-}
-    
-    
 
+	public EstadoPedido getEstadoPedido() {
+		return estadoPedido;
+	}
+
+	public void setEstadoPedido(EstadoPedido estadoPedido) {
+		this.estadoPedido = estadoPedido;
+	}
+
+	public void cancelar() {
+		estadoPedido = new EstadoPedidoCancelado();
+		estadoPedido.ejecutar(this);
+	}
+
+	public void completar() {
+		estadoPedido = new EstadoPedidoCompletado();
+		estadoPedido.ejecutar(this);
+	}
+
+	public void preparando() {
+		estadoPedido = new EstadoPedidoPreparando();
+		estadoPedido.ejecutar(this);
+	}
+
+	public abstract void añadirSubpedido(Pedido p);
+
+	public abstract void eliminarSubpedido(Pedido p);
+
+	public abstract String getDescripcion();
+
+	public abstract double getPrecioPedido();
+
+	@Override
+	public String toString() {
+		return "Pedido [id=" + id + ", email=" + email + ", telefono=" + telefono + ", direccionCliente="
+				+ direccionCliente + ", restaurante=" + restaurante + ", direccionRestaurante=" + direccionRestaurante
+				+ ", platos=" + platos + ", precioTotal=" + precioTotal + ", metodoPago=" + metodoPago + ", estado="
+				+ estado + ", estadoPedido=" + estadoPedido + "]";
+	}
+	
+
+}

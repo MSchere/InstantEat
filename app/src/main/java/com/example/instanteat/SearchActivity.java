@@ -43,7 +43,6 @@ public class SearchActivity extends AppCompatActivity {
 
         veganSwitch = findViewById(R.id.veganSwitch);
         glutenFreeSwitch = findViewById(R.id.glutenFreeSwitch);
-        restaurantSearchSwitch = findViewById(R.id.restaurantSearchSwitch);
         searcher = findViewById(R.id.searcher);
         orderPriceSpinner = findViewById(R.id.orderPriceSpinner);
 
@@ -135,13 +134,6 @@ public class SearchActivity extends AppCompatActivity {
                     buscador.deshacerGlutenFree();
                     fillLists(buscador.getLista());
                 }
-                break;
-            case R.id.restaurantSearchSwitch:
-                if (restaurantSearchSwitch.isChecked()){
-                    buscador = new BuscadorConcreto(Utilities.getDishList(getApplicationContext()));
-                    iBuscador = buscador;
-                }
-                else buscador.deshacerRestaurante();
                 break;
         }
         updateResult();

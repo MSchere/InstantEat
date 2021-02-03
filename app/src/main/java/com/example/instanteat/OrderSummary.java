@@ -10,34 +10,33 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
+import backend.Encargo;
 import backend.Pedido;
 import backend.User;
 
 public class OrderSummary extends AppCompatActivity {
-    TextView orderIdText, totalPriceText, restaurantAddressText, restaurantAddressTitleText, clientAddressText, phoneNumberText, paymentTitleText;
+    TextView orderIdText, totalPriceText, restaurantAddressText, restaurantAddressTitleText, clientAddressText, phoneNumberText, paymentTitleText, subordersText, subordersTitleText;
     ListView orderDishList;
     Spinner paymentMethodSpinner;
-    Button finishOrderButton;
+    Button finishOrderButton, addSuborderButton;
     ArrayAdapter<String> adapter;
     ArrayList<String> dishes, prices, fusedList;
     SharedPreferences prefs;
-    Boolean isUpdate;
+    Boolean isUpdate, hasSuborders = false;
     String[] paymentMethods = {"Efectivo", "Tarjeta", "PayPal", "Bitcoin"};
     User client, restaurant;
+    Encargo encargo = new Encargo();
     Pedido order;
     String email, cardNumber, selectedMethod, state;
     int orderId;
@@ -55,9 +54,12 @@ public class OrderSummary extends AppCompatActivity {
         restaurantAddressText = findViewById(R.id.restaurantAddressText);
         restaurantAddressTitleText = findViewById(R.id.restaurantAddressTitleText);
         phoneNumberText = findViewById(R.id.phoneNumberText);
-        paymentTitleText= findViewById(R.id.paymentTitleText);
+        paymentTitleText = findViewById(R.id.paymentTitleText);
+        subordersText = findViewById(R.id.subordersText);
+        subordersTitleText= findViewById(R.id.subordersTitleText);
 
         finishOrderButton = findViewById(R.id.finishOrderButton);
+        addSuborderButton = findViewById(R.id.addSuborderButton);
 
         bundle = getIntent().getExtras();
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -123,9 +125,13 @@ public class OrderSummary extends AppCompatActivity {
 
 
         finishOrderButton.setOnClickListener(v -> {
+            if (hasSuborders) {
+                state = "Preparando con subpedidos";
+            }
             if (!isUpdate) {
-                Utilities.insertOrder(getApplicationContext(), orderId, client.getEmail(), client.getPhoneNumber(), client.getAddress(),
+                encargo.crearPedido(orderId, client.getEmail(), client.getPhoneNumber(), client.getAddress(),
                         restaurant.getName(), restaurant.getAddress(), fusedList, totalPrice, selectedMethod, state);
+                Utilities.insertOrder(getApplicationContext(), encargo.getPedido());
             }
             else {
                 Utilities.updateOrderState(getApplicationContext(), orderId, state);
@@ -134,6 +140,25 @@ public class OrderSummary extends AppCompatActivity {
                     Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK));
+        });
+
+        addSuborderButton.setOnClickListener(v -> {
+            if (!isUpdate) {
+                encargo.crearPedido(orderId, client.getEmail(), client.getPhoneNumber(), client.getAddress(),
+                        restaurant.getName(), restaurant.getAddress(), fusedList, totalPrice, selectedMethod, state);
+                order = encargo.getPedido();
+                Utilities.insertOrder(getApplicationContext(), order);
+            }
+            else {
+                Utilities.updateOrderState(getApplicationContext(), orderId, state);
+            }
+            Intent intent = new Intent(getApplicationContext(), ChooseSubordersActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("order", order);
+            bundle.putDouble("totalPrice", totalPrice);
+            bundle.putInt("orderId", orderId); //Parámetros para la actividad
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
     }
 
@@ -168,6 +193,12 @@ public class OrderSummary extends AppCompatActivity {
         client = Utilities.getUser(getApplicationContext(), email, false);
         if (isUpdate){
             orderId = order.getId();
+            subordersText.setText(Utilities.getSuborders(getApplicationContext(), orderId+""));
+            if (subordersText.getText().equals("")){
+                subordersText.setText("sin subpedidos");
+                hasSuborders = false;
+            }
+            else hasSuborders = true;
             restaurant = Utilities.getUser(getApplicationContext(), order.getRestaurante(), true);
             totalPrice = order.getPrecioTotal();
         }

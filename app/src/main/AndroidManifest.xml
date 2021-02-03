@@ -18,6 +18,10 @@
             android:label="Resumen del Pedido"
             android:noHistory="true" />
         <activity
+            android:name=".SuborderSummary"
+            android:label="Resumen del Subpedido"
+            android:noHistory="true" />
+        <activity
             android:name=".OrderSummaryOwner"
             android:label="Resumen del Pedido"
             android:noHistory="true" />
@@ -25,8 +29,11 @@
             android:name=".OrderEditorActivity"
             android:label="Editor del Pedido" />
         <activity
+            android:name=".ChooseSubordersActivity"
+            android:label="Añadir subpedidos" />
+        <activity
             android:name=".CustomDishEditorActivity"
-            android:label="Editor del Pedido" />
+            android:label="Añadir platos personalizados" />
         <activity
             android:name=".ChooseRestaurantActivity"
             android:label="Elija Restaurante" />

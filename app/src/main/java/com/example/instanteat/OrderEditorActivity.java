@@ -105,10 +105,10 @@ public class OrderEditorActivity extends AppCompatActivity {
 
         finishOrderEditorButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), CustomDishEditorActivity.class);
-            Bundle bundle = new Bundle();
             bundle.putStringArrayList("dishesList", selectedDishesNames); //Parámetros para la actividad
             bundle.putStringArrayList("pricesList", selectedDishesPrices);
             bundle.putDouble("totalPrice", price);
+            bundle.putSerializable("isSuborder", bundle.getBoolean("isSuborder"));
             bundle.putSerializable("restaurant", restaurant);
             intent.putExtras(bundle);
             startActivity(intent);

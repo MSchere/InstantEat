@@ -50,7 +50,7 @@ public class OwnerMenuActivity extends AppCompatActivity {
 
         restaurant = Utilities.getUser(getApplicationContext(), email, false);
 
-        orderList = Utilities.getOrders(this, new String[] {restaurantName, restaurant.getAddress(), "Preparando"}, true);
+        orderList = Utilities.getOrders(this, new String[] {restaurantName, restaurant.getAddress()}, true, false);
         fillLists(orderList);
         clientOrderList = findViewById(R.id.ownerOrderList);
         adapterOrder = new AdapterOrder(this, IDs, clientAddresses, dishes, totalPrices, states);

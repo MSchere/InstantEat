@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import backend.Pedido;
 
 public class ClientMenuActivity extends AppCompatActivity {
-    Button searchButton, newOrderButton;
+    Button newOrderButton, newSuborderButton;
     AdapterOrder adapterOrder;
     ImageButton userPrefsButton;
-    ImageView logo;
+    ImageView logo, searchButton;
     ListView clientOrderList;
     ArrayList<Pedido> orderList;
     ArrayList<String> IDs, restaurantNames, totalPrices, dishes, dishNames, prices, states;
@@ -34,8 +34,9 @@ public class ClientMenuActivity extends AppCompatActivity {
         setContentView(R.layout.client_menu);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        searchButton = findViewById(R.id.dishDashboardButton);
+        searchButton = findViewById(R.id.searchButton);
         newOrderButton = findViewById(R.id.newOrderButton);
+        newSuborderButton = findViewById(R.id.newSuborderButton);
         userPrefsButton = findViewById(R.id.clientPrefsButton);
         logo = findViewById(R.id.menuLogo);
         logo.setImageAlpha(127);
@@ -43,17 +44,23 @@ public class ClientMenuActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         email = prefs.getString("email", "NULL");
-        orderList = Utilities.getOrders(this, new String[] {email}, false);
+        orderList = Utilities.getOrders(this, new String[] {email}, false, false);
         fillLists(orderList);
         clientOrderList = findViewById(R.id.clientOrderList);
         adapterOrder = new AdapterOrder(this, IDs, restaurantNames, dishes, totalPrices, states);
         clientOrderList.setAdapter(adapterOrder);
         clientOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), OrderSummary.class);
+                Intent intent;
                 Bundle bundle = new Bundle();
                 prices = new ArrayList<>();
                 dishNames = new ArrayList<>();
+                if (states.get(i).equals("Subpedido")){
+                    intent = new Intent(getApplicationContext(), SuborderSummary.class);
+                }
+                else{
+                    intent = new Intent(getApplicationContext(), OrderSummary.class);
+                }
                 for (String strDish:Utilities.stringToArrayList(dishes.get(i))){
                     dishNames.add(strDish.substring(0, strDish.indexOf(":")));
                     prices.add(strDish.replaceAll("[^\\d.]", ""));
@@ -71,11 +78,23 @@ public class ClientMenuActivity extends AppCompatActivity {
 
         searchButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SearchActivity.class)));
 
-        newOrderButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ChooseRestaurantActivity.class)));
+        newOrderButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ChooseRestaurantActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isSuborder", false);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+
+        newSuborderButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ChooseRestaurantActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isSuborder", true);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
 
         userPrefsButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), UserPrefsActivity.class)));
-
-
     }
 
     private void fillLists(ArrayList<Pedido> orderList){

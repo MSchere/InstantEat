@@ -19,6 +19,7 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<String> restaurants;
     String selection, restaurantName, address;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,18 +28,18 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         restaurantList = findViewById(R.id.searchResults);
+        bundle = getIntent().getExtras();
         restaurants = fillList();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, restaurants);
         restaurantList.setAdapter(adapter);
         restaurantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(), OrderEditorActivity.class);
-                Bundle bundle = new Bundle();
                 //Nos quedamos solo con el nombre del restaurante
                 selection = restaurants.get(i).substring(0, restaurants.get(i).indexOf(" en "));
                 selection.trim();
                 bundle.putSerializable("restaurant", Utilities.getUser(getApplicationContext(), selection, true)); //Parámetro para la actividad
-                //Utilities.showToast(getApplicationContext(), selection);
+                bundle.putSerializable("isSuborder", bundle.getBoolean("isSuborder"));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

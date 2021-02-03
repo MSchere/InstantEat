@@ -16,8 +16,12 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 import backend.AbstractFactoryPlato;
+import backend.Encargo;
 import backend.Pedido;
+import backend.PedidoBuilder;
+import backend.PedidoPrincipal;
 import backend.Plato;
+import backend.Subpedido;
 import backend.User;
 
 public class Utilities {
@@ -53,6 +57,7 @@ public class Utilities {
     public static final String totalPrice = "total_price";
     public static final String client = "client";
     public static final String paymentMethod = "payment_method";
+    public static final String suborders = "suborders";
 
 
     public static final String objectTable = "ObjectDB";
@@ -87,14 +92,15 @@ public class Utilities {
     public static final String create_order_table = "create table " + orderTable + "\n" +
             "(" + id + " int primary key,\n" +
             email + " varchar(40) not null,\n" +
-            phoneNumber + " int not null,\n" +
-            clientAddress + " varchar(40) not null,\n" +
+            phoneNumber + " int,\n" +
+            clientAddress + " varchar(40),\n" +
             restaurant + " varchar(40) not null,\n" +
             restaurantAddress + " blob not null,\n" +
             dishes + " varchar(40) not null,\n" +
             totalPrice + " double not null,\n" +
-            paymentMethod + " varchar(40) not null,\n" +
-            state + " varchar(9) not null);";
+            paymentMethod + " varchar(40),\n" +
+            state + " varchar(9) not null,"
+            + suborders + " varchar(40));";
 
 
 
@@ -129,13 +135,15 @@ public class Utilities {
         return user;
     }
 
-    public static final ArrayList<Pedido> getOrders(Context context, String[] parameters, boolean byOpenOrders) {
+    public static final ArrayList<Pedido> getOrders(Context context, String[] parameters, boolean byOpenOrders, boolean bySuborders) {
         ArrayList<Pedido> list = new ArrayList<Pedido>();
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, orderTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
+        Encargo encargo = new Encargo();
         String method;
         //name, address, state
-        if (byOpenOrders) method = Utilities.restaurant + "=? AND " + Utilities.restaurantAddress + "=? AND " + Utilities.state + "=?";
+        if (byOpenOrders) method = Utilities.restaurant + "=? AND " + Utilities.restaurantAddress + "=? AND (" + Utilities.state + "='Preparando' OR " + Utilities.state + "='Preparando con subpedidos')";
+        else if (bySuborders) method = Utilities.email + "=? AND " + Utilities.state + "='Subpedido'";
         else method = Utilities.email + "=?";
         String[] fields = {"*"};
         try {
@@ -143,10 +151,11 @@ public class Utilities {
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     //id, email, telefono, dircliente, restaurante, dirrestaurante, platos, total, pago, estado
-                    list.add(new Pedido(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
+                    encargo.crearPedido(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
                             cursor.getString(3), cursor.getString(4), cursor.getString(5),
                             stringToArrayList(cursor.getString(6)), cursor.getDouble(7),
-                            cursor.getString(8), cursor.getString(9)));
+                            cursor.getString(8), cursor.getString(9));
+                    list.add(encargo.getPedido());
                     cursor.moveToNext();
                 }
             }
@@ -160,30 +169,56 @@ public class Utilities {
         return list;
     }
 
-    public static final void insertOrder(Context context, int id, String email, int phoneNumber,  String clientAddress,
-                                         String restaurant, String restaurantAddress, ArrayList<String> dishes,
-                                         double totalPrice, String paymentMethod, String state) {
+    public static final Pedido getOrder(Context context, String orderId) {
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, orderTable, null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        Encargo encargo = new Encargo();
+        String[] parameters = {orderId};
+        String[] fields = {"*"};
+        try {
+            Cursor cursor = db.query(orderTable, fields, Utilities.id + "=?", parameters, null, null, null);
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    //id, email, telefono, dircliente, restaurante, dirrestaurante, platos, total, pago, estado
+                    encargo.crearPedido(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
+                            cursor.getString(3), cursor.getString(4), cursor.getString(5),
+                            stringToArrayList(cursor.getString(6)), cursor.getDouble(7),
+                            cursor.getString(8), cursor.getString(9));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            db.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            showToast(context, "Pedido no encontrado");
+        }
+        return encargo.getPedido();
+    }
+
+    public static final void insertOrder(Context context, Pedido order) {
 
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, orderTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(Utilities.id, String.valueOf(id));
-        values.put(Utilities.email, email);
-        values.put(Utilities.phoneNumber, String.valueOf(phoneNumber));
-        values.put(Utilities.clientAddress, clientAddress);
-        values.put(Utilities.restaurant, restaurant);
-        values.put(Utilities.restaurantAddress, restaurantAddress);
-        values.put(Utilities.dishes, arrayListToString(dishes));
-        values.put(Utilities.totalPrice, totalPrice);
-        values.put(Utilities.paymentMethod, paymentMethod);
-        values.put(Utilities.state, state);
+        values.put(Utilities.id, String.valueOf(order.getId()));
+        values.put(Utilities.email, order.getEmail());
+        values.put(Utilities.phoneNumber, String.valueOf(order.getTelefono()));
+        values.put(Utilities.clientAddress, order.getDireccionCliente());
+        values.put(Utilities.restaurant, order.getRestaurante());
+        values.put(Utilities.restaurantAddress, order.getDireccionRestaurante());
+        values.put(Utilities.dishes, arrayListToString(order.getPlatos()));
+        values.put(Utilities.totalPrice, order.getPrecioTotal());
+        values.put(Utilities.paymentMethod, order.getMetodoPago());
+        values.put(Utilities.state, order.getEstado());
         try {
             long index = db.insert(Utilities.orderTable, Utilities.id, values);
             showToast(context, "Pedido creado");
         }
         catch (Exception e) {
             e.printStackTrace();
-            showToast(context, "error creando pedido");
+            showToast(context, "Error creando pedido");
         }
         db.close();
     }
@@ -203,6 +238,60 @@ public class Utilities {
             db.close();
             Toast.makeText(context, "Error, no se pudo actualizar " + index, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static final void insertMainOrder(Context context, PedidoPrincipal order) {
+
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, orderTable, null, 1);
+        ArrayList<String> listaSubpedidos = new ArrayList<String>();
+        String subpedidos;
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parameters = {order.getId()+""};
+        ContentValues values = new ContentValues();
+        values.put(Utilities.id, String.valueOf(order.getId()));
+        values.put(Utilities.email, order.getEmail());
+        values.put(Utilities.phoneNumber, String.valueOf(order.getTelefono()));
+        values.put(Utilities.clientAddress, order.getDireccionCliente());
+        values.put(Utilities.restaurant, order.getRestaurante());
+        values.put(Utilities.restaurantAddress, order.getDireccionRestaurante());
+        values.put(Utilities.dishes, arrayListToString(order.getPlatos()));
+        values.put(Utilities.totalPrice, order.getPrecioTotal());
+        values.put(Utilities.paymentMethod, order.getMetodoPago());
+        values.put(Utilities.state, order.getEstado());
+        for (Pedido pedido:order.getSubpedidos()){
+            listaSubpedidos.add(pedido.getId()+"");
+        }
+        values.put(Utilities.suborders, arrayListToString(listaSubpedidos));
+        try {
+            long index = db.update(Utilities.orderTable, values, Utilities.id + "=?", parameters);
+            showToast(context, "Pedido principal creado");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            showToast(context, "Error creando pedido principal");
+        }
+        db.close();
+    }
+
+    public static final String getSuborders(Context context, String orderId) {
+        String suborders = "";
+        ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, orderTable, null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parameters = {orderId};
+        String[] fields = {Utilities.suborders};
+        try {
+            Cursor cursor = db.query(orderTable, fields, Utilities.id + "=?", parameters, null, null, null);
+            cursor.moveToFirst();
+            suborders = cursor.getString(0);
+            cursor.moveToNext();
+            cursor.close();
+            db.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            showToast(context, "No tiene subpedidos");
+        }
+        return suborders;
     }
 
     public static final void deleteOrders(Context context, String email) {

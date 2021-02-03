@@ -55,6 +55,12 @@ public class AdapterOrder extends ArrayAdapter {
             case "Completado":
                 states.setTextColor(Color.GREEN);
                 break;
+            case "Subpedido":
+                states.setTextColor(Color.GRAY);
+                break;
+            case "Preparando con subpedidos":
+                states.setTextColor(Color.MAGENTA);
+                break;
         }
         states.setText(rStates.get(position));
         return row;

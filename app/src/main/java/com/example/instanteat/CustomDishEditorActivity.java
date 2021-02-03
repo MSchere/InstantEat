@@ -35,6 +35,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
     ArrayList<String> ingredients0, ingredients1, ingredients2, ingredients3, ingredients4, ingredients5, ingredients6;
     int[] options = new int[7];
     Boolean initialized = false; //Si no crashea porque ejecuta onItemSelected sin preguntar
+    Boolean isSuborder;
     RadioButton radioButton, burgerRadioButton, pizzaRadioButton, saladRadioButton;
     RadioGroup radioGroup;
     AbstractFactoryPlato factoryPlato = new AbstractFactoryPlato();
@@ -54,6 +55,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
 
         bundle = getIntent().getExtras();
         restaurant = (User) bundle.getSerializable("restaurant");
+        isSuborder = bundle.getBoolean("isSuborder");
         restaurantName = restaurant.getName();
 
         totalPriceText = findViewById(R.id.totalPriceText);
@@ -79,8 +81,6 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
         setTitle("Pedido de " + restaurantName);
         totalPriceText.setText(totalPrice+" €");
 
-
-
         finishDishButton.setOnClickListener(v -> {
             Plato plato = null;
             switch (option){
@@ -104,8 +104,13 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
         });
 
         finishOrderEditorButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), OrderSummary.class);
-            Bundle bundle = new Bundle();
+            Intent intent;
+            if (isSuborder) {
+                 intent = new Intent(getApplicationContext(), SuborderSummary.class);
+            }
+            else {
+                 intent = new Intent(getApplicationContext(), OrderSummary.class);
+            }
             bundle.putBoolean("isUpdate", false);
             bundle.putStringArrayList("dishesList", dishes); //Parámetros para la actividad
             bundle.putStringArrayList("pricesList", prices);
