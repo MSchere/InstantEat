@@ -22,8 +22,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import backend.Encargo;
+import backend.Observador;
+import backend.ObservadorConcretoEstado;
 import backend.Pedido;
-import backend.User;
+import backend.Sujeto;
+import backend.SujetoConcreto;
+import backend.Usuario;
 
 public class OrderSummary extends AppCompatActivity {
     TextView orderIdText, totalPriceText, restaurantAddressText, restaurantAddressTitleText, clientAddressText, phoneNumberText, paymentTitleText, subordersText, subordersTitleText;
@@ -35,7 +39,9 @@ public class OrderSummary extends AppCompatActivity {
     SharedPreferences prefs;
     Boolean isUpdate, hasSuborders = false;
     String[] paymentMethods = {"Efectivo", "Tarjeta", "PayPal", "Bitcoin"};
-    User client, restaurant;
+    Usuario client, restaurant;
+    SujetoConcreto subject;
+    ObservadorConcretoEstado o1, o2;
     Encargo encargo = new Encargo();
     Pedido order;
     String email, cardNumber, selectedMethod, state;
@@ -77,7 +83,7 @@ public class OrderSummary extends AppCompatActivity {
         }
         else {
             totalPrice = bundle.getDouble("totalPrice");
-            restaurant = (User) bundle.getSerializable("restaurant");
+            restaurant = (Usuario) bundle.getSerializable("restaurant");
         }
         fillFields();
 
@@ -134,6 +140,7 @@ public class OrderSummary extends AppCompatActivity {
                 Utilities.insertOrder(getApplicationContext(), encargo.getPedido());
             }
             else {
+                observeState(state);
                 Utilities.updateOrderState(getApplicationContext(), orderId, state);
             }
             startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class).addFlags(
@@ -150,6 +157,7 @@ public class OrderSummary extends AppCompatActivity {
                 Utilities.insertOrder(getApplicationContext(), order);
             }
             else {
+                observeState(state);
                 Utilities.updateOrderState(getApplicationContext(), orderId, state);
             }
             Intent intent = new Intent(getApplicationContext(), ChooseSubordersActivity.class);
@@ -214,6 +222,18 @@ public class OrderSummary extends AppCompatActivity {
         totalPriceText.setText(df.format(totalPrice) + " €");
         state = "Preparando";
 
+    }
+
+    private void observeState(String state){
+        subject = new SujetoConcreto();
+        subject.setPedido(order);
+        o1 = new ObservadorConcretoEstado("Observador1", "Preparando", subject);
+        o2 = new ObservadorConcretoEstado("Observador2", "Preparando con subpedidos", subject);
+        subject.añadirObservador(o1);
+        subject.añadirObservador(o2);
+        order.setEstado(state);
+        o1.actualizar();
+        o2.actualizar();
     }
 
 }

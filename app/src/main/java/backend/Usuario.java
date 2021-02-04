@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Clase que representa a un usuario de la aplicación.
  */
-public class User implements Clonable, Serializable {
+public class Usuario implements Clonable, Serializable {
     private String email; // Email del usuario
     private String password; // Contraseña del usuario
     private String userType; // Tipo de usuario
@@ -23,7 +23,7 @@ public class User implements Clonable, Serializable {
      * @param address Dirección del usuario
      * @param phoneNumber Número de teléfono del usuario
      */
-    public User(String email, String password, String userType, String name, String address, int phoneNumber) {
+    public Usuario(String email, String password, String userType, String name, String address, int phoneNumber) {
         this.email = email;
         this.password = password;
         this.userType = userType;
@@ -147,6 +147,6 @@ public class User implements Clonable, Serializable {
      */
     @Override
     public Object copy() {
-        return new User(this.email, this.password, this.userType, this.name, this.address, this.phoneNumber);
+        return new Usuario(this.email, this.password, this.userType, this.name, this.address, this.phoneNumber);
     }
 }

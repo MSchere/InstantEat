@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,7 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import backend.Card;
+import backend.Tarjeta;
 
 public class EditCardActivity extends AppCompatActivity {
     SharedPreferences prefs;
@@ -135,7 +134,7 @@ public class EditCardActivity extends AppCompatActivity {
     //Instancia la clase tarjeta y mete sus datos en un content values
     private ContentValues createCard() {
         Date date = processDate();
-        Card card = new Card(Long.parseLong(cardNumberField.getText().toString()), email,
+        Tarjeta card = new Tarjeta(Long.parseLong(cardNumberField.getText().toString()), email,
                 cardHolderNameField.getText().toString(),
                 Integer.parseInt(cardCCVField.getText().toString()), date);
         ContentValues values = new ContentValues();

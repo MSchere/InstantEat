@@ -26,7 +26,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="42dp" />
+                    android:layout_height="35dp" />
 
                 <EditText
                     android:id="@+id/cardHolderNameField"
@@ -60,13 +60,9 @@
                     android:hint="fecha de caducidad"
                     android:inputType="date" />
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="142dp" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp">
+                    android:layout_height="380dp">
 
                     <Button
                         android:id="@+id/saveCardButton"
@@ -78,8 +74,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.497"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.156" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
                         android:id="@+id/deleteCardButton"
@@ -92,7 +87,7 @@
                         app:layout_constraintHorizontal_bias="0.497"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.843" />
+                        app:layout_constraintVertical_bias="0.792" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

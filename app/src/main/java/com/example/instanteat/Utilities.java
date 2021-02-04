@@ -1,28 +1,20 @@
 package com.example.instanteat;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
-import java.util.StringTokenizer;
 
 import backend.AbstractFactoryPlato;
 import backend.Encargo;
 import backend.Pedido;
-import backend.PedidoBuilder;
 import backend.PedidoPrincipal;
 import backend.Plato;
-import backend.Subpedido;
-import backend.User;
+import backend.Usuario;
 
 public class Utilities {
     //User table variables
@@ -55,12 +47,8 @@ public class Utilities {
     public static final String state = "state";
     public static final String dishes = "dishes";
     public static final String totalPrice = "total_price";
-    public static final String client = "client";
     public static final String paymentMethod = "payment_method";
     public static final String suborders = "suborders";
-
-
-    public static final String objectTable = "ObjectDB";
     public static final String object = "object";
 
     public static final String create_user_table = "create table " + userTable + "\n" +
@@ -71,8 +59,6 @@ public class Utilities {
             address + " varchar(50),\n" +
             phoneNumber + " varchar(9),\n" +
             object + " blob);";
-
-    public static final String insert_dummy_user = "INSERT INTO " + userTable + " VALUES ('dummy@email.com', 'dummy', 'client', 'dummy', 'dummy', '999999999','');";
 
     public static final String create_dish_table = "create table " + dishTable + "\n" +
             "(" + dishName + " varchar(40) primary key,\n" +
@@ -102,14 +88,18 @@ public class Utilities {
             state + " varchar(9) not null,"
             + suborders + " varchar(40));";
 
+    public static final String insert_dummy_user = "INSERT INTO " + userTable + " VALUES ('dummy@email.com', 'dummy', 'client', 'dummy', 'dummy', '999999999','');";
 
 
 
-    public static final User getUser(Context context, String parameter, Boolean byName) {
+
+
+
+    public static final Usuario getUser(Context context, String parameter, Boolean byName) {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, Utilities.userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         String method;
-        User user = null;
+        Usuario user = null;
         if (byName) method = Utilities.name;
         else method = Utilities.email;
         String[] parameters = {parameter};
@@ -118,7 +108,7 @@ public class Utilities {
         try {
             cursor = db.query(Utilities.userTable, fields, method + "=?", parameters, null, null, null);
             cursor.moveToFirst();
-            user = new User(cursor.getString(0),
+            user = new Usuario(cursor.getString(0),
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getString(3),
@@ -393,8 +383,8 @@ public class Utilities {
         return list;
     }
 
-    public static final User getDefaultUser(){
-        User user = new User("dummy@email.com", "dummy", "client", "dummy", "dummyAddress", 999999999);
+    public static final Usuario getDefaultUser(){
+        Usuario user = new Usuario("dummy@email.com", "dummy", "client", "dummy", "dummyAddress", 999999999);
         return user;
     }
 

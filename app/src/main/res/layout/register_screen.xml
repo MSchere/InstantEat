@@ -8,125 +8,99 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ScrollView
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="35dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/cardHolderNameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/passwordField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="contraseña"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/repeatPasswordField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="repetir contraseña"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/cardCCVField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="nombre"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/cardDateField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="dirección"
+            android:inputType="textPostalAddress" />
+
+        <EditText
+            android:id="@+id/cardNumberField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="teléfono"
+            android:inputType="phone" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="324dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="Registrarse"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.654" />
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp" />
+            <Button
+                android:id="@+id/ownerButton"
+                android:layout_width="91dp"
+                android:layout_height="40dp"
+                android:text="¿Eres propietario?"
+                android:textColor="#939393"
+                android:textColorHighlight="#000000"
+                android:textColorLink="#000000"
+                android:textSize="8sp"
+                app:backgroundTint="#00FFFFFF"
+                app:iconTint="#00FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.95"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.938" />
 
-                <EditText
-                    android:id="@+id/cardHolderNameField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="email"
-                    android:inputType="textEmailAddress" />
-
-                <EditText
-                    android:id="@+id/passwordField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="contraseña"
-                    android:inputType="textPassword" />
-
-                <EditText
-                    android:id="@+id/repeatPasswordField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="repetir contraseña"
-                    android:inputType="textPassword" />
-
-                <EditText
-                    android:id="@+id/cardCCVField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="nombre"
-                    android:inputType="textPersonName" />
-
-                <EditText
-                    android:id="@+id/cardDateField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="dirección"
-                    android:inputType="textPostalAddress" />
-
-                <EditText
-                    android:id="@+id/cardNumberField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="teléfono"
-                    android:inputType="phone" />
-
-                <CheckBox
-                    android:id="@+id/offersCheckBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Quiero recibir ofertas especiales."
-                    android:textColor="#757575" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="93dp">
-
-                    <Button
-                        android:id="@+id/saveButton"
-                        android:layout_width="324dp"
-                        android:layout_height="wrap_content"
-                        android:text="Registrarse"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Button
-                        android:id="@+id/ownerButton"
-                        android:layout_width="91dp"
-                        android:layout_height="40dp"
-                        android:text="¿Eres propietario?"
-                        android:textColor="#939393"
-                        android:textColorHighlight="#000000"
-                        android:textColorLink="#000000"
-                        android:textSize="8sp"
-                        app:backgroundTint="#00FFFFFF"
-                        app:iconTint="#00FFFFFF"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-        </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

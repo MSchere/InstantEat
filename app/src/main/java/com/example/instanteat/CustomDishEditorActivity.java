@@ -3,12 +3,9 @@ package com.example.instanteat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -25,7 +22,7 @@ import java.util.Arrays;
 import backend.AbstractFactoryPlato;
 import backend.IAbstractFactoryPlato;
 import backend.Plato;
-import backend.User;
+import backend.Usuario;
 
 public class CustomDishEditorActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     TextView totalPriceText;
@@ -41,7 +38,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
     DecimalFormat df = new DecimalFormat("#.00");
     AbstractFactoryPlato factoryPlato = new AbstractFactoryPlato();
     IAbstractFactoryPlato iAbstractFactoryPlato;
-    User restaurant;
+    Usuario restaurant;
     ArrayList<String> dishes, prices;
     String restaurantName, option;
     Double totalPrice;
@@ -55,7 +52,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         bundle = getIntent().getExtras();
-        restaurant = (User) bundle.getSerializable("restaurant");
+        restaurant = (Usuario) bundle.getSerializable("restaurant");
         isSuborder = bundle.getBoolean("isSuborder");
         restaurantName = restaurant.getName();
 
@@ -66,7 +63,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
         dishes = bundle.getStringArrayList("dishesList");
         prices = bundle.getStringArrayList("pricesList");
         totalPrice = bundle.getDouble("totalPrice");
-        restaurant = (User) bundle.getSerializable("restaurant");
+        restaurant = (Usuario) bundle.getSerializable("restaurant");
 
         radioGroup = findViewById(R.id.radioGroup);
         burgerRadioButton = findViewById(R.id.burgerRadioButton);
@@ -126,10 +123,10 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
         option = radioButton.getText().toString();
         switch (option){
             case "Hamburguesa":
-                ingredients0 = new ArrayList<>(Arrays.asList("Sin pan","Pan normal","Pan de masa madre","Pan sin gluten"));
+                ingredients0 = new ArrayList<>(Arrays.asList("Sin pan","Pan normal","Pan de chapata","Pan sin gluten"));
                 ingredients1 = new ArrayList<>(Arrays.asList("Sin lechuga", "Lechuga"));
                 ingredients2 = new ArrayList<>(Arrays.asList("Sin tomate", "Tomate"));
-                ingredients3 = new ArrayList<>(Arrays.asList("Sin cebolla", "Cebolla cruda","Cebolla caramelizada"));
+                ingredients3 = new ArrayList<>(Arrays.asList("Sin cebolla", "Cebolla","Cebolla caramelizada"));
                 ingredients4 = new ArrayList<>(Arrays.asList("Sin bacon", "Bacon"));
                 ingredients5 = new ArrayList<>(Arrays.asList("Sin carne", "Carne de ternera","Carne de pollo","Carne vegana"));
                 ingredients6 = new ArrayList<>(Arrays.asList("Cualquier punto", "Poco hecha","Al punto","Muy hecha"));
@@ -140,17 +137,17 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
                 ingredients2 = new ArrayList<>(Arrays.asList("Sin primera base", "Tomate", "Salsa barbacoa"));
                 ingredients3 = new ArrayList<>(Arrays.asList("Sin segunda base", "Queso"));
                 ingredients4 = new ArrayList<>(Arrays.asList("Sin primer ingrediente", "Bacon","Pollo","Espinacas"));
-                ingredients5 = new ArrayList<>(Arrays.asList("Sin segundo ingrediente", "Anchoas","Maiz","Salami"));
+                ingredients5 = new ArrayList<>(Arrays.asList("Sin segundo ingrediente", "Anchoas", "Maiz","Salami"));
                 ingredients6 = new ArrayList<>(Arrays.asList("Sin tercer ingrediente", "Champiñones","Pimiento","Aceitunas"));
                 break;
             case "Ensalada":
                 ingredients0 = new ArrayList<>(Arrays.asList("Sin base","Lechuga","Canonigos","Rúcula"));
                 ingredients1 = new ArrayList<>(Arrays.asList("Sin carne", "Pollo", "Pavo"));
                 ingredients2 = new ArrayList<>(Arrays.asList("Sin queso", "Queso chedar","Queso azul"));
-                ingredients3 = new ArrayList<>(Arrays.asList("Sin maiz", "Maiz"));
+                ingredients3 = new ArrayList<>(Arrays.asList("Sin maíz", "Maíz"));
                 ingredients4 = new ArrayList<>(Arrays.asList("Sin tomate", "Tomate", "Tomates cherry"));
                 ingredients5 = new ArrayList<>(Arrays.asList("Sin aceitunas", "Aceitunas negras","Aceitunas verdes"));
-                ingredients6 = new ArrayList<>(Arrays.asList("Sin salsa", "Mayonesa", "Alioli", "Cesar"));
+                ingredients6 = new ArrayList<>(Arrays.asList("Sin salsa", "Mayonesa", "Alioli", "Salsa césar"));
                 break;
         }
         initialized = true;

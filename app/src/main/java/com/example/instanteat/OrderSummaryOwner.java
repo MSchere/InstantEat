@@ -1,29 +1,24 @@
 package com.example.instanteat;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import java.util.ArrayList;
-import java.util.Random;
 
+import backend.ObservadorConcretoEstado;
 import backend.Pedido;
-import backend.User;
+import backend.Sujeto;
+import backend.SujetoConcreto;
+import backend.Usuario;
 
 public class OrderSummaryOwner extends AppCompatActivity {
     TextView orderIdText, totalPriceText, clientAddressText, phoneNumberText, paymentMethodText, subordersText, subordersTitleText;
@@ -32,8 +27,10 @@ public class OrderSummaryOwner extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<String> dishes, prices, fusedList;
     SharedPreferences prefs;
-    User client, restaurant;
+    Usuario client, restaurant;
     Pedido order;
+    Sujeto subject;
+    ObservadorConcretoEstado o1, o2;
     String email, cardNumber, state;
     int orderId;
     Double totalPrice;
@@ -75,7 +72,9 @@ public class OrderSummaryOwner extends AppCompatActivity {
         orderDishList.setAdapter(adapter);
 
         orderDoneButton.setOnClickListener(v -> {
-            Utilities.updateOrderState(getApplicationContext(), orderId, "Completado");
+            state = "Completado";
+            observeState(state);
+            Utilities.updateOrderState(getApplicationContext(), orderId, state);
             startActivity(new Intent(getApplicationContext(), OwnerMenuActivity.class).addFlags(
                     Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
@@ -83,7 +82,9 @@ public class OrderSummaryOwner extends AppCompatActivity {
         });
 
         orderCanceledButton.setOnClickListener(v -> {
-            Utilities.updateOrderState(getApplicationContext(), orderId, "Cancelado");
+            state = "Cancelado";
+            observeState(state);
+            Utilities.updateOrderState(getApplicationContext(), orderId, state);
             startActivity(new Intent(getApplicationContext(), OwnerMenuActivity.class).addFlags(
                     Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
@@ -113,5 +114,17 @@ public class OrderSummaryOwner extends AppCompatActivity {
         phoneNumberText.setText(String.valueOf(client.getPhoneNumber()));
         totalPriceText.setText(totalPrice + " €");
         paymentMethodText.setText("Pagado con " + order.getMetodoPago());
+    }
+
+    private void observeState(String state){
+        subject = new SujetoConcreto();
+        subject.setPedido(order);
+        o1 = new ObservadorConcretoEstado("Observador1", "Completado", subject);
+        o2 = new ObservadorConcretoEstado("Observador2", "Cancelado", subject);
+        subject.añadirObservador(o1);
+        subject.añadirObservador(o2);
+        order.setEstado(state);
+        o1.actualizar();
+        o2.actualizar();
     }
 }

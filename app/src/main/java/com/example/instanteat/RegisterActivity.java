@@ -7,19 +7,15 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import backend.User;
-import backend.ViewRemoverDecorator;
+import backend.Usuario;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText emailField, passwordField, repeatPasswordField, nameField, addressField, phoneNumberField;
     Button registerButton, ownerButton;
-    CheckBox offersCheckBox;
     String userType;
 
     @Override
@@ -36,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
         nameField = findViewById(R.id.cardCCVField);
         phoneNumberField = findViewById(R.id.cardNumberField);
 
-        offersCheckBox = findViewById(R.id.offersCheckBox);
         registerButton = findViewById(R.id.saveButton);
         ownerButton = findViewById(R.id.ownerButton);
 
@@ -48,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         ownerButton.setOnClickListener(v -> {
             nameField.setHint("nombre del local");
-            ViewRemoverDecorator decorator = new ViewRemoverDecorator(getApplicationContext(), new View[]{ownerButton, offersCheckBox});
+            ViewRemoverDecorator decorator = new ViewRemoverDecorator(getApplicationContext(), new View[]{ownerButton});
             decorator.decorate();
             userType = "owner";
         });
@@ -73,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private ContentValues createUser() {
-        User user = new User(emailField.getText().toString(),
+        Usuario user = new Usuario(emailField.getText().toString(),
                 passwordField.getText().toString(),
                 userType,
                 nameField.getText().toString(),

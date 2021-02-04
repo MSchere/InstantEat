@@ -1,4 +1,4 @@
-package backend;
+package com.example.instanteat;
 
 import android.content.Context;
 import android.view.View;

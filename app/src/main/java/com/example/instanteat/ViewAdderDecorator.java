@@ -1,10 +1,10 @@
-package backend;
+package com.example.instanteat;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ViewAdderDecorator extends ViewDecorator{
+public class ViewAdderDecorator extends ViewDecorator {
 
     public ViewAdderDecorator(Context context, View[] views){
         super(context, views);

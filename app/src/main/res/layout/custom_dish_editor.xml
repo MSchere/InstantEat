@@ -7,6 +7,17 @@
     tools:context=".CustomDishEditorActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:background="#6200EE"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="83dp"
@@ -66,56 +77,69 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="217dp"
+        android:layout_height="270dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.576">
+        app:layout_constraintVertical_bias="0.618">
 
         <Spinner
             android:id="@+id/spinner0"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15dp"/>
+            android:layout_height="15dp" />
+
         <Spinner
             android:id="@+id/spinner1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15dp"/>
+            android:layout_height="15dp" />
+
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15dp"/>
+            android:layout_height="15dp" />
+
         <Spinner
             android:id="@+id/spinner3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15dp"/>
+            android:layout_height="15dp" />
+
         <Spinner
             android:id="@+id/spinner4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15dp"/>
+            android:layout_height="15dp" />
+
         <Spinner
             android:id="@+id/spinner5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15dp"/>
+            android:layout_height="15dp" />
+
         <Spinner
             android:id="@+id/spinner6"
             android:layout_width="match_parent"
@@ -124,14 +148,16 @@
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.042">
+        app:layout_constraintVertical_bias="0.225">
 
         <RadioButton
             android:id="@+id/saladRadioButton"
@@ -139,21 +165,24 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:onClick="checkButton"
-            android:text="Ensalada" />
-
-        <RadioButton
-            android:id="@+id/pizzaRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="checkButton"
-            android:text="Pizza" />
+            android:text="Ensalada"
+            android:textColor="#FFFFFF" />
 
         <RadioButton
             android:id="@+id/burgerRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="checkButton"
-            android:text="Hamburguesa" />
+            android:text="Hamburguesa"
+            android:textColor="#FFFFFF" />
+
+        <RadioButton
+            android:id="@+id/pizzaRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="checkButton"
+            android:text="Pizza"
+            android:textColor="#FFFFFF" />
     </RadioGroup>
 
     <Button
@@ -165,6 +194,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.915" />
+        app:layout_constraintVertical_bias="0.98" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="375dp"
+        android:layout_height="wrap_content"
+        android:text="Estos platos personalizables se pueden pedir desde cualquier restaurante y se cocinarán en los locales de InstantEat. ¡Se añadirán a tu pedido como un plato más!"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.036" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

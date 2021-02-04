@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.*;
 
-import backend.User;
+import backend.Usuario;
 
 public class LoginActivity extends AppCompatActivity {
     //Variable declaration
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     private void validate() {
         String email = emailField.getText().toString();
         try {
-            User user = Utilities.getUser(getApplicationContext(), email, false);
+            Usuario user = Utilities.getUser(getApplicationContext(), email, false);
             String password = user.getPassword();
             String userType = user.getUserType();
             String name = user.getName();
@@ -66,8 +66,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (rememberCheckBox.isChecked()) {
                     editor.putString("savedEmail", email);
                     editor.putString("savedPassword", inputPassword);
+                    Utilities.showToast(getApplicationContext(), "¡Bienvenido de vuelta " + name + "!");
                 }
-                Utilities.showToast(getApplicationContext(), "Inicio de sesión correcto\nBienvenido " + name);
+                Utilities.showToast(getApplicationContext(), "¡Bienvenido " + name+"!");
                 if (userType.equals("client")) {
                     editor.putString("userType", "client");
                     //Vamos al menú
@@ -91,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     private void loginNoAccount(){
-        User user = (User) Utilities.getDefaultUser().copy();
+        Usuario user = (Usuario) Utilities.getDefaultUser().copy();
         editor.putString("email", user.getEmail());
         editor.commit();
         finish();

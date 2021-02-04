@@ -14,14 +14,11 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import backend.User;
-import backend.ViewEnablerDecorator;
-import backend.ViewRemoverDecorator;
+import backend.Usuario;
 
 public class UserPrefsActivity extends AppCompatActivity {
     EditText emailField, passwordField, nameField, addressField, phoneNumberField;
     Button saveButton, deleteAccountButton, logoffButton, addCardButton, deleteOrdersButton;
-    CheckBox offersCheckBox;
     String userType, email, userName;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -44,7 +41,6 @@ public class UserPrefsActivity extends AppCompatActivity {
         addressField = findViewById(R.id.addressField);
         nameField = findViewById(R.id.nameField);
         phoneNumberField = findViewById(R.id.phoneNumberField);
-        offersCheckBox = findViewById(R.id.offersCheckBox);
 
         saveButton = findViewById(R.id.saveButton);
         deleteAccountButton = findViewById(R.id.deleteAccountButton);
@@ -84,14 +80,14 @@ public class UserPrefsActivity extends AppCompatActivity {
         deleteOrdersButton.setOnClickListener(v -> Utilities.deleteOrders(this, email));
 
         if (email.equals("dummy@email.com")) {
-            ViewEnablerDecorator decorator = new ViewEnablerDecorator(getApplicationContext(), new View[]{emailField, passwordField, nameField, offersCheckBox, deleteAccountButton, addCardButton}, false);
+            ViewEnablerDecorator decorator = new ViewEnablerDecorator(getApplicationContext(), new View[]{emailField, passwordField, nameField, deleteAccountButton, addCardButton}, false);
             decorator.decorate();
             addressField.setText("");
             phoneNumberField.setText("");
         }
 
         if (userType.equals("owner")){
-            ViewRemoverDecorator decorator = new ViewRemoverDecorator(getApplicationContext(), new View[]{offersCheckBox, addCardButton, deleteOrdersButton});
+            ViewRemoverDecorator decorator = new ViewRemoverDecorator(getApplicationContext(), new View[]{addCardButton, deleteOrdersButton});
             decorator.decorate();
         }
 
@@ -153,7 +149,7 @@ public class UserPrefsActivity extends AppCompatActivity {
     }
 
     private ContentValues createUser() {
-        User user = new User(emailField.getText().toString(),
+        Usuario user = new Usuario(emailField.getText().toString(),
                 passwordField.getText().toString(),
                 userType,
                 nameField.getText().toString(),
@@ -170,7 +166,7 @@ public class UserPrefsActivity extends AppCompatActivity {
     }
 
     private ContentValues createDummyUser() {
-        User user = (User) Utilities.getDefaultUser().copy();
+        Usuario user = (Usuario) Utilities.getDefaultUser().copy();
         user.setAddress(addressField.getText().toString());
         user.setPhoneNumber(Integer.valueOf(phoneNumberField.getText().toString()));
         ContentValues values = new ContentValues();

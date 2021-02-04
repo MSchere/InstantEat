@@ -2,16 +2,12 @@ package com.example.instanteat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +19,7 @@ import java.util.Random;
 
 import backend.Encargo;
 import backend.Pedido;
-import backend.User;
-import backend.ViewRemoverDecorator;
+import backend.Usuario;
 
 public class SuborderSummary extends AppCompatActivity {
     TextView orderIdText, totalPriceText, restaurantAddressText, restaurantAddressTitleText;
@@ -34,7 +29,7 @@ public class SuborderSummary extends AppCompatActivity {
     ArrayList<String> dishes, prices, fusedList;
     Pedido order;
     SharedPreferences prefs;
-    User client, restaurant;
+    Usuario client, restaurant;
     Boolean isUpdate;
     Encargo encargo = new Encargo();
     String email, state;
@@ -66,7 +61,7 @@ public class SuborderSummary extends AppCompatActivity {
         email = prefs.getString("email", "NULL");
 
         totalPrice = bundle.getDouble("totalPrice");
-        restaurant = (User) bundle.getSerializable("restaurant");
+        restaurant = (Usuario) bundle.getSerializable("restaurant");
 
         if (isUpdate) {
             order = (Pedido) bundle.getSerializable("order");

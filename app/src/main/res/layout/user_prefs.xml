@@ -17,7 +17,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="48dp" />
+                android:layout_height="35dp" />
 
             <EditText
                 android:id="@+id/emailField"
@@ -59,16 +59,9 @@
                 android:hint="teléfono"
                 android:inputType="phone" />
 
-            <CheckBox
-                android:id="@+id/offersCheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Quiero recibir ofertas especiales."
-                android:textColor="#757575" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="371dp">
+                android:layout_height="400dp">
 
                 <Button
                     android:id="@+id/addCardButton"
@@ -77,48 +70,9 @@
                     android:text="Añadir tarjeta de crédito/débito"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.281" />
-
-                <Button
-                    android:id="@+id/deleteAccountButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Borrar Cuenta"
-                    app:backgroundTint="#B32D02"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.936"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.693" />
-
-                <Button
-                    android:id="@+id/saveButton"
-                    android:layout_width="325dp"
-                    android:layout_height="wrap_content"
-                    android:text="Guardar"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.494"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.498" />
-
-                <Button
-                    android:id="@+id/logoffButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cerrar Sesión"
-                    app:backgroundTint="#FFC107"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.061"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.693" />
+                    app:layout_constraintVertical_bias="0.389" />
 
                 <Button
                     android:id="@+id/deleteOrdersButton"
@@ -129,7 +83,44 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.08" />
+                    app:layout_constraintVertical_bias="0.161" />
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="325dp"
+                    android:layout_height="wrap_content"
+                    android:text="Guardar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.616" />
+
+                <Button
+                    android:id="@+id/deleteAccountButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Borrar Cuenta"
+                    app:backgroundTint="#B32D02"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.931"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.954" />
+
+                <Button
+                    android:id="@+id/logoffButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cerrar Sesión"
+                    app:backgroundTint="#FFC107"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.066"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.954" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Clase que representa una tarjeta de crédito
  */
-public class Card {
+public class Tarjeta {
     private Long cardNumber; // Número de la tarjeta
     private String email; // Email del dueño
     private String cardHolderName; // Nombre del dueño
@@ -21,7 +21,7 @@ public class Card {
      * @param ccv Código ccv de la tarjeta
      * @param date Fecha de caducidad de la tarjeta
      */
-    public Card(Long cardNumber, String email, String getCardHolderName, int ccv, Date date) {
+    public Tarjeta(Long cardNumber, String email, String getCardHolderName, int ccv, Date date) {
         this.cardNumber = cardNumber;
         this.email = email;
         this.cardHolderName = getCardHolderName;

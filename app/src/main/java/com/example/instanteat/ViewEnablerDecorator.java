@@ -1,9 +1,9 @@
-package backend;
+package com.example.instanteat;
 
 import android.content.Context;
 import android.view.View;
 
-public class ViewEnablerDecorator extends ViewDecorator{
+public class ViewEnablerDecorator extends ViewDecorator {
     Boolean enabled;
     public ViewEnablerDecorator(Context context, View[] views, Boolean enabled){
         super(context, views);

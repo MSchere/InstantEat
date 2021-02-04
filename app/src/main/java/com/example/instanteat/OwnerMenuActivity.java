@@ -17,13 +17,13 @@ import androidx.appcompat.app.AppCompatDelegate;
 import java.util.ArrayList;
 
 import backend.Pedido;
-import backend.User;
+import backend.Usuario;
 
 public class OwnerMenuActivity extends AppCompatActivity {
     Button dashBoardButton;
     AdapterOrder adapterOrder;
     ImageButton ownerPrefsButton;
-    User restaurant;
+    Usuario restaurant;
     ImageView logo;
     ListView clientOrderList;
     ArrayList<Pedido> orderList;

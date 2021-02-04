@@ -19,6 +19,7 @@ public class ConnectSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL(Utilities.create_card_table);
         db.execSQL(Utilities.create_order_table);
         db.execSQL(Utilities.insert_dummy_user);
+        insertDemoData(db);
     }
 
     @Override
@@ -28,5 +29,9 @@ public class ConnectSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL("drop table if exists cardDB;");
         db.execSQL("drop table if exists orderDB;");
         onCreate(db);
+    }
+
+    public void insertDemoData(SQLiteDatabase db){
+        db.execSQL("INSERT INTO userDB VALUES ('jRuiz@gmail.com', 'contraseña', 'client', 'Javier Ruiz', 'Calle los Perales 28b, 7ºa', '999999999','');");
     }
 }

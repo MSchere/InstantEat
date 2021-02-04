@@ -17,14 +17,14 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import backend.Plato;
-import backend.User;
+import backend.Usuario;
 
 public class OrderEditorActivity extends AppCompatActivity {
     TextView totalPriceText;
     ListView dishList;
     Button finishOrderEditorButton;
     AdapterDish adapterDish;
-    User restaurant;
+    Usuario restaurant;
     ArrayList<String> selectedDishesPrices, selectedDishesNames, selectedDishesIngredients;
     ArrayList<Integer> selectedPositions;
     ArrayList<String> dishNames, dishIngredients, dishPrices;
@@ -39,7 +39,7 @@ public class OrderEditorActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         bundle = getIntent().getExtras();
-        restaurant = (User) bundle.getSerializable("restaurant");
+        restaurant = (Usuario) bundle.getSerializable("restaurant");
         restaurantName = restaurant.getName();
 
         totalPriceText = findViewById(R.id.totalPriceText);

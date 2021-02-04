@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import backend.Buscador;
 import backend.BuscadorConcreto;
 import backend.Plato;
-import backend.User;
+import backend.Usuario;
 
 public class SearchActivity extends AppCompatActivity {
     SearchView searcher;
@@ -64,7 +64,7 @@ public class SearchActivity extends AppCompatActivity {
                 String selection = buscador.getLista().get(i).getRestaurante();
                 Intent intent = new Intent(getApplicationContext(), OrderEditorActivity.class);
                 Bundle bundle = new Bundle();
-                User restaurant = (User) Utilities.getUser(getApplicationContext(), selection, true);
+                Usuario restaurant = (Usuario) Utilities.getUser(getApplicationContext(), selection, true);
                 bundle.putSerializable("restaurant", restaurant); //Parámetro para la actividad
                 intent.putExtras(bundle);
                 startActivity(intent);

@@ -17,19 +17,22 @@ import androidx.appcompat.app.AppCompatDelegate;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import backend.ObservadorConcretoEstado;
 import backend.Pedido;
 import backend.PedidoPrincipal;
-import backend.Plato;
 import backend.Subpedido;
-import backend.User;
-import backend.ViewRemoverDecorator;
+import backend.Sujeto;
+import backend.SujetoConcreto;
 
 public class ChooseSubordersActivity extends AppCompatActivity {
     TextView totalPriceText;
     ListView orderList;
     Button finishOrderEditorButton;
     AdapterOrder adapterOrder;
+    PedidoPrincipal mainOrder;
     Pedido order;
+    Sujeto subject;
+    ObservadorConcretoEstado o;
     SharedPreferences prefs;
     ArrayList<String> selectedOrdersPrices, selectedOrdersIds;
     ArrayList<String> IDs, restaurantNames, dishes, prices, states;
@@ -110,18 +113,19 @@ public class ChooseSubordersActivity extends AppCompatActivity {
         });
 
         finishOrderEditorButton.setOnClickListener(v -> {
-            PedidoPrincipal pedidoPrincipal = new PedidoPrincipal(order.getId(), order.getEmail(), order.getTelefono(), order.getDireccionCliente(), order.getRestaurante(),
+            mainOrder = new PedidoPrincipal(order.getId(), order.getEmail(), order.getTelefono(), order.getDireccionCliente(), order.getRestaurante(),
                     order.getDireccionRestaurante(), order.getPlatos(), 0, order.getMetodoPago(), "Preparando con subpedidos");
+            observeState("Preparando con subpedidos");
             Pedido tempOrder;
             Subpedido subOrder;
             for (String id:selectedOrdersIds){
                 tempOrder = Utilities.getOrder(getApplicationContext(), id);
                 subOrder = new Subpedido(tempOrder.getId(), tempOrder.getEmail(), 0, "", tempOrder.getRestaurante(),
                         tempOrder.getDireccionRestaurante(), tempOrder.getPlatos(), tempOrder.getPrecioTotal(), "", "");
-                pedidoPrincipal.añadirSubpedido(subOrder);
+                mainOrder.añadirSubpedido(subOrder);
             }
-            pedidoPrincipal.setPrecioTotal(pedidoPrincipal.getPrecioPedido());
-            Utilities.insertMainOrder(getApplicationContext(), pedidoPrincipal);
+            mainOrder.setPrecioTotal(mainOrder.getPrecioPedido());
+            Utilities.insertMainOrder(getApplicationContext(), mainOrder);
 
             startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class).addFlags(
                     Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -169,4 +173,14 @@ public class ChooseSubordersActivity extends AppCompatActivity {
             states.add(order.getEstado());
         }
     }
+
+    private void observeState(String state){
+        subject = new SujetoConcreto();
+        subject.setPedido(mainOrder);
+        o = new ObservadorConcretoEstado("Observador", "Preparando con subpedidos", subject);
+        subject.añadirObservador(o);
+        order.setEstado(state);
+        o.actualizar();
+    }
+
 }
