@@ -28,7 +28,7 @@ public class ObservadorConcretoEstado implements Observador {
     public String actualizar() {
         String est = sujeto.getPedido().getEstado();
 
-        if (est.equals("cancelado") & estado.equals("completado")) {
+        if (est.equals("Cancelado") & estado.equals("Completado")) {
             notificarfinal(est);
             sujeto.eliminarObservador(this); // Si el estado esta completado o cancelado eliminamos el observador
         } else {

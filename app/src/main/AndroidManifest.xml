@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.instanteat">
+    package="com.example.instantEat">
 
     <application
         android:allowBackup="true"
@@ -9,56 +9,56 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.InstantEat">
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name="com.example.instantEat.SearchActivity"></activity>
         <activity
-            android:name=".EditCardActivity"
+            android:name="com.example.instantEat.EditCardActivity"
             android:noHistory="true" />
         <activity
-            android:name=".OrderSummary"
+            android:name="com.example.instantEat.OrderSummary"
             android:label="Resumen del Pedido"
             android:noHistory="true" />
         <activity
-            android:name=".SuborderSummary"
+            android:name="com.example.instantEat.SuborderSummary"
             android:label="Resumen del Subpedido"
             android:noHistory="true" />
         <activity
-            android:name=".OrderSummaryOwner"
+            android:name="com.example.instantEat.OrderSummaryOwner"
             android:label="Resumen del Pedido"
             android:noHistory="true" />
         <activity
-            android:name=".OrderEditorActivity"
+            android:name="com.example.instantEat.OrderEditorActivity"
             android:label="Editor del Pedido" />
         <activity
-            android:name=".ChooseSubordersActivity"
+            android:name="com.example.instantEat.ChooseSubordersActivity"
             android:label="Añadir subpedidos" />
         <activity
-            android:name=".CustomDishEditorActivity"
+            android:name="com.example.instantEat.CustomDishEditorActivity"
             android:label="Añadir platos personalizados" />
         <activity
-            android:name=".ChooseRestaurantActivity"
+            android:name="com.example.instantEat.ChooseRestaurantActivity"
             android:label="Elija Restaurante" />
         <activity
-            android:name=".EditDishActivity"
+            android:name="com.example.instantEat.EditDishActivity"
             android:label="Edición de Plato"
             android:noHistory="true" />
         <activity
-            android:name=".OwnerDashboardActivity"
+            android:name="com.example.instantEat.OwnerDashboardActivity"
             android:label="Visualizador de platos" />
         <activity
-            android:name=".OwnerMenuActivity"
+            android:name="com.example.instantEat.OwnerMenuActivity"
             android:label="Menú de propietario" />
         <activity
-            android:name=".UserPrefsActivity"
+            android:name="com.example.instantEat.UserPrefsActivity"
             android:label="Preferencias de Usuario" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.example.instantEat.RegisterActivity"
             android:label="Registro de Nuevo Usuario"
             android:noHistory="true" />
         <activity
-            android:name=".ClientMenuActivity"
+            android:name="com.example.instantEat.ClientMenuActivity"
             android:label="InstantEat" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.example.instantEat.LoginActivity"
             android:label="InstantEat"
             android:noHistory="true">
             <intent-filter>

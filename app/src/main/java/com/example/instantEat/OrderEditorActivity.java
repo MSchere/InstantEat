@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -28,6 +28,7 @@ public class OrderEditorActivity extends AppCompatActivity {
     ArrayList<String> selectedDishesPrices, selectedDishesNames, selectedDishesIngredients;
     ArrayList<Integer> selectedPositions;
     ArrayList<String> dishNames, dishIngredients, dishPrices;
+    ArrayList<Boolean> dishVegan, dishGlutenFree;
     String restaurantName;
     Double price;
     Bundle bundle;
@@ -53,7 +54,7 @@ public class OrderEditorActivity extends AppCompatActivity {
 
         fillLists(Utilities.getDishList(this, restaurantName));
 
-        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices);
+        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices, dishGlutenFree, dishVegan);
         dishList = findViewById(R.id.orderDishList);
         dishList.setItemsCanFocus(false);
         dishList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -104,14 +105,17 @@ public class OrderEditorActivity extends AppCompatActivity {
         });
 
         finishOrderEditorButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), CustomDishEditorActivity.class);
-            bundle.putStringArrayList("dishesList", selectedDishesNames); //Parámetros para la actividad
-            bundle.putStringArrayList("pricesList", selectedDishesPrices);
-            bundle.putDouble("totalPrice", price);
-            bundle.putSerializable("isSuborder", bundle.getBoolean("isSuborder"));
-            bundle.putSerializable("restaurant", restaurant);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            if (selectedDishesNames.size()!=0) {
+                Intent intent = new Intent(getApplicationContext(), CustomDishEditorActivity.class);
+                bundle.putStringArrayList("dishesList", selectedDishesNames); //Parámetros para la actividad
+                bundle.putStringArrayList("pricesList", selectedDishesPrices);
+                bundle.putDouble("totalPrice", price);
+                bundle.putSerializable("isSuborder", bundle.getBoolean("isSuborder"));
+                bundle.putSerializable("restaurant", restaurant);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+            else Utilities.showToast(getApplicationContext(), "Ningún plato seleccionado");
         });
     }
     //Encontrado en stack overflow, créditos al usuario VVB
@@ -144,11 +148,14 @@ public class OrderEditorActivity extends AppCompatActivity {
         dishNames = new ArrayList<String>();
         dishIngredients = new ArrayList<String>();
         dishPrices = new ArrayList<String>();
+        dishVegan = new ArrayList<Boolean>();
+        dishGlutenFree = new ArrayList<Boolean>();
         for (Plato plato:dishList){
             dishNames.add(plato.getNombre());
             dishIngredients.add(Utilities.arrayListToString(plato.getIngredientes()));
             dishPrices.add(String.valueOf(plato.getPrecio()));
-
+            dishVegan.add(plato.isVegano());
+            dishGlutenFree.add(plato.isGlutenFree());
         }
     }
 }

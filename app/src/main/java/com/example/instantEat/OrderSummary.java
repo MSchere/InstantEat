@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -22,10 +22,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import backend.Encargo;
-import backend.Observador;
 import backend.ObservadorConcretoEstado;
 import backend.Pedido;
-import backend.Sujeto;
 import backend.SujetoConcreto;
 import backend.Usuario;
 
@@ -38,6 +36,7 @@ public class OrderSummary extends AppCompatActivity {
     ArrayList<String> dishes, prices, fusedList;
     SharedPreferences prefs;
     Boolean isUpdate, hasSuborders = false;
+    DecimalFormat df = new DecimalFormat("#.00");
     String[] paymentMethods = {"Efectivo", "Tarjeta", "PayPal", "Bitcoin"};
     Usuario client, restaurant;
     SujetoConcreto subject;
@@ -192,13 +191,13 @@ public class OrderSummary extends AppCompatActivity {
     private ArrayList<String> mergeLists(ArrayList<String> list1, ArrayList<String> list2) {
         ArrayList<String> newList = new ArrayList<String>();
         for (int i = 0; i < list1.size(); i++){
-            newList.add(list1.get(i) + ": " + list2.get(i) + " €");
+            newList.add(list1.get(i) + ": " + df.format(Double.parseDouble(list2.get(i).replaceAll(",","."))) + " €");
         }
         return newList;
     }
 
     private void fillFields() {
-        client = Utilities.getUser(getApplicationContext(), email, false);
+        client = Utilities.getUser(getApplicationContext(), email, false, false);
         if (isUpdate){
             orderId = order.getId();
             subordersText.setText(Utilities.getSuborders(getApplicationContext(), orderId+""));
@@ -207,7 +206,7 @@ public class OrderSummary extends AppCompatActivity {
                 hasSuborders = false;
             }
             else hasSuborders = true;
-            restaurant = Utilities.getUser(getApplicationContext(), order.getRestaurante(), true);
+            restaurant = Utilities.getUser(getApplicationContext(), order.getDireccionRestaurante(), false, true);
             totalPrice = order.getPrecioTotal();
         }
         else {
@@ -218,7 +217,6 @@ public class OrderSummary extends AppCompatActivity {
         restaurantAddressTitleText.setText("Dirección de " + restaurant.getName() + ":");
         restaurantAddressText.setText(restaurant.getAddress());
         phoneNumberText.setText(String.valueOf(client.getPhoneNumber()));
-        DecimalFormat df = new DecimalFormat("#.00");
         totalPriceText.setText(df.format(totalPrice) + " €");
         state = "Preparando";
 

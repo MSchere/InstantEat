@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -97,10 +97,10 @@ public class SuborderSummary extends AppCompatActivity {
     }
 
     private void fillFields() {
-        client = Utilities.getUser(getApplicationContext(), email, false);
+        client = Utilities.getUser(getApplicationContext(), email, false, false);
         if (isUpdate){
             orderId = order.getId();
-            restaurant = Utilities.getUser(getApplicationContext(), order.getRestaurante(), true);
+            restaurant = Utilities.getUser(getApplicationContext(), order.getDireccionRestaurante(), false, true);
             totalPrice = order.getPrecioTotal();
         }
         orderId = new Random().nextInt(10000);

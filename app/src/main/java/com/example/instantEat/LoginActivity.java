@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = prefs.edit();
 
-        //getApplicationContext().deleteDatabase("orderDB");
+        //Utilities.deleteDb(this);
 
         emailField = findViewById(R.id.emailFieldLogin);
         passwordField = findViewById(R.id.passwordFieldLogin);
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     private void validate() {
         String email = emailField.getText().toString();
         try {
-            Usuario user = Utilities.getUser(getApplicationContext(), email, false);
+            Usuario user = Utilities.getUser(getApplicationContext(), email, false, false);
             String password = user.getPassword();
             String userType = user.getUserType();
             String name = user.getName();
@@ -66,18 +66,19 @@ public class LoginActivity extends AppCompatActivity {
                 if (rememberCheckBox.isChecked()) {
                     editor.putString("savedEmail", email);
                     editor.putString("savedPassword", inputPassword);
-                    Utilities.showToast(getApplicationContext(), "¡Bienvenido de vuelta " + name + "!");
+                    //Utilities.showToast(getApplicationContext(), "¡Bienvenid@ de vuelta " + name + "!");
                 }
-                Utilities.showToast(getApplicationContext(), "¡Bienvenido " + name+"!");
                 if (userType.equals("client")) {
                     editor.putString("userType", "client");
                     //Vamos al menú
                     finish();
+                    Utilities.showToast(getApplicationContext(), "¡Bienvenido " + name+"!");
                     startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class));
                 }
                 else {
                     editor.putString("userType", "owner");
                     finish();
+                    Utilities.showToast(getApplicationContext(), "Bienvenido propietario de " + name);
                     startActivity(new Intent(getApplicationContext(), OwnerMenuActivity.class));
                 }
                 editor.commit();

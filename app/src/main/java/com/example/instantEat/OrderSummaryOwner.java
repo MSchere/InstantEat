@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import backend.ObservadorConcretoEstado;
@@ -28,6 +29,7 @@ public class OrderSummaryOwner extends AppCompatActivity {
     ArrayList<String> dishes, prices, fusedList;
     SharedPreferences prefs;
     Usuario client, restaurant;
+    DecimalFormat df = new DecimalFormat("#.00");
     Pedido order;
     Sujeto subject;
     ObservadorConcretoEstado o1, o2;
@@ -95,21 +97,21 @@ public class OrderSummaryOwner extends AppCompatActivity {
     private ArrayList<String> mergeLists(ArrayList<String> list1, ArrayList<String> list2) {
         ArrayList<String> newList = new ArrayList<String>();
         for (int i = 0; i < list1.size(); i++){
-            newList.add(list1.get(i) + ": " + list2.get(i) + " €");
+            newList.add(list1.get(i) + ": " + df.format(Double.parseDouble(list2.get(i).replaceAll(",","."))) + " €");
         }
         return newList;
     }
 
     private void fillFields() {
-        client = Utilities.getUser(getApplicationContext(), email, false);
+        client = Utilities.getUser(getApplicationContext(), email, false, false);
         orderId = order.getId();
         subordersText.setText(Utilities.getSuborders(getApplicationContext(), orderId+""));
         if (subordersText.getText().equals("")){
             subordersText.setText("sin subpedidos");
         }
-        restaurant = Utilities.getUser(getApplicationContext(), order.getRestaurante(), true);
+        restaurant = Utilities.getUser(getApplicationContext(), order.getDireccionRestaurante(), false, true);
         totalPrice = order.getPrecioTotal();
-        orderIdText.setText(String.format("%06d", orderId));
+        orderIdText.setText(String.format("%04d", orderId));
         clientAddressText.setText(client.getAddress());
         phoneNumberText.setText(String.valueOf(client.getPhoneNumber()));
         totalPriceText.setText(totalPrice + " €");

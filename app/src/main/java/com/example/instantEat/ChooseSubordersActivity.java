@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +33,7 @@ public class ChooseSubordersActivity extends AppCompatActivity {
     Pedido order;
     Sujeto subject;
     ObservadorConcretoEstado o;
+    DecimalFormat df = new DecimalFormat("#.00");
     SharedPreferences prefs;
     ArrayList<String> selectedOrdersPrices, selectedOrdersIds;
     ArrayList<String> IDs, restaurantNames, dishes, prices, states;
@@ -61,7 +62,7 @@ public class ChooseSubordersActivity extends AppCompatActivity {
         selectedOrdersIds = new ArrayList<String>();
         selectedPositions = new ArrayList<Integer>();
 
-        totalPriceText.setText(mainOrderPrice + " €");
+        totalPriceText.setText(df.format(mainOrderPrice) + " €");
         fillLists(Utilities.getOrders(this, new String[] {email}, false, true));
 
         adapterOrder = new AdapterOrder(this, IDs, restaurantNames, dishes, prices, states);
@@ -113,24 +114,29 @@ public class ChooseSubordersActivity extends AppCompatActivity {
         });
 
         finishOrderEditorButton.setOnClickListener(v -> {
-            mainOrder = new PedidoPrincipal(order.getId(), order.getEmail(), order.getTelefono(), order.getDireccionCliente(), order.getRestaurante(),
-                    order.getDireccionRestaurante(), order.getPlatos(), 0, order.getMetodoPago(), "Preparando con subpedidos");
-            observeState("Preparando con subpedidos");
-            Pedido tempOrder;
-            Subpedido subOrder;
-            for (String id:selectedOrdersIds){
-                tempOrder = Utilities.getOrder(getApplicationContext(), id);
-                subOrder = new Subpedido(tempOrder.getId(), tempOrder.getEmail(), 0, "", tempOrder.getRestaurante(),
-                        tempOrder.getDireccionRestaurante(), tempOrder.getPlatos(), tempOrder.getPrecioTotal(), "", "");
-                mainOrder.añadirSubpedido(subOrder);
-            }
-            mainOrder.setPrecioTotal(mainOrder.getPrecioPedido());
-            Utilities.insertMainOrder(getApplicationContext(), mainOrder);
+                    if (selectedOrdersIds.size()!=0) {
+                        mainOrder = new PedidoPrincipal(order.getId(), order.getEmail(), order.getTelefono(), order.getDireccionCliente(), order.getRestaurante(),
+                                order.getDireccionRestaurante(), order.getPlatos(), 0, order.getMetodoPago(), "Preparando con subpedidos");
+                        observeState("Preparando con subpedidos");
+                        Pedido tempOrder;
+                        Subpedido subOrder;
+                        for (String id : selectedOrdersIds) {
+                            tempOrder = Utilities.getOrder(getApplicationContext(), id);
+                            subOrder = new Subpedido(tempOrder.getId(), tempOrder.getEmail(), 0, "", tempOrder.getRestaurante(),
+                                    tempOrder.getDireccionRestaurante(), tempOrder.getPlatos(), tempOrder.getPrecioTotal(), "", "");
+                            mainOrder.añadirSubpedido(subOrder);
+                        }
+                        mainOrder.setPrecioTotal(mainOrder.getPrecioPedido());
+                        Utilities.insertMainOrder(getApplicationContext(), mainOrder);
 
-            startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class).addFlags(
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                            Intent.FLAG_ACTIVITY_NEW_TASK));
+                        startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class).addFlags(
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                        Intent.FLAG_ACTIVITY_NEW_TASK));
+                    }
+                    else {
+                        Utilities.showToast(getApplicationContext(), "Ningún subpedido seleccionado");
+                    }
         });
     }
     //Encontrado en stack overflow, créditos al usuario VVB
@@ -154,7 +160,6 @@ public class ChooseSubordersActivity extends AppCompatActivity {
             doubleValue = item.replaceAll("[^\\d.]", "");
             price = price + Double.parseDouble(doubleValue);
         }
-        DecimalFormat df = new DecimalFormat("#.00");
         totalPriceText.setText(df.format(price) + " €");
         return price;
     }

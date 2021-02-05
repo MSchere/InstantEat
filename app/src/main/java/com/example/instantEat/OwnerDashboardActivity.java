@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -29,6 +29,7 @@ public class OwnerDashboardActivity extends AppCompatActivity {
     AdapterDish adapterDish;
     ArrayList<Plato> dishes;
     ArrayList<String> dishNames, dishIngredients, dishPrices;
+    ArrayList<Boolean> dishVegan, dishGlutenFree;
     BuscadorConcreto buscador;
     Buscador iBuscador;
 
@@ -56,7 +57,7 @@ public class OwnerDashboardActivity extends AppCompatActivity {
         iBuscador = buscador;
         fillLists(dishes);
         fillDashboard();
-        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices);
+        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices, dishGlutenFree, dishVegan);
         dishList.setAdapter(adapterDish);
         dishList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -76,15 +77,18 @@ public class OwnerDashboardActivity extends AppCompatActivity {
                         Intent.FLAG_ACTIVITY_NEW_TASK)));
     }
 
-    private void fillLists(ArrayList<Plato> dishList) {
+    private void fillLists(ArrayList<Plato> dishList){
         dishNames = new ArrayList<String>();
         dishIngredients = new ArrayList<String>();
         dishPrices = new ArrayList<String>();
-        for (Plato plato : dishList) {
+        dishVegan = new ArrayList<Boolean>();
+        dishGlutenFree = new ArrayList<Boolean>();
+        for (Plato plato:dishList){
             dishNames.add(plato.getNombre());
             dishIngredients.add(Utilities.arrayListToString(plato.getIngredientes()));
             dishPrices.add(String.valueOf(plato.getPrecio()));
-
+            dishVegan.add(plato.isVegano());
+            dishGlutenFree.add(plato.isGlutenFree());
         }
     }
         private void fillDashboard(){

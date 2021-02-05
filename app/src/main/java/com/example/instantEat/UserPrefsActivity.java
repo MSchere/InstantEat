@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +15,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import backend.Usuario;
 
-public class UserPrefsActivity extends AppCompatActivity {
+public class  UserPrefsActivity extends AppCompatActivity {
     EditText emailField, passwordField, nameField, addressField, phoneNumberField;
     Button saveButton, deleteAccountButton, logoffButton, addCardButton, deleteOrdersButton;
     String userType, email, userName;
@@ -77,7 +76,13 @@ public class UserPrefsActivity extends AppCompatActivity {
 
         deleteAccountButton.setOnClickListener(v -> deleteUser());
 
-        deleteOrdersButton.setOnClickListener(v -> Utilities.deleteOrders(this, email));
+        deleteOrdersButton.setOnClickListener(v -> {
+            Utilities.deleteOrders(this, email);
+            startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class).addFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                            Intent.FLAG_ACTIVITY_NEW_TASK));
+        });
 
         if (email.equals("dummy@email.com")) {
             ViewEnablerDecorator decorator = new ViewEnablerDecorator(getApplicationContext(), new View[]{emailField, passwordField, nameField, deleteAccountButton, addCardButton}, false);

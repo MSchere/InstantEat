@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -40,7 +40,7 @@ public class AdapterOrder extends ArrayAdapter {
         TextView states = row.findViewById(R.id.stateListField);
         String state;
 
-        id.setText(rID.get(position));
+        id.setText(String.format("%04d", Integer.parseInt(rID.get(position))));
         restaurant.setText(rRestaurantName.get(position));
         total.setText(new DecimalFormat("#.00").format(Double.valueOf(rTotalPrices.get(position))) + "€");
         dishes.setText(rDishes.get(position));

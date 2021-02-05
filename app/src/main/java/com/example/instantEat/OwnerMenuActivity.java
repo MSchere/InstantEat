@@ -1,6 +1,4 @@
-package com.example.instanteat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+package com.example.instantEat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,57 +11,59 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import java.util.ArrayList;
 
 import backend.Pedido;
+import backend.Usuario;
 
-public class ClientMenuActivity extends AppCompatActivity {
-    Button newOrderButton, newSuborderButton;
+public class OwnerMenuActivity extends AppCompatActivity {
+    Button dashBoardButton;
     AdapterOrder adapterOrder;
-    ImageButton userPrefsButton;
-    ImageView logo, searchButton;
+    ImageButton ownerPrefsButton;
+    Usuario restaurant;
+    ImageView logo;
     ListView clientOrderList;
     ArrayList<Pedido> orderList;
-    ArrayList<String> IDs, restaurantNames, totalPrices, dishes, dishNames, prices, states;
+    ArrayList<String> IDs, clientAddresses, totalPrices, dishes, dishNames, prices, states;
     SharedPreferences prefs;
-    String email, strDishes;
+    String email, strDishes, restaurantName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.client_menu);
+        setContentView(R.layout.owner_menu);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        searchButton = findViewById(R.id.searchButton);
-        newOrderButton = findViewById(R.id.newOrderButton);
-        newSuborderButton = findViewById(R.id.newSuborderButton);
-        userPrefsButton = findViewById(R.id.clientPrefsButton);
-        logo = findViewById(R.id.menuLogo);
+        dashBoardButton = findViewById(R.id.dashboardButton);
+        ownerPrefsButton = findViewById(R.id.ownerPrefsButton);
+        logo = findViewById(R.id.ownerMenuLogo);
         logo.setImageAlpha(127);
-
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         email = prefs.getString("email", "NULL");
-        orderList = Utilities.getOrders(this, new String[] {email}, false, false);
+        restaurantName = prefs.getString("name", "NULL");
+
+        setTitle("Menú del local: " + restaurantName);
+
+        restaurant = Utilities.getUser(getApplicationContext(), email, false, false);
+
+        orderList = Utilities.getOrders(this, new String[] {restaurantName, restaurant.getAddress()}, true, false);
         fillLists(orderList);
-        clientOrderList = findViewById(R.id.clientOrderList);
-        adapterOrder = new AdapterOrder(this, IDs, restaurantNames, dishes, totalPrices, states);
+        clientOrderList = findViewById(R.id.ownerOrderList);
+        adapterOrder = new AdapterOrder(this, IDs, clientAddresses, dishes, totalPrices, states);
         clientOrderList.setAdapter(adapterOrder);
         clientOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent;
+                Intent intent = new Intent(getApplicationContext(), OrderSummaryOwner.class);
                 Bundle bundle = new Bundle();
                 prices = new ArrayList<>();
                 dishNames = new ArrayList<>();
-                if (states.get(i).equals("Subpedido")){
-                    intent = new Intent(getApplicationContext(), SuborderSummary.class);
-                }
-                else{
-                    intent = new Intent(getApplicationContext(), OrderSummary.class);
-                }
                 for (String strDish:Utilities.stringToArrayList(dishes.get(i))){
                     dishNames.add(strDish.substring(0, strDish.indexOf(":")));
-                    prices.add(strDish.replaceAll("[^\\d.]", ""));
+                    prices.add(strDish.replaceAll("[^\\d,]", ""));
                     //Utilities.showToast(getApplicationContext(), dishNames.get(dishNames.size()-1) + prices.get(prices.size()-1));
                 }
                 bundle.putStringArrayList("dishesList", dishNames);
@@ -75,37 +75,22 @@ public class ClientMenuActivity extends AppCompatActivity {
             }
         });
 
+        dashBoardButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), OwnerDashboardActivity.class)));
 
-        searchButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SearchActivity.class)));
+        ownerPrefsButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), UserPrefsActivity.class)));
 
-        newOrderButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), ChooseRestaurantActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("isSuborder", false);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
 
-        newSuborderButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), ChooseRestaurantActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("isSuborder", true);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
-
-        userPrefsButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), UserPrefsActivity.class)));
     }
 
     private void fillLists(ArrayList<Pedido> orderList){
         IDs = new ArrayList<String>();
-        restaurantNames = new ArrayList<String>();
+        clientAddresses = new ArrayList<String>();
         totalPrices = new ArrayList<String>();
         dishes = new ArrayList<String>();
         states = new ArrayList<String>();
         for (Pedido order:orderList){
             IDs.add(String.valueOf(order.getId()));
-            restaurantNames.add(order.getRestaurante());
+            clientAddresses.add(order.getDireccionCliente());
             totalPrices.add(String.valueOf(order.getPrecioTotal()));
             strDishes = Utilities.arrayListToString(order.getPlatos());
             dishes.add(Utilities.arrayListToString(order.getPlatos()));

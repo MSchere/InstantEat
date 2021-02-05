@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -25,13 +25,14 @@ public class SearchActivity extends AppCompatActivity {
     SearchView searcher;
     Switch veganSwitch, glutenFreeSwitch, restaurantSearchSwitch;
     Spinner orderPriceSpinner;
-    String[] order = {"Precio ascendente", "Precio descendente"};
+    String[] order = {"No ordenar", "Precio ascendente", "Precio descendente"};
     String previousQuery = "";
     ListView searchResults;
     ArrayAdapter<String> adapter;
     ArrayList<Plato> dishList;
     AdapterDish adapterDish;
     ArrayList<String> dishNames, dishIngredients, dishPrices;
+    ArrayList<Boolean> dishVegan, dishGlutenFree;
     BuscadorConcreto buscador;
     Buscador iBuscador;
 
@@ -57,14 +58,15 @@ public class SearchActivity extends AppCompatActivity {
         orderPriceSpinner.setAdapter(adapter);
 
         searchResults = findViewById(R.id.searchResults);
-        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices);
+        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices, dishGlutenFree, dishVegan);
         searchResults.setAdapter(adapterDish);
         searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = buscador.getLista().get(i).getRestaurante();
                 Intent intent = new Intent(getApplicationContext(), OrderEditorActivity.class);
                 Bundle bundle = new Bundle();
-                Usuario restaurant = (Usuario) Utilities.getUser(getApplicationContext(), selection, true);
+                Usuario restaurant = (Usuario) Utilities.getUser(getApplicationContext(), selection, true, false);
+                Utilities.showToast(getApplicationContext(), "Nuevo pedido de " + restaurant.getName() + " en " + restaurant.getAddress());
                 bundle.putSerializable("restaurant", restaurant); //Parámetro para la actividad
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -140,7 +142,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void updateResult(){
-        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices);
+        adapterDish = new AdapterDish(this, dishNames, dishIngredients, dishPrices, dishGlutenFree, dishVegan);
         searchResults.setAdapter(adapterDish);
     }
 
@@ -148,11 +150,14 @@ public class SearchActivity extends AppCompatActivity {
         dishNames = new ArrayList<String>();
         dishIngredients = new ArrayList<String>();
         dishPrices = new ArrayList<String>();
-            for (Plato plato:dishList){
+        dishVegan = new ArrayList<Boolean>();
+        dishGlutenFree = new ArrayList<Boolean>();
+        for (Plato plato:dishList){
                 dishNames.add(plato.getNombre());
                 dishIngredients.add(Utilities.arrayListToString(plato.getIngredientes()));
                 dishPrices.add(String.valueOf(plato.getPrecio()));
-
+                dishVegan.add(plato.isVegano());
+                dishGlutenFree.add(plato.isGlutenFree());
             }
     }
 }

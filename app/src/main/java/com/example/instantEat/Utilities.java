@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -49,16 +49,14 @@ public class Utilities {
     public static final String totalPrice = "total_price";
     public static final String paymentMethod = "payment_method";
     public static final String suborders = "suborders";
-    public static final String object = "object";
 
     public static final String create_user_table = "create table " + userTable + "\n" +
             "(" + email + " varchar(40) primary key,\n" +
             password + " varchar(20) not null,\n" +
             userType + " varchar(8) check (user_type in ('client', 'owner', 'rider')),\n" +
             name + " varchar(40) not null,\n" +
-            address + " varchar(50),\n" +
-            phoneNumber + " varchar(9),\n" +
-            object + " blob);";
+            address + " varchar(50) not null,\n" +
+            phoneNumber + " int not null);";
 
     public static final String create_dish_table = "create table " + dishTable + "\n" +
             "(" + dishName + " varchar(40) primary key,\n" +
@@ -81,26 +79,22 @@ public class Utilities {
             phoneNumber + " int,\n" +
             clientAddress + " varchar(40),\n" +
             restaurant + " varchar(40) not null,\n" +
-            restaurantAddress + " blob not null,\n" +
+            restaurantAddress + " varchar(40) not null,\n" +
             dishes + " varchar(40) not null,\n" +
             totalPrice + " double not null,\n" +
             paymentMethod + " varchar(40),\n" +
             state + " varchar(9) not null,"
             + suborders + " varchar(40));";
 
-    public static final String insert_dummy_user = "INSERT INTO " + userTable + " VALUES ('dummy@email.com', 'dummy', 'client', 'dummy', 'dummy', '999999999','');";
+    public static final String insert_dummy_user = "INSERT INTO " + userTable + " VALUES ('dummy@email.com', 'dummy', 'client', 'dummy', 'dummy', 999999999);";
 
-
-
-
-
-
-    public static final Usuario getUser(Context context, String parameter, Boolean byName) {
+    public static final Usuario getUser(Context context, String parameter, Boolean byName, Boolean byAddress) {
         ConnectSQLiteHelper conn = new ConnectSQLiteHelper(context, Utilities.userTable, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         String method;
         Usuario user = null;
-        if (byName) method = Utilities.name;
+        if (byAddress) method = Utilities.address;
+        else if (byName) method = Utilities.name;
         else method = Utilities.email;
         String[] parameters = {parameter};
         String[] fields = {"*"};
@@ -392,9 +386,10 @@ public class Utilities {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
     public static final void deleteDb(Context context) {
-        //context.deleteDatabase("userDB");
+        context.deleteDatabase("userDB");
         context.deleteDatabase("dishDB");
-        //context.deleteDatabase("objectDB");
+        context.deleteDatabase("cardDB");
+        context.deleteDatabase("orderDB");
     }
 
 

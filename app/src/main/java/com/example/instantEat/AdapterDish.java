@@ -1,10 +1,11 @@
-package com.example.instanteat;
+package com.example.instantEat;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,15 +18,16 @@ import java.util.ArrayList;
 public class AdapterDish extends ArrayAdapter {
     Context context;
     ArrayList<String> rName, rIngredients, rPrice;
-    int[] image;
+    ArrayList<Boolean> rGlutenFree, rVegan;
 
-    public AdapterDish(Context context, ArrayList<String> rName, ArrayList<String> rIngredients, ArrayList<String> rPrice) {
+    public AdapterDish(Context context, ArrayList<String> rName, ArrayList<String> rIngredients, ArrayList<String> rPrice, ArrayList<Boolean> rGlutenFree, ArrayList<Boolean> rVegan) {
         super(context, R.layout.row_dish, R.id.textView, rName);
         this.context = context;
         this.rName = rName;
         this.rIngredients = rIngredients;
         this.rPrice = rPrice;
-        this.image = image;
+        this.rGlutenFree = rGlutenFree;
+        this.rVegan = rVegan;
     }
     @NonNull
     @Override
@@ -35,11 +37,19 @@ public class AdapterDish extends ArrayAdapter {
         TextView name = row.findViewById(R.id.dishNameListField);
         TextView ingredients = row.findViewById(R.id.ingredientsListField);
         TextView price = row.findViewById(R.id.dishPriceListField);
+        ImageView veganImage = row.findViewById(R.id.veganImage);
+        ImageView glutenFreeImage = row.findViewById(R.id.glutenFreeImage);
 
         name.setText(rName.get(position));
         ingredients.setText(rIngredients.get(position));
         DecimalFormat df = new DecimalFormat("#.00");
         price.setText(df.format(Double.valueOf(rPrice.get(position))) + "€");
+        if (!rGlutenFree.get(position)){
+            glutenFreeImage.setImageAlpha(0);
+        }
+        if (!rVegan.get(position)){
+            veganImage.setImageAlpha(0);
+        }
         return row;
     }
 }

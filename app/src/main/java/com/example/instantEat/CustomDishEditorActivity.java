@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -98,6 +98,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
             totalPrice = Double.valueOf(prices.get(prices.size()-1))+totalPrice;
             totalPriceText.setText(df.format(totalPrice) + " €");
             dishes.add(plato.getNombre());
+            Utilities.showToast(getApplicationContext(), "Plato personalizado añadido");
         });
 
         finishOrderEditorButton.setOnClickListener(v -> {

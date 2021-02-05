@@ -1,4 +1,4 @@
-package com.example.instanteat;
+package com.example.instantEat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class ChooseRestaurantActivity extends AppCompatActivity {
     ListView restaurantList;
     ArrayAdapter<String> adapter;
-    ArrayList<String> restaurants;
-    String selection, restaurantName, address;
+    ArrayList<String> list;
+    String restaurantName, restaurantAddress;
     Bundle bundle;
 
     @Override
@@ -26,19 +26,18 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose_restaurant);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-        restaurantList = findViewById(R.id.searchResults);
         bundle = getIntent().getExtras();
-        restaurants = fillList();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, restaurants);
+        list = fillList();
+        restaurantList = findViewById(R.id.restaurantList);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         restaurantList.setAdapter(adapter);
         restaurantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String address = list.get(i).substring(list.get(i).indexOf("en ") + 3);
+                address.trim();
                 Intent intent = new Intent(getApplicationContext(), OrderEditorActivity.class);
                 //Nos quedamos solo con el nombre del restaurante
-                selection = restaurants.get(i).substring(0, restaurants.get(i).indexOf(" en "));
-                selection.trim();
-                bundle.putSerializable("restaurant", Utilities.getUser(getApplicationContext(), selection, true)); //Parámetro para la actividad
+                bundle.putSerializable("restaurant", Utilities.getUser(getApplicationContext(), address, false, true)); //Parámetro para la actividad
                 bundle.putSerializable("isSuborder", bundle.getBoolean("isSuborder"));
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -57,13 +56,13 @@ public class ChooseRestaurantActivity extends AppCompatActivity {
             if(cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     restaurantName = cursor.getString(1);
-                    address = cursor.getString(2);
-                    list.add(restaurantName + " en " + address);
+                    restaurantAddress = cursor.getString(2);
+                    list.add(restaurantName + " en " + restaurantAddress);
                     cursor.moveToNext();
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "ERROR EN LA BASE DE DATOS", Toast.LENGTH_SHORT).show();
+            Utilities.showToast(getApplicationContext(), "ERROR EN LA BASE DE DATOS");
             db.close();
             e.printStackTrace();
         }

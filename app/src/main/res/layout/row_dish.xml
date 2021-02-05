@@ -15,13 +15,13 @@
         />
 
     <LinearLayout
-        android:layout_width="225dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/dishNameListField"
-            android:layout_width="200dp"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="Nombre plato"
@@ -39,16 +39,43 @@
             android:textSize="15sp"
             android:textStyle="bold" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/dishPriceListField"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="100.00€"
-        android:textColor="#000"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
+        android:orientation="vertical"
+        android:padding="5dp"
+        >
+        <TextView
+            android:id="@+id/dishPriceListField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="3dp"
+            android:text="10,00€"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="left"
+            android:src="@drawable/vegan_icon"
+            android:id="@+id/veganImage"
+            />
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/guntenfree_icon"
+            android:id="@+id/glutenFreeImage"
+            />
+    </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
