@@ -96,17 +96,17 @@ public class ConnectSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL("INSERT INTO orderDB VALUES (4516, 'jRuiz@gmail.com', 645865412, 'Calle los Perales 28b, 7ºa', 'McDonalds', 'Centro Comercial Isla Azul'" +
                 ", 'BigMac: 6,45€, Refresco Mconalds: 1,5€, Patatas deluxe: 1,00€, McPollo: 6,25€', 15.2, 'tarjeta', 'Preparando', '');");
         db.execSQL("INSERT INTO orderDB VALUES (1645, 'jRuiz@gmail.com', 0, '', 'Telepizza', 'Plaza de Bejanque 22'" +
-                ", 'Pizza Barbacoa: 7,25€', 15.2, '', 'Subpedido', '');");
+                ", 'Pizza Barbacoa: 7,25€', 7.25, '', 'Subpedido', '');");
 
         db.execSQL("INSERT INTO orderDB VALUES (4172, 'pGarcia@gmail.com', 646465234, 'Calle Virgen de la Antigua 17, 2ºc', 'McDonalds', 'Centro Comercial Isla Azul'" +
                 ", 'BigMac: 6,45€, Refresco Mconalds: 1,5€, Patatas deluxe: 1,00€, McPollo: 6,25€', 15.2, 'tarjeta', 'Preparando', '');");
         db.execSQL("INSERT INTO orderDB VALUES (2467, 'pGarcia@gmail.com', 0, '', 'Telepizza', 'Plaza de Bejanque 22'" +
-                ", 'Pizza Barbacoa: 7,25€', 15.2, '', 'Subpedido', '');");
+                ", 'Pizza Barbacoa: 7,25€', 7.25, '', 'Subpedido', '');");
 
         db.execSQL("INSERT INTO orderDB VALUES (7975, 'ePerez@gmail.com', 644146738, 'Calle el Embajador 12a, 4ºb', 'McDonalds', 'Centro Comercial Isla Azul'" +
                 ", 'BigMac: 6,45€, Refresco Mconalds: 1,5€, Patatas deluxe: 1,00€, McPollo: 6,25€', 15.2, 'tarjeta', 'Preparando', '');");
         db.execSQL("INSERT INTO orderDB VALUES (6543, 'ePerez@gmail.com', 0, '', 'Telepizza', 'Plaza de Bejanque 22'" +
-                ", 'Pizza Barbacoa: 7,25€', 15.2, '', 'Subpedido', '');");
+                ", 'Pizza Barbacoa: 7,25€', 7.25, '', 'Subpedido', '');");
 
     }
 }
