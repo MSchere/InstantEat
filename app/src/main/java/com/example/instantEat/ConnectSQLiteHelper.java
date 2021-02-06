@@ -38,7 +38,7 @@ public class ConnectSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL("INSERT INTO userDB VALUES ('mcDonalds1@gmail.com', 'contraseña', 'owner', 'McDonalds', 'Centro Comercial Isla Azul', 946164316);");
         db.execSQL("INSERT INTO userDB VALUES ('mcDonalds2@gmail.com', 'contraseña', 'owner', 'McDonalds', 'Calle Martin Fierro 26', 946154673);");
         db.execSQL("INSERT INTO userDB VALUES ('telepizza@gmail.com', 'contraseña', 'owner', 'Telepizza', 'Plaza de Bejanque 22', 946431654);");
-        db.execSQL("INSERT INTO userDB VALUES ('kfc@gmail.com', 'contraseña', 'owner', 'KFC', 'Centro Comercial Isla Azul', 946134576);");
+        db.execSQL("INSERT INTO userDB VALUES ('kfc@gmail.com', 'contraseña', 'owner', 'KFC', 'Centro Comercial Ferial Plaza', 946134576);");
         db.execSQL("INSERT INTO userDB VALUES ('istanbul@gmail.com', 'contraseña', 'owner', 'Istanbul', 'Calle Colón 15', 946154372);");
 
         db.execSQL("INSERT INTO cardDB VALUES (1546134245164219, 'jRuiz@gmail.com', 'Vanesa García Jiménez', 240, '08/22');");
