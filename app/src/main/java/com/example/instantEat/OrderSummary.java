@@ -79,6 +79,10 @@ public class OrderSummary extends AppCompatActivity {
         if (isUpdate) {
             order = (Pedido) bundle.getSerializable("order");
             finishOrderButton.setText("Repetir pedido");
+            if (order.getEstado().equals("Preparando con subpedidos")){
+                ViewEnablerDecorator decorator = new ViewEnablerDecorator(getApplicationContext(), new View[] {addSuborderButton}, false);
+                decorator.decorate();
+            }
         }
         else {
             totalPrice = bundle.getDouble("totalPrice");

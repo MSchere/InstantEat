@@ -126,7 +126,7 @@ public class ChooseSubordersActivity extends AppCompatActivity {
                                     tempOrder.getDireccionRestaurante(), tempOrder.getPlatos(), tempOrder.getPrecioTotal(), "", "");
                             mainOrder.añadirSubpedido(subOrder);
                         }
-                        mainOrder.setPrecioTotal(mainOrder.getPrecioPedido());
+                        mainOrder.setPrecioTotal(calculatePrice());
                         Utilities.insertMainOrder(getApplicationContext(), mainOrder);
 
                         startActivity(new Intent(getApplicationContext(), ClientMenuActivity.class).addFlags(

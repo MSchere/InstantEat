@@ -25,7 +25,7 @@ import backend.Plato;
 import backend.Usuario;
 
 public class CustomDishEditorActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    TextView totalPriceText;
+    TextView totalPriceText, priceText;
     Button finishOrderEditorButton, finishDishButton;
     Spinner spinner0, spinner1, spinner2, spinner3, spinner4, spinner5, spinner6;
     SpinnerAdapter adapter0, adapter1, adapter2, adapter3, adapter4, adapter5, adapter6;
@@ -57,6 +57,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
         restaurantName = restaurant.getName();
 
         totalPriceText = findViewById(R.id.totalPriceText);
+        priceText = findViewById(R.id.priceText);
         finishOrderEditorButton = findViewById(R.id.finishOrderEditorButton);
         finishDishButton = findViewById(R.id.finishDishButton);
 
@@ -131,6 +132,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
                 ingredients4 = new ArrayList<>(Arrays.asList("Sin bacon", "Bacon"));
                 ingredients5 = new ArrayList<>(Arrays.asList("Sin carne", "Carne de ternera","Carne de pollo","Carne vegana"));
                 ingredients6 = new ArrayList<>(Arrays.asList("Cualquier punto", "Poco hecha","Al punto","Muy hecha"));
+                priceText.setText("Precio 5,50€");
                 break;
             case "Pizza":
                 ingredients0 = new ArrayList<>(Arrays.asList("Cualquier masa", "Masa normal","Masa fina","Masa sin gluten"));
@@ -140,6 +142,8 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
                 ingredients4 = new ArrayList<>(Arrays.asList("Sin primer ingrediente", "Bacon","Pollo","Espinacas"));
                 ingredients5 = new ArrayList<>(Arrays.asList("Sin segundo ingrediente", "Anchoas", "Maiz","Salami"));
                 ingredients6 = new ArrayList<>(Arrays.asList("Sin tercer ingrediente", "Champiñones","Pimiento","Aceitunas"));
+                priceText.setText("Precio 7,50€");
+
                 break;
             case "Ensalada":
                 ingredients0 = new ArrayList<>(Arrays.asList("Sin base","Lechuga","Canonigos","Rúcula"));
@@ -149,6 +153,7 @@ public class CustomDishEditorActivity extends AppCompatActivity implements Adapt
                 ingredients4 = new ArrayList<>(Arrays.asList("Sin tomate", "Tomate", "Tomates cherry"));
                 ingredients5 = new ArrayList<>(Arrays.asList("Sin aceitunas", "Aceitunas negras","Aceitunas verdes"));
                 ingredients6 = new ArrayList<>(Arrays.asList("Sin salsa", "Mayonesa", "Alioli", "Salsa césar"));
+                priceText.setText("Precio 4,50€");
                 break;
         }
         initialized = true;
