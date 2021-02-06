@@ -103,7 +103,7 @@ public class OrderSummaryOwner extends AppCompatActivity {
     }
 
     private void fillFields() {
-        client = Utilities.getUser(getApplicationContext(), email, false, false);
+        client = Utilities.getUser(getApplicationContext(), order.getEmail(), false, false);
         orderId = order.getId();
         subordersText.setText(Utilities.getSuborders(getApplicationContext(), orderId+""));
         if (subordersText.getText().equals("")){
